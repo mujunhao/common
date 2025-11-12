@@ -19,11 +19,11 @@ func Server() middleware.Middleware {
 				return nil, errors.New(int(businessErrors.ErrSystemError.HttpCode), businessErrors.ErrSystemError.Type, businessErrors.ErrSystemError.Message)
 			}
 
-			// 信任上游传递来的header X-User-ID X-User-Type  X-Tenant-ID
+			// 信任上游传递来的header X-User-ID X-User-Type  X-Tenant-ID X-Region-Name
 			userId := tr.RequestHeader().Get("X-User-ID")
 			userType := tr.RequestHeader().Get("X-User-Type")
 			tenantId := tr.RequestHeader().Get("X-Tenant-ID")
-
+			regionName := tr.RequestHeader().Get("X-Region-Name")
 			// 检查必需的 header
 			if userId == "" {
 				return nil, errors.New(
@@ -62,9 +62,10 @@ func Server() middleware.Middleware {
 			}
 
 			claims := &Claims{
-				UserID:   uint32(userIdUint),
-				UserType: userType,
-				TenantID: uint32(tenantIdUint),
+				UserID:     uint32(userIdUint),
+				UserType:   userType,
+				TenantID:   uint32(tenantIdUint),
+				RegionName: regionName,
 			}
 			newCtx := NewContext(ctx, claims)
 

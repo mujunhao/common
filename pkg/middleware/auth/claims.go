@@ -3,9 +3,10 @@ package auth
 import "context"
 
 type Claims struct {
-	UserID   uint32
-	UserType string
-	TenantID uint32
+	UserID     uint32
+	UserType   string
+	TenantID   uint32
+	RegionName string
 }
 
 // 定义用于在 context 中传递 Claims 的 key
