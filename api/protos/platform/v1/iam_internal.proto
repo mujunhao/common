@@ -1,0 +1,106 @@
+syntax = "proto3";
+
+package iam.service.v1;
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+// ==================== 权限相关消息 ====================
+
+// 路由元信息
+message RouteMeta {
+  optional string activeIcon = 1 [json_name = "activeIcon"];
+  optional string activePath = 2 [json_name = "activePath"];
+  optional bool affixTab = 3 [json_name = "affixTab"];
+  optional int32 affixTabOrder = 4 [json_name = "affixTabOrder"];
+  repeated string authority = 5 [json_name = "authority"];
+  optional string badge = 6 [json_name = "badge"];
+  optional string badgeType = 7 [json_name = "badgeType"]; // dot, normal
+  optional string badgeVariants = 8 [json_name = "badgeVariants"]; // default, destructive, primary, success, warning
+  optional bool hideChildrenInMenu = 9 [json_name = "hideChildrenInMenu"];
+  optional bool hideInBreadcrumb = 10 [json_name = "hideInBreadcrumb"];
+  optional bool hideInMenu = 11 [json_name = "hideInMenu"];
+  optional bool hideInTab = 12 [json_name = "hideInTab"];
+  optional string icon = 13 [json_name = "icon"];
+  optional string iframeSrc = 14 [json_name = "iframeSrc"];
+  optional bool ignoreAccess = 15 [json_name = "ignoreAccess"];
+  optional bool keepAlive = 16 [json_name = "keepAlive"];
+  optional string link = 17 [json_name = "link"];
+  optional bool loaded = 18 [json_name = "loaded"];
+  optional int32 maxNumOfOpenTab = 19 [json_name = "maxNumOfOpenTab"];
+  optional bool menuVisibleWithForbidden = 20 [json_name = "menuVisibleWithForbidden"];
+  optional bool openInNewWindow = 21 [json_name = "openInNewWindow"];
+  optional int32 order = 22 [json_name = "order"];
+  optional string title = 23 [json_name = "title"];
+}
+
+// 权限点
+message Permission {
+  optional uint32 id = 1 [json_name = "id"];
+  optional string name = 2 [json_name = "name"];
+  optional string code = 3 [json_name = "code"];
+  optional string type = 4 [json_name = "type"]; // menu, api, button
+  optional string parent_code = 5 [json_name = "parentCode"];
+  optional string path = 6 [json_name = "path"];
+  optional string method = 7 [json_name = "method"];
+  optional string description = 8 [json_name = "description"];
+  optional int32 sort_order = 9 [json_name = "sortOrder"];
+  optional bool is_active = 10 [json_name = "isActive"];
+  repeated Permission children = 11 [json_name = "children"];
+  optional string redirect = 12 [json_name = "redirect"];
+  optional string component = 13 [json_name = "component"];
+  optional RouteMeta meta = 14 [json_name = "meta"];
+  optional google.protobuf.Timestamp create_time = 200 [json_name = "createTime"];
+  optional google.protobuf.Timestamp update_time = 201 [json_name = "updateTime"];
+}
+
+// 获取按钮权限列表响应
+message GetActionsResponse {
+  repeated string actions = 1 [json_name = "actions"];
+  uint32 total = 2 [json_name = "total"];
+}
+
+// 获取用户菜单响应
+message GetUserMenusResponse {
+  repeated Permission menus = 1;
+}
+
+// ==================== 租户权限相关消息 ====================
+
+// 租户权限树节点
+message TenantPermissionTreeNode {
+  uint32 id = 1 [json_name = "id"];
+  string name = 2 [json_name = "name"];
+  optional string code = 3 [json_name = "code"];
+  optional string type = 4 [json_name = "type"];
+  optional uint32 parent_id = 5 [json_name = "parentId"];
+  optional string parent_code = 6 [json_name = "parentCode"];
+  optional string path = 7 [json_name = "path"];
+  optional string redirect = 8 [json_name = "redirect"];
+  optional string component = 9 [json_name = "component"];
+  string status = 10 [json_name = "status"];
+  optional RouteMeta meta = 11 [json_name = "meta"];
+  optional uint32 product_id = 12 [json_name = "productId"];
+  int32 sort_order = 13 [json_name = "sortOrder"];
+  repeated TenantPermissionTreeNode children = 14 [json_name = "children"];
+}
+
+// 获取租户权限树请求
+message GetTenantPermissionsTreeRequest {
+  optional string status = 1 [json_name = "status"]; // DEV, BETA, GA
+}
+
+// 获取租户权限树响应
+message GetTenantPermissionsTreeResponse {
+  repeated TenantPermissionTreeNode tree = 1 [json_name = "tree"];
+  uint32 total = 2 [json_name = "total"];
+}
+
+
+// ==================== 内部 IAM 服务 ====================
+
+// 内部IAM服务（仅 gRPC，不暴露 HTTP）
+service PlatformIamService {
+  // 获取完整租户权限树（树结构，包含 children，用于前端菜单渲染和权限分配）
+  rpc GetTenantPermissionsTree(GetTenantPermissionsTreeRequest) returns (GetTenantPermissionsTreeResponse);
+}
