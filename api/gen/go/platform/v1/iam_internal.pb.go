@@ -409,104 +409,6 @@ func (x *Permission) GetUpdateTime() *timestamppb.Timestamp {
 	return nil
 }
 
-// 获取按钮权限列表响应
-type GetActionsResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Actions       []string               `protobuf:"bytes,1,rep,name=actions,proto3" json:"actions,omitempty"`
-	Total         uint32                 `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetActionsResponse) Reset() {
-	*x = GetActionsResponse{}
-	mi := &file_platform_v1_iam_internal_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetActionsResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetActionsResponse) ProtoMessage() {}
-
-func (x *GetActionsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_platform_v1_iam_internal_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetActionsResponse.ProtoReflect.Descriptor instead.
-func (*GetActionsResponse) Descriptor() ([]byte, []int) {
-	return file_platform_v1_iam_internal_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *GetActionsResponse) GetActions() []string {
-	if x != nil {
-		return x.Actions
-	}
-	return nil
-}
-
-func (x *GetActionsResponse) GetTotal() uint32 {
-	if x != nil {
-		return x.Total
-	}
-	return 0
-}
-
-// 获取用户菜单响应
-type GetUserMenusResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Menus         []*Permission          `protobuf:"bytes,1,rep,name=menus,proto3" json:"menus,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetUserMenusResponse) Reset() {
-	*x = GetUserMenusResponse{}
-	mi := &file_platform_v1_iam_internal_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetUserMenusResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetUserMenusResponse) ProtoMessage() {}
-
-func (x *GetUserMenusResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_platform_v1_iam_internal_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetUserMenusResponse.ProtoReflect.Descriptor instead.
-func (*GetUserMenusResponse) Descriptor() ([]byte, []int) {
-	return file_platform_v1_iam_internal_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *GetUserMenusResponse) GetMenus() []*Permission {
-	if x != nil {
-		return x.Menus
-	}
-	return nil
-}
-
 // 租户权限树节点
 type TenantPermissionTreeNode struct {
 	state         protoimpl.MessageState      `protogen:"open.v1"`
@@ -530,7 +432,7 @@ type TenantPermissionTreeNode struct {
 
 func (x *TenantPermissionTreeNode) Reset() {
 	*x = TenantPermissionTreeNode{}
-	mi := &file_platform_v1_iam_internal_proto_msgTypes[4]
+	mi := &file_platform_v1_iam_internal_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -542,7 +444,7 @@ func (x *TenantPermissionTreeNode) String() string {
 func (*TenantPermissionTreeNode) ProtoMessage() {}
 
 func (x *TenantPermissionTreeNode) ProtoReflect() protoreflect.Message {
-	mi := &file_platform_v1_iam_internal_proto_msgTypes[4]
+	mi := &file_platform_v1_iam_internal_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -555,7 +457,7 @@ func (x *TenantPermissionTreeNode) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TenantPermissionTreeNode.ProtoReflect.Descriptor instead.
 func (*TenantPermissionTreeNode) Descriptor() ([]byte, []int) {
-	return file_platform_v1_iam_internal_proto_rawDescGZIP(), []int{4}
+	return file_platform_v1_iam_internal_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *TenantPermissionTreeNode) GetId() uint32 {
@@ -666,7 +568,7 @@ type GetTenantPermissionsTreeRequest struct {
 
 func (x *GetTenantPermissionsTreeRequest) Reset() {
 	*x = GetTenantPermissionsTreeRequest{}
-	mi := &file_platform_v1_iam_internal_proto_msgTypes[5]
+	mi := &file_platform_v1_iam_internal_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -678,7 +580,7 @@ func (x *GetTenantPermissionsTreeRequest) String() string {
 func (*GetTenantPermissionsTreeRequest) ProtoMessage() {}
 
 func (x *GetTenantPermissionsTreeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_platform_v1_iam_internal_proto_msgTypes[5]
+	mi := &file_platform_v1_iam_internal_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -691,7 +593,7 @@ func (x *GetTenantPermissionsTreeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetTenantPermissionsTreeRequest.ProtoReflect.Descriptor instead.
 func (*GetTenantPermissionsTreeRequest) Descriptor() ([]byte, []int) {
-	return file_platform_v1_iam_internal_proto_rawDescGZIP(), []int{5}
+	return file_platform_v1_iam_internal_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *GetTenantPermissionsTreeRequest) GetStatus() string {
@@ -712,7 +614,7 @@ type GetTenantPermissionsTreeResponse struct {
 
 func (x *GetTenantPermissionsTreeResponse) Reset() {
 	*x = GetTenantPermissionsTreeResponse{}
-	mi := &file_platform_v1_iam_internal_proto_msgTypes[6]
+	mi := &file_platform_v1_iam_internal_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -724,7 +626,7 @@ func (x *GetTenantPermissionsTreeResponse) String() string {
 func (*GetTenantPermissionsTreeResponse) ProtoMessage() {}
 
 func (x *GetTenantPermissionsTreeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_platform_v1_iam_internal_proto_msgTypes[6]
+	mi := &file_platform_v1_iam_internal_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -737,7 +639,7 @@ func (x *GetTenantPermissionsTreeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetTenantPermissionsTreeResponse.ProtoReflect.Descriptor instead.
 func (*GetTenantPermissionsTreeResponse) Descriptor() ([]byte, []int) {
-	return file_platform_v1_iam_internal_proto_rawDescGZIP(), []int{6}
+	return file_platform_v1_iam_internal_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *GetTenantPermissionsTreeResponse) GetTree() []*TenantPermissionTreeNode {
@@ -857,12 +759,7 @@ const file_platform_v1_iam_internal_proto_rawDesc = "" +
 	"_componentB\a\n" +
 	"\x05_metaB\x0e\n" +
 	"\f_create_timeB\x0e\n" +
-	"\f_update_time\"D\n" +
-	"\x12GetActionsResponse\x12\x18\n" +
-	"\aactions\x18\x01 \x03(\tR\aactions\x12\x14\n" +
-	"\x05total\x18\x02 \x01(\rR\x05total\"H\n" +
-	"\x14GetUserMenusResponse\x120\n" +
-	"\x05menus\x18\x01 \x03(\v2\x1a.iam.service.v1.PermissionR\x05menus\"\xd6\x04\n" +
+	"\f_update_time\"\xd6\x04\n" +
 	"\x18TenantPermissionTreeNode\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x17\n" +
@@ -915,33 +812,30 @@ func file_platform_v1_iam_internal_proto_rawDescGZIP() []byte {
 	return file_platform_v1_iam_internal_proto_rawDescData
 }
 
-var file_platform_v1_iam_internal_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_platform_v1_iam_internal_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_platform_v1_iam_internal_proto_goTypes = []any{
 	(*RouteMeta)(nil),                        // 0: iam.service.v1.RouteMeta
 	(*Permission)(nil),                       // 1: iam.service.v1.Permission
-	(*GetActionsResponse)(nil),               // 2: iam.service.v1.GetActionsResponse
-	(*GetUserMenusResponse)(nil),             // 3: iam.service.v1.GetUserMenusResponse
-	(*TenantPermissionTreeNode)(nil),         // 4: iam.service.v1.TenantPermissionTreeNode
-	(*GetTenantPermissionsTreeRequest)(nil),  // 5: iam.service.v1.GetTenantPermissionsTreeRequest
-	(*GetTenantPermissionsTreeResponse)(nil), // 6: iam.service.v1.GetTenantPermissionsTreeResponse
-	(*timestamppb.Timestamp)(nil),            // 7: google.protobuf.Timestamp
+	(*TenantPermissionTreeNode)(nil),         // 2: iam.service.v1.TenantPermissionTreeNode
+	(*GetTenantPermissionsTreeRequest)(nil),  // 3: iam.service.v1.GetTenantPermissionsTreeRequest
+	(*GetTenantPermissionsTreeResponse)(nil), // 4: iam.service.v1.GetTenantPermissionsTreeResponse
+	(*timestamppb.Timestamp)(nil),            // 5: google.protobuf.Timestamp
 }
 var file_platform_v1_iam_internal_proto_depIdxs = []int32{
 	1, // 0: iam.service.v1.Permission.children:type_name -> iam.service.v1.Permission
 	0, // 1: iam.service.v1.Permission.meta:type_name -> iam.service.v1.RouteMeta
-	7, // 2: iam.service.v1.Permission.create_time:type_name -> google.protobuf.Timestamp
-	7, // 3: iam.service.v1.Permission.update_time:type_name -> google.protobuf.Timestamp
-	1, // 4: iam.service.v1.GetUserMenusResponse.menus:type_name -> iam.service.v1.Permission
-	0, // 5: iam.service.v1.TenantPermissionTreeNode.meta:type_name -> iam.service.v1.RouteMeta
-	4, // 6: iam.service.v1.TenantPermissionTreeNode.children:type_name -> iam.service.v1.TenantPermissionTreeNode
-	4, // 7: iam.service.v1.GetTenantPermissionsTreeResponse.tree:type_name -> iam.service.v1.TenantPermissionTreeNode
-	5, // 8: iam.service.v1.PlatformIamService.GetTenantPermissionsTree:input_type -> iam.service.v1.GetTenantPermissionsTreeRequest
-	6, // 9: iam.service.v1.PlatformIamService.GetTenantPermissionsTree:output_type -> iam.service.v1.GetTenantPermissionsTreeResponse
-	9, // [9:10] is the sub-list for method output_type
-	8, // [8:9] is the sub-list for method input_type
-	8, // [8:8] is the sub-list for extension type_name
-	8, // [8:8] is the sub-list for extension extendee
-	0, // [0:8] is the sub-list for field type_name
+	5, // 2: iam.service.v1.Permission.create_time:type_name -> google.protobuf.Timestamp
+	5, // 3: iam.service.v1.Permission.update_time:type_name -> google.protobuf.Timestamp
+	0, // 4: iam.service.v1.TenantPermissionTreeNode.meta:type_name -> iam.service.v1.RouteMeta
+	2, // 5: iam.service.v1.TenantPermissionTreeNode.children:type_name -> iam.service.v1.TenantPermissionTreeNode
+	2, // 6: iam.service.v1.GetTenantPermissionsTreeResponse.tree:type_name -> iam.service.v1.TenantPermissionTreeNode
+	3, // 7: iam.service.v1.PlatformIamService.GetTenantPermissionsTree:input_type -> iam.service.v1.GetTenantPermissionsTreeRequest
+	4, // 8: iam.service.v1.PlatformIamService.GetTenantPermissionsTree:output_type -> iam.service.v1.GetTenantPermissionsTreeResponse
+	8, // [8:9] is the sub-list for method output_type
+	7, // [7:8] is the sub-list for method input_type
+	7, // [7:7] is the sub-list for extension type_name
+	7, // [7:7] is the sub-list for extension extendee
+	0, // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_platform_v1_iam_internal_proto_init() }
@@ -951,15 +845,15 @@ func file_platform_v1_iam_internal_proto_init() {
 	}
 	file_platform_v1_iam_internal_proto_msgTypes[0].OneofWrappers = []any{}
 	file_platform_v1_iam_internal_proto_msgTypes[1].OneofWrappers = []any{}
-	file_platform_v1_iam_internal_proto_msgTypes[4].OneofWrappers = []any{}
-	file_platform_v1_iam_internal_proto_msgTypes[5].OneofWrappers = []any{}
+	file_platform_v1_iam_internal_proto_msgTypes[2].OneofWrappers = []any{}
+	file_platform_v1_iam_internal_proto_msgTypes[3].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_platform_v1_iam_internal_proto_rawDesc), len(file_platform_v1_iam_internal_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   7,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

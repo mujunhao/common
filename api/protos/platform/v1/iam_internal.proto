@@ -54,16 +54,6 @@ message Permission {
   optional google.protobuf.Timestamp update_time = 201 [json_name = "updateTime"];
 }
 
-// 获取按钮权限列表响应
-message GetActionsResponse {
-  repeated string actions = 1 [json_name = "actions"];
-  uint32 total = 2 [json_name = "total"];
-}
-
-// 获取用户菜单响应
-message GetUserMenusResponse {
-  repeated Permission menus = 1;
-}
 
 // ==================== 租户权限相关消息 ====================
 
