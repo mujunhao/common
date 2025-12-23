@@ -33,7 +33,7 @@ func BootstrapConfig(serviceName string) config.Config {
 	if path == "" {
 		path = os.Getenv("CONSUL_PATH")
 		if path == "" {
-			path = "configs/" + serviceName + "config.yaml"
+			path = "configs/" + serviceName + "/config.yaml"
 		}
 	}
 
