@@ -39,9 +39,6 @@ func BootstrapConfig(serviceName string) config.Config {
 
 	var sources []config.Source
 
-	// 永远携带本地文件源，作为默认兜底
-	sources = append(sources, file.NewSource(flagConf))
-
 	if addr != "" {
 		c := api.DefaultConfig()
 		c.Address = addr
@@ -54,6 +51,9 @@ func BootstrapConfig(serviceName string) config.Config {
 			panic(err)
 		}
 		sources = append(sources, source)
+	} else {
+		// 本地文件源，作为默认兜底
+		sources = append(sources, file.NewSource(flagConf))
 	}
 
 	c := config.New(config.WithSource(sources...))
