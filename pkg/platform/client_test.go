@@ -106,7 +106,6 @@ func TestGetPermissionCodesByProductWithStatus(t *testing.T) {
 		t.Skipf("无法连接到 Consul: %v", err)
 		return
 	}
-
 	discovery := consul.New(consulClient)
 	client, err := NewClientWithDiscovery(DefaultConfig(), discovery)
 	if err != nil {
