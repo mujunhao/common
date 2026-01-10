@@ -52,8 +52,8 @@ func GetOperator(ctx context.Context) Operator {
 		return Operator{Type: "api_key", ID: GetAPIKeyID(ctx)}
 	}
 	claims, ok := FromContext(ctx)
-	if ok {
-		return Operator{Type: "user", ID: uint64(claims.UserID)}
+	if ok && claims.UserCode != "" {
+		return Operator{Type: "user", ID: 0} // ID 不再使用，返回0
 	}
 	return Operator{Type: "unknown", ID: 0}
 }
@@ -78,65 +78,39 @@ func Server(needTenant bool) middleware.Middleware {
 			authType := header.Get("X-Auth-Type")
 			isOpenAPI := authType == "openapi"
 
-			// 2. 读取公共 headers
-			userId := header.Get(common.USERID)
+			// 2. 读取公共 headers (现在使用 code 字符串)
+			userCode := header.Get(common.USERCODE)
 			regionName := header.Get(common.REGIONNAME)
 
-			var userIdUint uint64 = 0
-
-			if isOpenAPI {
-				// OpenAPI 认证：X-User-ID 可以为空或为 "0"
-				if userId != "" {
-					userIdUint, _ = strconv.ParseUint(userId, 10, 32)
-				}
-				// OpenAPI 请求的 UserID 固定为 0，不报错
-			} else {
-				// JWT Token 认证：X-User-ID 必须存在且有效
-				if userId == "" {
+			if !isOpenAPI {
+				// JWT Token 认证：X-User-Code 必须存在且有效
+				if userCode == "" {
 					return nil, errors.New(
 						int(businessErrors.ErrAuthHeaderMissing.HttpCode),
 						businessErrors.ErrAuthHeaderMissing.Type,
-						"X-User-ID header is missing",
-					)
-				}
-
-				userIdUint, err = strconv.ParseUint(userId, 10, 32)
-				if err != nil {
-					return nil, errors.New(
-						int(businessErrors.ErrAuthHeaderInvalid.HttpCode),
-						businessErrors.ErrAuthHeaderInvalid.Type,
-						"Invalid X-User-ID format",
+						"X-User-Code header is missing",
 					)
 				}
 			}
 
-			// 3. 处理租户ID
-			var tenantIdUint uint64 = 0
+			// 3. 处理租户 Code
+			var tenantCode string
 
 			if needTenant {
-				tenantId := header.Get(common.TENANTID)
-				if tenantId == "" {
+				tenantCode = header.Get(common.TENANTCODE)
+				if tenantCode == "" {
 					return nil, errors.New(
 						int(businessErrors.ErrTenantMissing.HttpCode),
 						businessErrors.ErrTenantMissing.Type,
 						businessErrors.ErrTenantMissing.Message,
 					)
 				}
-				t, err := strconv.ParseUint(tenantId, 10, 32)
-				if err != nil {
-					return nil, errors.New(
-						int(businessErrors.ErrTenantInvalid.HttpCode),
-						businessErrors.ErrTenantInvalid.Type,
-						businessErrors.ErrTenantInvalid.Message,
-					)
-				}
-				tenantIdUint = t
 			}
 
 			// 4. 创建 Claims 并注入 context
 			claims := &Claims{
-				UserID:     uint32(userIdUint),
-				TenantID:   uint32(tenantIdUint),
+				UserCode:   userCode,
+				TenantCode: tenantCode,
 				RegionName: regionName,
 			}
 			newCtx := NewContext(ctx, claims)

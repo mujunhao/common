@@ -3,8 +3,8 @@ package auth
 import "context"
 
 type Claims struct {
-	UserID     uint32
-	TenantID   uint32
+	UserCode   string
+	TenantCode string
 	RegionName string
 }
 

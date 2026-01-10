@@ -2,8 +2,8 @@ package common
 
 // 常用 Header
 const (
-	USERID     string = "X-User-ID"
-	TENANTID   string = "X-Tenant-ID"
+	USERCODE   string = "X-User-Code"
+	TENANTCODE string = "X-Tenant-Code"
 	REGIONNAME string = "X-Region-Name"
 )
 

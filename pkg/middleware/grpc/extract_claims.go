@@ -2,7 +2,6 @@ package middleware
 
 import (
 	"context"
-	"strconv"
 
 	"github.com/go-kratos/kratos/v2/middleware"
 	authWare "github.com/heyinLab/common/pkg/middleware/auth"
@@ -19,23 +18,18 @@ func ExtractClaims() middleware.Middleware {
 				claims := &authWare.Claims{}
 				hasData := false
 
-				// 2. 安全地解析 UserID
-				// 注意：md.Get 返回的是切片，必须检查长度防止 panic
-				if vals := md.Get(common.USERID); len(vals) > 0 {
-					if uid, err := strconv.ParseUint(vals[0], 10, 32); err == nil {
-						claims.UserID = uint32(uid)
-						hasData = true
-					}
+				// 2. 提取 UserCode
+				if vals := md.Get(common.USERCODE); len(vals) > 0 {
+					claims.UserCode = vals[0]
+					hasData = true
 				}
 
-				// 3. 解析 TenantID
-				if vals := md.Get(common.TENANTID); len(vals) > 0 {
-					if tid, err := strconv.ParseUint(vals[0], 10, 32); err == nil {
-						claims.TenantID = uint32(tid)
-					}
+				// 3. 提取 TenantCode
+				if vals := md.Get(common.TENANTCODE); len(vals) > 0 {
+					claims.TenantCode = vals[0]
 				}
 
-				// 4. 解析 RegionName
+				// 4. 提取 RegionName
 				if vals := md.Get(common.REGIONNAME); len(vals) > 0 {
 					claims.RegionName = vals[0]
 				}
