@@ -1,0 +1,213 @@
+syntax = "proto3";
+
+package api.subscription.v1;
+
+option go_package = "subscribe/v1;v1";
+
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+
+// SubscriptionInternalService 订阅服务内部接口
+service SubscriptionInternalService {
+  // ListSubscriptions 获取订阅列表
+  rpc ListSubscriptions(ListSubscriptionsRequest) returns (ListSubscriptionsResponse);
+  // CreateSubscription 商户创建订阅
+  rpc CreateSubscription(CreateSubscriptionRequest) returns (CreateSubscriptionResponse);
+  // ReNewSubscription 商户续订订阅
+  rpc ReNewSubscription(ReNewSubscriptionRequest) returns (ReNewSubscriptionResponse);
+  // UpgradeSubscription 商户升级订阅
+  rpc UpgradeSubscription(UpgradeSubscriptionRequest) returns (UpgradeSubscriptionResponse);
+}
+
+// 订阅状态枚举
+enum SubscriptionStatus {
+  SUBSCRIPTION_STATUS_UNSPECIFIED = 0;
+  SUBSCRIPTION_STATUS_ACTIVE = 1;      // 使用中
+  SUBSCRIPTION_STATUS_TRIAL = 2;       // 试用中
+  SUBSCRIPTION_STATUS_SUSPENDED = 3;   // 已暂停
+  SUBSCRIPTION_STATUS_EXPIRED = 4;     // 已过期
+  SUBSCRIPTION_STATUS_CANCELLED = 5;   // 已取消
+}
+
+// 配额类型枚举
+enum QuotaType {
+  QUOTA_TYPE_UNSPECIFIED = 0;
+  QUOTA_TYPE_NUMERIC = 1;       // 数字型
+  QUOTA_TYPE_USAGE = 2;         // 用量型
+  QUOTA_TYPE_SWITCH = 3;        // 开关型
+}
+
+// 订单类型枚举
+enum OrderType {
+  ORDER_TYPE_UNSPECIFIED = 0;
+  ORDER_TYPE_NEW = 1;           // 新购
+  ORDER_TYPE_RENEW = 2;         // 续费
+  ORDER_TYPE_UPGRADE = 3;       // 升级
+  ORDER_TYPE_DOWNGRADE = 4;     // 降级
+  ORDER_TYPE_TRIAL = 5;         // 试用
+}
+
+// 计费周期
+enum BillingCycle {
+  BILLING_CYCLE_UNSPECIFIED = 0;
+  BILLING_CYCLE_MONTHLY = 1;      // 按月
+  BILLING_CYCLE_YEARLY = 2;       // 按年
+  BILLING_CYCLE_LIFETIME = 3;     // 终身
+}
+
+// 订单状态枚举
+enum OrderStatus {
+  ORDER_STATUS_UNSPECIFIED = 0;
+  ORDER_STATUS_PENDING = 1;     // 待支付
+  ORDER_STATUS_PAID = 2;        // 已支付
+  ORDER_STATUS_CANCELLED = 3;   // 已取消
+  ORDER_STATUS_REFUNDED = 4;    // 已退款
+  ORDER_STATUS_FAILED = 5;      // 支付失败
+}
+
+// 订阅信息
+message SubscriptionInfo {
+  uint32 id = 1 [json_name = "id"];                                           // 订阅ID
+  string subscription_code = 2 [json_name = "subscriptionCode"];              // 订阅编号
+  string tenant_code = 3 [json_name = "tenantCode"];                          // 租户Code
+  string tenant_name = 4 [json_name = "tenantName"];                          // 租户名称
+
+  string product_code = 6 [json_name = "productCode"];                        // 产品编码
+  google.protobuf.Struct product_i18n = 5;                   // 产品多语言内容
+
+  string plan_code = 9 [json_name = "planCode"];                              // 套餐编码
+  google.protobuf.Struct plan_i18n = 7;                      // 套餐多语言内容
+
+  SubscriptionStatus status = 11 [json_name = "status"];                      // 订阅状态
+  bool automatic_renewal = 12 [json_name = "automaticRenewal"];               // 是否自动续费
+  google.protobuf.Timestamp start_date = 13 [json_name = "startDate"];        // 订阅开始时间
+  google.protobuf.Timestamp end_date = 14 [json_name = "endDate"];            // 订阅结束时间
+  bool is_trial = 16 [json_name = "isTrial"];                                 // 是否试用期
+  int32 trial_days = 17 [json_name = "trialDays"];                            // 试用天数
+  google.protobuf.Timestamp trial_end_date = 18 [json_name = "trialEndDate"]; // 试用结束时间
+  google.protobuf.Struct quota_snapshot = 19 [json_name = "quotaSnapshot"];   // 配额上限快照
+
+  repeated QuotaUsageInfo quota_usages = 20 [json_name = "quotaUsages"];      // 配额使用列表
+  google.protobuf.Timestamp create_time = 21 [json_name = "createTime"];      // 创建时间
+  google.protobuf.Timestamp update_time = 22 [json_name = "updateTime"];      // 更新时间
+  optional string created_by = 23 [json_name = "createdBy"];                  // 创建人
+  optional string updated_by = 24 [json_name = "updatedBy"];                  // 更新人
+}
+
+// 配额使用信息
+message QuotaUsageInfo {
+  string subscription_code = 1 [json_name = "subscriptionCode"];              // 配额记录ID
+
+  string dimension_key = 2 [json_name = "dimensionKey"];                      // 维度键
+  google.protobuf.Struct dimension_i18n = 3 [json_name = "dimensionI18n"];                    // 维度多语言内容
+
+  int32 quota_limit = 4 [json_name = "quotaLimit"];                           // 配额限制（-1表示无限）
+  bool is_unlimited = 5 [json_name = "isUnlimited"];                          // 是否无限制
+
+
+  int32 quota_used = 8 [json_name = "quotaUsed"];                             // 已使用配额
+  int32 quota_remaining = 9 [json_name = "quotaRemaining"];                   // 剩余配额
+  double usage_percentage = 10 [json_name = "usagePercentage"];               // 使用率（百分比）
+
+  optional string unit = 11 [json_name = "unit"];                             // 单位（个、GB、次）
+  QuotaType quota_type = 12 [json_name = "quotaType"];                        // 配额类型
+
+  //  QuotaStatus status = 13 [json_name = "status"];                             // 状态
+  //  int32 warning_threshold = 14 [json_name = "warningThreshold"];              // 告警阈值（百分比）
+  //  bool is_warning_sent = 15 [json_name = "isWarningSent"];                    // 是否已发送告警
+  //  google.protobuf.Timestamp warning_sent_at = 16 [json_name = "warningSentAt"]; // 告警发送时间
+}
+
+// 订单信息
+message SubscriptionOrderInfo {
+  string order_no = 1 [json_name = "orderNo"]; // 订单号
+  OrderType order_type = 2 [json_name = "orderType"]; // 订单状态
+  BillingCycle billing_cycle = 3 ; // 计费周期
+  int64 original_price = 4 [json_name = "originalPrice"]; // 原价
+  int64 discount_amount = 5 [json_name = "discountAmount"]; // 优惠金额
+  int64 final_price = 6 [json_name = "finalPrice"]; // 实付金额
+  string currency = 7 [json_name = "currency"]; // 货币单位
+  optional string coupon_code = 8 [json_name = "couponCode"]; // 优惠券代码
+  optional string promotion_code = 9 [json_name = "promotionCode"]; // 促销代码
+  OrderStatus status = 10 [json_name = "status"]; // 订单状态
+  optional string payment_method = 11 [json_name = "paymentMethod"]; // 支付方式
+  optional string payment_transaction_id = 12 [json_name = "paymentTransactionId"]; // 支付交易号
+  optional google.protobuf.Timestamp paid_at = 13 [json_name = "paidAt"]; // 支付时间
+  optional google.protobuf.Timestamp cancelled_at = 14 [json_name = "cancelledAt"]; // 取消时间
+  optional google.protobuf.Timestamp refunded_at = 15 [json_name = "refundedAt"]; // 退款时间
+  optional google.protobuf.Timestamp service_start_date = 16 [json_name = "serviceStartDate"]; // 服务开始时间
+  optional google.protobuf.Timestamp service_end_date = 17 [json_name = "serviceEndDate"]; // 服务结束时间
+  bool need_invoice = 18 [json_name = "needInvoice"]; // 是否需要发票
+  google.protobuf.Struct invoice_info = 19 [json_name = "invoiceInfo"]; // 发票信息
+  optional string invoice_no = 20 [json_name = "invoiceNo"]; // 发票号
+  optional string remark = 21 [json_name = "remark"]; // 备注
+  optional string created_by = 22 [json_name = "createdBy"]; // 创建人
+}
+
+// 获取订阅列表请求
+message ListSubscriptionsRequest {
+  optional int32 page = 1 [json_name = "page"];                               // 页码
+  optional int32 page_size = 2 [json_name = "pageSize"];                      // 每页数量
+  optional string tenant_code = 3 [json_name = "tenantCode"];                 // 租户Code筛选
+  optional string product_code = 4 [json_name = "productCode"];               // 产品编码筛选
+  optional SubscriptionStatus status = 5 [json_name = "status"];              // 状态筛选
+  optional bool is_trial = 6 [json_name = "isTrial"];                         // 是否试用期筛选
+  optional string search = 7 [json_name = "search"];                          // 搜索关键词（租户名、产品名）
+  optional string sort_by = 8 [json_name = "sortBy"];                         // 排序字段（create_time, end_date）
+  optional string sort_order = 9 [json_name = "sortOrder"];                   // 排序方向（asc, desc）
+}
+
+// 获取订阅列表响应
+message ListSubscriptionsResponse {
+  repeated SubscriptionInfo subscriptions = 1 [json_name = "subscriptions"];  // 订阅列表
+  int32 total = 2 [json_name = "total"];                                      // 总数
+  int32 page = 3 [json_name = "page"];                                        // 当前页码
+  int32 page_size = 4 [json_name = "pageSize"];                               // 每页数量
+}
+
+// 创建订阅请求
+message CreateSubscriptionRequest {
+  string product_code = 1 [json_name = "productCode"];                       // 产品Code
+  string plan_code = 2 [json_name = "planCode"];                             // 套餐Code
+  bool automatic_renewal = 3 [json_name = "automaticRenewal"];               // 是否自动续费
+  google.protobuf.Timestamp start_date = 4 [json_name = "startDate"];        // 订阅开始时间
+  optional google.protobuf.Timestamp end_date = 5 [json_name = "endDate"];   // 订阅结束时间
+  bool is_trial = 6 [json_name = "isTrial"];                                 // 是否试用期
+  SubscriptionOrderInfo order = 7 [json_name = "order"];                     // 订单信息
+}
+
+// 创建订阅回复
+message CreateSubscriptionResponse {
+  SubscriptionInfo subscription = 1 [json_name = "subscription"];            // 订阅信息
+}
+
+// 续定订阅请求
+message ReNewSubscriptionRequest {
+  string subscription_code = 1 [json_name = "subscriptionCode"];             // 订阅Code
+  string product_code = 2 [json_name = "productCode"];                       // 产品Code
+  string plan_code = 3 [json_name = "planCode"];                             // 套餐Code
+  google.protobuf.Duration re_new_time = 4 [json_name = "reNewTime"];        // 续费时长
+  SubscriptionOrderInfo order = 5 [json_name = "order"];                     // 订单信息
+}
+
+// 续定订阅回复
+message ReNewSubscriptionResponse {
+  SubscriptionInfo subscription = 1 [json_name = "subscription"];            // 订阅信息
+}
+
+// 升级订阅请求
+message UpgradeSubscriptionRequest{
+  string subscription_code = 1 [json_name = "subscriptionCode"];             // 订阅Code
+  string product_code = 2 [json_name = "productCode"];                       // 产品Code
+  string plan_code = 3 [json_name = "planCode"];                             // 套餐Code
+  google.protobuf.Timestamp start_date = 4 [json_name = "startDate"];        // 订阅开始时间
+  optional google.protobuf.Timestamp end_date = 5 [json_name = "endDate"];   // 订阅结束时间
+  SubscriptionOrderInfo order = 6 [json_name = "order"];                     // 订单信息
+}
+
+
+// 升级订阅回复
+message UpgradeSubscriptionResponse {
+  SubscriptionInfo subscription = 1 [json_name = "subscription"];            // 订阅信息
+}
