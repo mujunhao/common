@@ -10,6 +10,8 @@ import "google/protobuf/timestamp.proto";
 service ProductManagementService {
   // 获取产品详情
   rpc GetProduct(GetProductRequest) returns (GetProductResponse);
+  // 商户获取产品详情
+  rpc MerchantGetProduct(MerchantGetProductRequest) returns (MerchantGetProductResponse);
 }
 
 // 产品状态枚举
@@ -53,5 +55,16 @@ message GetProductRequest {
 
 // 获取产品响应
 message GetProductResponse {
+  ProductInfo product = 1 [json_name = "product"];                        // 产品信息
+}
+
+// 商户获取产品请求
+message MerchantGetProductRequest {
+  string product_code = 1 [json_name = "productCode"];                    // 产品编码
+  optional bool include_plans = 2 [json_name = "includePlans"];           // 是否包含套餐列表
+}
+
+//商户获取产品响应
+message MerchantGetProductResponse {
   ProductInfo product = 1 [json_name = "product"];                        // 产品信息
 }

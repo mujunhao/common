@@ -19,7 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	ProductManagementService_GetProduct_FullMethodName = "/api.product.v1.ProductManagementService/GetProduct"
+	ProductManagementService_GetProduct_FullMethodName         = "/api.product.v1.ProductManagementService/GetProduct"
+	ProductManagementService_MerchantGetProduct_FullMethodName = "/api.product.v1.ProductManagementService/MerchantGetProduct"
 )
 
 // ProductManagementServiceClient is the client API for ProductManagementService service.
@@ -28,6 +29,8 @@ const (
 type ProductManagementServiceClient interface {
 	// 获取产品详情
 	GetProduct(ctx context.Context, in *GetProductRequest, opts ...grpc.CallOption) (*GetProductResponse, error)
+	// 商户获取产品详情
+	MerchantGetProduct(ctx context.Context, in *MerchantGetProductRequest, opts ...grpc.CallOption) (*MerchantGetProductResponse, error)
 }
 
 type productManagementServiceClient struct {
@@ -48,12 +51,24 @@ func (c *productManagementServiceClient) GetProduct(ctx context.Context, in *Get
 	return out, nil
 }
 
+func (c *productManagementServiceClient) MerchantGetProduct(ctx context.Context, in *MerchantGetProductRequest, opts ...grpc.CallOption) (*MerchantGetProductResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(MerchantGetProductResponse)
+	err := c.cc.Invoke(ctx, ProductManagementService_MerchantGetProduct_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ProductManagementServiceServer is the server API for ProductManagementService service.
 // All implementations must embed UnimplementedProductManagementServiceServer
 // for forward compatibility.
 type ProductManagementServiceServer interface {
 	// 获取产品详情
 	GetProduct(context.Context, *GetProductRequest) (*GetProductResponse, error)
+	// 商户获取产品详情
+	MerchantGetProduct(context.Context, *MerchantGetProductRequest) (*MerchantGetProductResponse, error)
 	mustEmbedUnimplementedProductManagementServiceServer()
 }
 
@@ -66,6 +81,9 @@ type UnimplementedProductManagementServiceServer struct{}
 
 func (UnimplementedProductManagementServiceServer) GetProduct(context.Context, *GetProductRequest) (*GetProductResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetProduct not implemented")
+}
+func (UnimplementedProductManagementServiceServer) MerchantGetProduct(context.Context, *MerchantGetProductRequest) (*MerchantGetProductResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method MerchantGetProduct not implemented")
 }
 func (UnimplementedProductManagementServiceServer) mustEmbedUnimplementedProductManagementServiceServer() {
 }
@@ -107,6 +125,24 @@ func _ProductManagementService_GetProduct_Handler(srv interface{}, ctx context.C
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ProductManagementService_MerchantGetProduct_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MerchantGetProductRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductManagementServiceServer).MerchantGetProduct(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ProductManagementService_MerchantGetProduct_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductManagementServiceServer).MerchantGetProduct(ctx, req.(*MerchantGetProductRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ProductManagementService_ServiceDesc is the grpc.ServiceDesc for ProductManagementService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -117,6 +153,10 @@ var ProductManagementService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetProduct",
 			Handler:    _ProductManagementService_GetProduct_Handler,
+		},
+		{
+			MethodName: "MerchantGetProduct",
+			Handler:    _ProductManagementService_MerchantGetProduct_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

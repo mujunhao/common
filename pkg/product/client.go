@@ -240,3 +240,31 @@ func (c *ProductClient) ListPricingRules(ctx context.Context, opt *ListPricingRu
 
 	return resp, nil
 }
+
+type GetMerchantGetProduct struct {
+	IncludePlans *bool // 是否包含套餐列表
+}
+
+// MerchantGetProduct 商户获取产品
+func (c *ProductClient) MerchantGetProduct(ctx context.Context, productCode string, opt *GetMerchantGetProduct) (*v1.ProductInfo, error) {
+	req := &v1.MerchantGetProductRequest{
+		ProductCode:  productCode,
+		IncludePlans: nil,
+	}
+	if opt != nil {
+		if opt.IncludePlans != nil {
+			req.IncludePlans = opt.IncludePlans
+		}
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, c.config.Timeout)
+	defer cancel()
+
+	resp, err := c.product.MerchantGetProduct(ctx, req)
+	if err != nil {
+		c.logger.WithContext(ctx).Errorf("获取产品信息失败:product_code=%s,error=%v", productCode, err)
+		return nil, err
+	}
+
+	return resp.Product, nil
+}

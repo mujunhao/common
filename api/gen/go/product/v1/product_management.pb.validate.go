@@ -485,3 +485,242 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = GetProductResponseValidationError{}
+
+// Validate checks the field values on MerchantGetProductRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *MerchantGetProductRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on MerchantGetProductRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// MerchantGetProductRequestMultiError, or nil if none found.
+func (m *MerchantGetProductRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *MerchantGetProductRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for ProductCode
+
+	if m.IncludePlans != nil {
+		// no validation rules for IncludePlans
+	}
+
+	if len(errors) > 0 {
+		return MerchantGetProductRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// MerchantGetProductRequestMultiError is an error wrapping multiple validation
+// errors returned by MerchantGetProductRequest.ValidateAll() if the
+// designated constraints aren't met.
+type MerchantGetProductRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m MerchantGetProductRequestMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m MerchantGetProductRequestMultiError) AllErrors() []error { return m }
+
+// MerchantGetProductRequestValidationError is the validation error returned by
+// MerchantGetProductRequest.Validate if the designated constraints aren't met.
+type MerchantGetProductRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e MerchantGetProductRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e MerchantGetProductRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e MerchantGetProductRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e MerchantGetProductRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e MerchantGetProductRequestValidationError) ErrorName() string {
+	return "MerchantGetProductRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e MerchantGetProductRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sMerchantGetProductRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = MerchantGetProductRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = MerchantGetProductRequestValidationError{}
+
+// Validate checks the field values on MerchantGetProductResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *MerchantGetProductResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on MerchantGetProductResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// MerchantGetProductResponseMultiError, or nil if none found.
+func (m *MerchantGetProductResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *MerchantGetProductResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetProduct()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, MerchantGetProductResponseValidationError{
+					field:  "Product",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, MerchantGetProductResponseValidationError{
+					field:  "Product",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetProduct()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return MerchantGetProductResponseValidationError{
+				field:  "Product",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return MerchantGetProductResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// MerchantGetProductResponseMultiError is an error wrapping multiple
+// validation errors returned by MerchantGetProductResponse.ValidateAll() if
+// the designated constraints aren't met.
+type MerchantGetProductResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m MerchantGetProductResponseMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m MerchantGetProductResponseMultiError) AllErrors() []error { return m }
+
+// MerchantGetProductResponseValidationError is the validation error returned
+// by MerchantGetProductResponse.Validate if the designated constraints aren't met.
+type MerchantGetProductResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e MerchantGetProductResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e MerchantGetProductResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e MerchantGetProductResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e MerchantGetProductResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e MerchantGetProductResponseValidationError) ErrorName() string {
+	return "MerchantGetProductResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e MerchantGetProductResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sMerchantGetProductResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = MerchantGetProductResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = MerchantGetProductResponseValidationError{}

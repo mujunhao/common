@@ -339,6 +339,104 @@ func (x *GetProductResponse) GetProduct() *ProductInfo {
 	return nil
 }
 
+// 商户获取产品请求
+type MerchantGetProductRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ProductCode   string                 `protobuf:"bytes,1,opt,name=product_code,json=productCode,proto3" json:"product_code,omitempty"`           // 产品编码
+	IncludePlans  *bool                  `protobuf:"varint,2,opt,name=include_plans,json=includePlans,proto3,oneof" json:"include_plans,omitempty"` // 是否包含套餐列表
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MerchantGetProductRequest) Reset() {
+	*x = MerchantGetProductRequest{}
+	mi := &file_product_v1_product_management_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MerchantGetProductRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MerchantGetProductRequest) ProtoMessage() {}
+
+func (x *MerchantGetProductRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_product_v1_product_management_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MerchantGetProductRequest.ProtoReflect.Descriptor instead.
+func (*MerchantGetProductRequest) Descriptor() ([]byte, []int) {
+	return file_product_v1_product_management_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *MerchantGetProductRequest) GetProductCode() string {
+	if x != nil {
+		return x.ProductCode
+	}
+	return ""
+}
+
+func (x *MerchantGetProductRequest) GetIncludePlans() bool {
+	if x != nil && x.IncludePlans != nil {
+		return *x.IncludePlans
+	}
+	return false
+}
+
+//商户获取产品响应
+type MerchantGetProductResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Product       *ProductInfo           `protobuf:"bytes,1,opt,name=product,proto3" json:"product,omitempty"` // 产品信息
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MerchantGetProductResponse) Reset() {
+	*x = MerchantGetProductResponse{}
+	mi := &file_product_v1_product_management_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MerchantGetProductResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MerchantGetProductResponse) ProtoMessage() {}
+
+func (x *MerchantGetProductResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_product_v1_product_management_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MerchantGetProductResponse.ProtoReflect.Descriptor instead.
+func (*MerchantGetProductResponse) Descriptor() ([]byte, []int) {
+	return file_product_v1_product_management_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *MerchantGetProductResponse) GetProduct() *ProductInfo {
+	if x != nil {
+		return x.Product
+	}
+	return nil
+}
+
 var File_product_v1_product_management_proto protoreflect.FileDescriptor
 
 const file_product_v1_product_management_proto_rawDesc = "" +
@@ -375,16 +473,23 @@ const file_product_v1_product_management_proto_rawDesc = "" +
 	"\rinclude_plans\x18\x02 \x01(\bH\x00R\fincludePlans\x88\x01\x01B\x10\n" +
 	"\x0e_include_plans\"K\n" +
 	"\x12GetProductResponse\x125\n" +
+	"\aproduct\x18\x01 \x01(\v2\x1b.api.product.v1.ProductInfoR\aproduct\"z\n" +
+	"\x19MerchantGetProductRequest\x12!\n" +
+	"\fproduct_code\x18\x01 \x01(\tR\vproductCode\x12(\n" +
+	"\rinclude_plans\x18\x02 \x01(\bH\x00R\fincludePlans\x88\x01\x01B\x10\n" +
+	"\x0e_include_plans\"S\n" +
+	"\x1aMerchantGetProductResponse\x125\n" +
 	"\aproduct\x18\x01 \x01(\v2\x1b.api.product.v1.ProductInfoR\aproduct*\xa2\x01\n" +
 	"\rProductStatus\x12\x1e\n" +
 	"\x1aPRODUCT_STATUS_UNSPECIFIED\x10\x00\x12\x18\n" +
 	"\x14PRODUCT_STATUS_DRAFT\x10\x01\x12\x19\n" +
 	"\x15PRODUCT_STATUS_ACTIVE\x10\x02\x12\x1b\n" +
 	"\x17PRODUCT_STATUS_INACTIVE\x10\x03\x12\x1f\n" +
-	"\x1bPRODUCT_STATUS_DISCONTINUED\x10\x042o\n" +
+	"\x1bPRODUCT_STATUS_DISCONTINUED\x10\x042\xdc\x01\n" +
 	"\x18ProductManagementService\x12S\n" +
 	"\n" +
-	"GetProduct\x12!.api.product.v1.GetProductRequest\x1a\".api.product.v1.GetProductResponseB\xc2\x01\n" +
+	"GetProduct\x12!.api.product.v1.GetProductRequest\x1a\".api.product.v1.GetProductResponse\x12k\n" +
+	"\x12MerchantGetProduct\x12).api.product.v1.MerchantGetProductRequest\x1a*.api.product.v1.MerchantGetProductResponseB\xc2\x01\n" +
 	"\x12com.api.product.v1B\x16ProductManagementProtoP\x01Z:github.com/heyinLab/common/api/gen/go/product/v1;productv1\xa2\x02\x03APX\xaa\x02\x0eApi.Product.V1\xca\x02\x0eApi\\Product\\V1\xe2\x02\x1aApi\\Product\\V1\\GPBMetadata\xea\x02\x10Api::Product::V1b\x06proto3"
 
 var (
@@ -400,28 +505,33 @@ func file_product_v1_product_management_proto_rawDescGZIP() []byte {
 }
 
 var file_product_v1_product_management_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_product_v1_product_management_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_product_v1_product_management_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_product_v1_product_management_proto_goTypes = []any{
-	(ProductStatus)(0),            // 0: api.product.v1.ProductStatus
-	(*ProductInfo)(nil),           // 1: api.product.v1.ProductInfo
-	(*GetProductRequest)(nil),     // 2: api.product.v1.GetProductRequest
-	(*GetProductResponse)(nil),    // 3: api.product.v1.GetProductResponse
-	(*structpb.Struct)(nil),       // 4: google.protobuf.Struct
-	(*timestamppb.Timestamp)(nil), // 5: google.protobuf.Timestamp
+	(ProductStatus)(0),                 // 0: api.product.v1.ProductStatus
+	(*ProductInfo)(nil),                // 1: api.product.v1.ProductInfo
+	(*GetProductRequest)(nil),          // 2: api.product.v1.GetProductRequest
+	(*GetProductResponse)(nil),         // 3: api.product.v1.GetProductResponse
+	(*MerchantGetProductRequest)(nil),  // 4: api.product.v1.MerchantGetProductRequest
+	(*MerchantGetProductResponse)(nil), // 5: api.product.v1.MerchantGetProductResponse
+	(*structpb.Struct)(nil),            // 6: google.protobuf.Struct
+	(*timestamppb.Timestamp)(nil),      // 7: google.protobuf.Timestamp
 }
 var file_product_v1_product_management_proto_depIdxs = []int32{
-	4, // 0: api.product.v1.ProductInfo.i18n:type_name -> google.protobuf.Struct
+	6, // 0: api.product.v1.ProductInfo.i18n:type_name -> google.protobuf.Struct
 	0, // 1: api.product.v1.ProductInfo.status:type_name -> api.product.v1.ProductStatus
-	5, // 2: api.product.v1.ProductInfo.create_time:type_name -> google.protobuf.Timestamp
-	5, // 3: api.product.v1.ProductInfo.update_time:type_name -> google.protobuf.Timestamp
+	7, // 2: api.product.v1.ProductInfo.create_time:type_name -> google.protobuf.Timestamp
+	7, // 3: api.product.v1.ProductInfo.update_time:type_name -> google.protobuf.Timestamp
 	1, // 4: api.product.v1.GetProductResponse.product:type_name -> api.product.v1.ProductInfo
-	2, // 5: api.product.v1.ProductManagementService.GetProduct:input_type -> api.product.v1.GetProductRequest
-	3, // 6: api.product.v1.ProductManagementService.GetProduct:output_type -> api.product.v1.GetProductResponse
-	6, // [6:7] is the sub-list for method output_type
-	5, // [5:6] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	1, // 5: api.product.v1.MerchantGetProductResponse.product:type_name -> api.product.v1.ProductInfo
+	2, // 6: api.product.v1.ProductManagementService.GetProduct:input_type -> api.product.v1.GetProductRequest
+	4, // 7: api.product.v1.ProductManagementService.MerchantGetProduct:input_type -> api.product.v1.MerchantGetProductRequest
+	3, // 8: api.product.v1.ProductManagementService.GetProduct:output_type -> api.product.v1.GetProductResponse
+	5, // 9: api.product.v1.ProductManagementService.MerchantGetProduct:output_type -> api.product.v1.MerchantGetProductResponse
+	8, // [8:10] is the sub-list for method output_type
+	6, // [6:8] is the sub-list for method input_type
+	6, // [6:6] is the sub-list for extension type_name
+	6, // [6:6] is the sub-list for extension extendee
+	0, // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_product_v1_product_management_proto_init() }
@@ -431,13 +541,14 @@ func file_product_v1_product_management_proto_init() {
 	}
 	file_product_v1_product_management_proto_msgTypes[0].OneofWrappers = []any{}
 	file_product_v1_product_management_proto_msgTypes[1].OneofWrappers = []any{}
+	file_product_v1_product_management_proto_msgTypes[3].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_product_v1_product_management_proto_rawDesc), len(file_product_v1_product_management_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   3,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
