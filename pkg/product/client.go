@@ -115,20 +115,16 @@ func createGRPCConn(config *Config, discovery registry.Discovery, logger *log.He
 }
 
 type ProductClient struct {
-	packageM    v1.PackageManagementClient
-	product     v1.ProductManagementServiceClient
-	pricingRule v1.PricingRuleManagementServiceClient
-	logger      *log.Helper
-	config      *Config
+	client v1.ProductInternalServiceClient
+	logger *log.Helper
+	config *Config
 }
 
 func newProductClient(conn *grpc.ClientConn, logger *log.Helper, config *Config) *ProductClient {
 	return &ProductClient{
-		packageM:    v1.NewPackageManagementClient(conn),
-		product:     v1.NewProductManagementServiceClient(conn),
-		pricingRule: v1.NewPricingRuleManagementServiceClient(conn),
-		logger:      logger,
-		config:      config,
+		client: v1.NewProductInternalServiceClient(conn),
+		logger: logger,
+		config: config,
 	}
 }
 
@@ -151,7 +147,7 @@ func (c *ProductClient) GetPlan(ctx context.Context, planCode string, opt *GetPl
 	ctx, cancel := context.WithTimeout(ctx, c.config.Timeout)
 	defer cancel()
 
-	resp, err := c.packageM.GetPlan(ctx, req)
+	resp, err := c.client.GetPlan(ctx, req)
 	if err != nil {
 		c.logger.WithContext(ctx).Errorf("获取套餐信息失败:plan_ode=%s,error=%v", planCode, err)
 		return nil, err
@@ -179,7 +175,7 @@ func (c *ProductClient) MerchantGetPlan(ctx context.Context, planCode string, op
 	ctx, cancel := context.WithTimeout(ctx, c.config.Timeout)
 	defer cancel()
 
-	resp, err := c.packageM.MerchantGetPlan(ctx, req)
+	resp, err := c.client.MerchantGetPlan(ctx, req)
 	if err != nil {
 		c.logger.WithContext(ctx).Errorf("商户获取套餐信息失败:plan_ode=%s,error=%v", planCode, err)
 		return nil, err
@@ -207,7 +203,7 @@ func (c *ProductClient) GetProduct(ctx context.Context, productCode string, opt 
 	ctx, cancel := context.WithTimeout(ctx, c.config.Timeout)
 	defer cancel()
 
-	resp, err := c.product.GetProduct(ctx, req)
+	resp, err := c.client.GetProduct(ctx, req)
 	if err != nil {
 		c.logger.WithContext(ctx).Errorf("获取产品信息失败:product_code=%s,error=%v", productCode, err)
 		return nil, err
@@ -235,7 +231,7 @@ func (c *ProductClient) MerchantGetProduct(ctx context.Context, productCode stri
 	ctx, cancel := context.WithTimeout(ctx, c.config.Timeout)
 	defer cancel()
 
-	resp, err := c.product.MerchantGetProduct(ctx, req)
+	resp, err := c.client.MerchantGetProduct(ctx, req)
 	if err != nil {
 		c.logger.WithContext(ctx).Errorf("商户获取产品信息失败:product_code=%s,error=%v", productCode, err)
 		return nil, err
@@ -288,7 +284,7 @@ func (c *ProductClient) ListPricingRules(ctx context.Context, opt *ListPricingRu
 	ctx, cancel := context.WithTimeout(ctx, c.config.Timeout)
 	defer cancel()
 
-	resp, err := c.pricingRule.ListPricingRules(ctx, req)
+	resp, err := c.client.ListPricingRules(ctx, req)
 	if err != nil {
 		c.logger.WithContext(ctx).Errorf("获取定价规则列表失败:error=%v", err)
 		return nil, err

@@ -117,32 +117,30 @@ func createGRPCConn(config *Config, discovery registry.Discovery, logger *log.He
 }
 
 type SubscribeClient struct {
-	tenant v1.SubscriptionTenantManagementServiceClient
-	admin  v1.SubscriptionManagementServiceClient
+	client v1.SubscriptionInternalServiceClient
 	logger *log.Helper
 	config *Config
 }
 
 func newSubscribeClient(conn *grpc.ClientConn, logger *log.Helper, config *Config) *SubscribeClient {
 	return &SubscribeClient{
-		tenant: v1.NewSubscriptionTenantManagementServiceClient(conn),
-		admin:  v1.NewSubscriptionManagementServiceClient(conn),
+		client: v1.NewSubscriptionInternalServiceClient(conn),
 		logger: logger,
 		config: config,
 	}
 }
 
 // GetTenantSubscriptions 获取商家指定产品订阅列表
-func (c *SubscribeClient) GetTenantSubscriptions(ctx context.Context, tenantID uint32, productCode string) ([]*v1.SubscriptionInfo, error) {
+func (c *SubscribeClient) GetTenantSubscriptions(ctx context.Context, tenantCode string, productCode string) ([]*v1.SubscriptionInfo, error) {
 	ctx, cancel := context.WithTimeout(ctx, c.config.Timeout)
 	defer cancel()
 
-	resp, err := c.admin.ListSubscriptions(ctx, &v1.ListSubscriptionsRequest{
-		TenantId:    &tenantID,
+	resp, err := c.client.ListSubscriptions(ctx, &v1.ListSubscriptionsRequest{
+		TenantCode:  &tenantCode,
 		ProductCode: &productCode,
 	})
 	if err != nil {
-		c.logger.WithContext(ctx).Errorf("获取订阅列表失败:tenant_id=%d, product_code=%s,error=%v", tenantID, productCode, err)
+		c.logger.WithContext(ctx).Errorf("获取订阅列表失败:tenant_code=%d, product_code=%s,error=%v", tenantCode, productCode, err)
 		return nil, err
 	}
 
@@ -185,7 +183,7 @@ func (c *SubscribeClient) CreateSubscription(ctx context.Context, productCode st
 	ctx, cancel := context.WithTimeout(ctx, c.config.Timeout)
 	defer cancel()
 
-	resp, err := c.tenant.CreateSubscription(ctx, req)
+	resp, err := c.client.CreateSubscription(ctx, req)
 	if err != nil {
 		c.logger.WithContext(ctx).Errorf("创建订阅失败:product_code=%s plan_code=:%s err=%v", productCode, planCode, err)
 		return nil, err
@@ -205,7 +203,7 @@ func (c *SubscribeClient) ReNewSubscription(ctx context.Context, productCode str
 	ctx, cancel := context.WithTimeout(ctx, c.config.Timeout)
 	defer cancel()
 
-	resp, err := c.tenant.ReNewSubscription(ctx, req)
+	resp, err := c.client.ReNewSubscription(ctx, req)
 	if err != nil {
 		c.logger.WithContext(ctx).Errorf("续订订阅失败:product_code=%s plan_code=:%s renew_time=:%s err=%v", productCode, planCode, reNewTime.String(), err)
 		return nil, err
@@ -242,7 +240,7 @@ func (c *SubscribeClient) UpgradeSubscription(ctx context.Context, productCode s
 	ctx, cancel := context.WithTimeout(ctx, c.config.Timeout)
 	defer cancel()
 
-	resp, err := c.tenant.UpgradeSubscription(ctx, req)
+	resp, err := c.client.UpgradeSubscription(ctx, req)
 	if err != nil {
 		c.logger.WithContext(ctx).Errorf("升级订阅失败:product_code=%s plan_code=:%s err=%v", productCode, planCode, err)
 		return nil, err
