@@ -22,48 +22,48 @@ service SubscriptionInternalService {
 
 // 订阅状态枚举
 enum InternalSubscriptionStatus {
-  SUBSCRIPTION_STATUS_UNSPECIFIED = 0;
-  SUBSCRIPTION_STATUS_ACTIVE = 1;      // 使用中
-  SUBSCRIPTION_STATUS_TRIAL = 2;       // 试用中
-  SUBSCRIPTION_STATUS_SUSPENDED = 3;   // 已暂停
-  SUBSCRIPTION_STATUS_EXPIRED = 4;     // 已过期
-  SUBSCRIPTION_STATUS_CANCELLED = 5;   // 已取消
+  INTERNAL_SUBSCRIPTION_STATUS_UNSPECIFIED = 0;
+  INTERNAL_SUBSCRIPTION_STATUS_ACTIVE = 1;      // 使用中
+  INTERNAL_SUBSCRIPTION_STATUS_TRIAL = 2;       // 试用中
+  INTERNAL_SUBSCRIPTION_STATUS_SUSPENDED = 3;   // 已暂停
+  INTERNAL_SUBSCRIPTION_STATUS_EXPIRED = 4;     // 已过期
+  INTERNAL_SUBSCRIPTION_STATUS_CANCELLED = 5;   // 已取消
 }
 
 // 配额类型枚举
 enum InternalQuotaType {
-  QUOTA_TYPE_UNSPECIFIED = 0;
-  QUOTA_TYPE_NUMERIC = 1;       // 数字型
-  QUOTA_TYPE_USAGE = 2;         // 用量型
-  QUOTA_TYPE_SWITCH = 3;        // 开关型
+  INTERNAL_QUOTA_TYPE_UNSPECIFIED = 0;
+  INTERNAL_QUOTA_TYPE_NUMERIC = 1;       // 数字型
+  INTERNAL_QUOTA_TYPE_USAGE = 2;         // 用量型
+  INTERNAL_QUOTA_TYPE_SWITCH = 3;        // 开关型
 }
 
 // 订单类型枚举
 enum InternalOrderType {
-  ORDER_TYPE_UNSPECIFIED = 0;
-  ORDER_TYPE_NEW = 1;           // 新购
-  ORDER_TYPE_RENEW = 2;         // 续费
-  ORDER_TYPE_UPGRADE = 3;       // 升级
-  ORDER_TYPE_DOWNGRADE = 4;     // 降级
-  ORDER_TYPE_TRIAL = 5;         // 试用
+  INTERNAL_ORDER_TYPE_UNSPECIFIED = 0;
+  INTERNAL_ORDER_TYPE_NEW = 1;           // 新购
+  INTERNAL_ORDER_TYPE_RENEW = 2;         // 续费
+  INTERNAL_ORDER_TYPE_UPGRADE = 3;       // 升级
+  INTERNAL_ORDER_TYPE_DOWNGRADE = 4;     // 降级
+  INTERNAL_ORDER_TYPE_TRIAL = 5;         // 试用
 }
 
 // 计费周期
 enum InternalBillingCycle {
-  BILLING_CYCLE_UNSPECIFIED = 0;
-  BILLING_CYCLE_MONTHLY = 1;      // 按月
-  BILLING_CYCLE_YEARLY = 2;       // 按年
-  BILLING_CYCLE_LIFETIME = 3;     // 终身
+  INTERNAL_BILLING_CYCLE_UNSPECIFIED = 0;
+  INTERNAL_BILLING_CYCLE_MONTHLY = 1;      // 按月
+  INTERNAL_BILLING_CYCLE_YEARLY = 2;       // 按年
+  INTERNAL_BILLING_CYCLE_LIFETIME = 3;     // 终身
 }
 
 // 订单状态枚举
 enum InternalOrderStatus {
-  ORDER_STATUS_UNSPECIFIED = 0;
-  ORDER_STATUS_PENDING = 1;     // 待支付
-  ORDER_STATUS_PAID = 2;        // 已支付
-  ORDER_STATUS_CANCELLED = 3;   // 已取消
-  ORDER_STATUS_REFUNDED = 4;    // 已退款
-  ORDER_STATUS_FAILED = 5;      // 支付失败
+  INTERNAL_ORDER_STATUS_UNSPECIFIED = 0;
+  INTERNAL_ORDER_STATUS_PENDING = 1;     // 待支付
+  INTERNAL_ORDER_STATUS_PAID = 2;        // 已支付
+  INTERNAL_ORDER_STATUS_CANCELLED = 3;   // 已取消
+  INTERNAL_ORDER_STATUS_REFUNDED = 4;    // 已退款
+  INTERNAL_ORDER_STATUS_FAILED = 5;      // 支付失败
 }
 
 // 订阅信息

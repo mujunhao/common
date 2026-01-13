@@ -28,31 +28,31 @@ const (
 type InternalSubscriptionStatus int32
 
 const (
-	InternalSubscriptionStatus_SUBSCRIPTION_STATUS_UNSPECIFIED InternalSubscriptionStatus = 0
-	InternalSubscriptionStatus_SUBSCRIPTION_STATUS_ACTIVE      InternalSubscriptionStatus = 1 // 使用中
-	InternalSubscriptionStatus_SUBSCRIPTION_STATUS_TRIAL       InternalSubscriptionStatus = 2 // 试用中
-	InternalSubscriptionStatus_SUBSCRIPTION_STATUS_SUSPENDED   InternalSubscriptionStatus = 3 // 已暂停
-	InternalSubscriptionStatus_SUBSCRIPTION_STATUS_EXPIRED     InternalSubscriptionStatus = 4 // 已过期
-	InternalSubscriptionStatus_SUBSCRIPTION_STATUS_CANCELLED   InternalSubscriptionStatus = 5 // 已取消
+	InternalSubscriptionStatus_INTERNAL_SUBSCRIPTION_STATUS_UNSPECIFIED InternalSubscriptionStatus = 0
+	InternalSubscriptionStatus_INTERNAL_SUBSCRIPTION_STATUS_ACTIVE      InternalSubscriptionStatus = 1 // 使用中
+	InternalSubscriptionStatus_INTERNAL_SUBSCRIPTION_STATUS_TRIAL       InternalSubscriptionStatus = 2 // 试用中
+	InternalSubscriptionStatus_INTERNAL_SUBSCRIPTION_STATUS_SUSPENDED   InternalSubscriptionStatus = 3 // 已暂停
+	InternalSubscriptionStatus_INTERNAL_SUBSCRIPTION_STATUS_EXPIRED     InternalSubscriptionStatus = 4 // 已过期
+	InternalSubscriptionStatus_INTERNAL_SUBSCRIPTION_STATUS_CANCELLED   InternalSubscriptionStatus = 5 // 已取消
 )
 
 // Enum value maps for InternalSubscriptionStatus.
 var (
 	InternalSubscriptionStatus_name = map[int32]string{
-		0: "SUBSCRIPTION_STATUS_UNSPECIFIED",
-		1: "SUBSCRIPTION_STATUS_ACTIVE",
-		2: "SUBSCRIPTION_STATUS_TRIAL",
-		3: "SUBSCRIPTION_STATUS_SUSPENDED",
-		4: "SUBSCRIPTION_STATUS_EXPIRED",
-		5: "SUBSCRIPTION_STATUS_CANCELLED",
+		0: "INTERNAL_SUBSCRIPTION_STATUS_UNSPECIFIED",
+		1: "INTERNAL_SUBSCRIPTION_STATUS_ACTIVE",
+		2: "INTERNAL_SUBSCRIPTION_STATUS_TRIAL",
+		3: "INTERNAL_SUBSCRIPTION_STATUS_SUSPENDED",
+		4: "INTERNAL_SUBSCRIPTION_STATUS_EXPIRED",
+		5: "INTERNAL_SUBSCRIPTION_STATUS_CANCELLED",
 	}
 	InternalSubscriptionStatus_value = map[string]int32{
-		"SUBSCRIPTION_STATUS_UNSPECIFIED": 0,
-		"SUBSCRIPTION_STATUS_ACTIVE":      1,
-		"SUBSCRIPTION_STATUS_TRIAL":       2,
-		"SUBSCRIPTION_STATUS_SUSPENDED":   3,
-		"SUBSCRIPTION_STATUS_EXPIRED":     4,
-		"SUBSCRIPTION_STATUS_CANCELLED":   5,
+		"INTERNAL_SUBSCRIPTION_STATUS_UNSPECIFIED": 0,
+		"INTERNAL_SUBSCRIPTION_STATUS_ACTIVE":      1,
+		"INTERNAL_SUBSCRIPTION_STATUS_TRIAL":       2,
+		"INTERNAL_SUBSCRIPTION_STATUS_SUSPENDED":   3,
+		"INTERNAL_SUBSCRIPTION_STATUS_EXPIRED":     4,
+		"INTERNAL_SUBSCRIPTION_STATUS_CANCELLED":   5,
 	}
 )
 
@@ -87,25 +87,25 @@ func (InternalSubscriptionStatus) EnumDescriptor() ([]byte, []int) {
 type InternalQuotaType int32
 
 const (
-	InternalQuotaType_QUOTA_TYPE_UNSPECIFIED InternalQuotaType = 0
-	InternalQuotaType_QUOTA_TYPE_NUMERIC     InternalQuotaType = 1 // 数字型
-	InternalQuotaType_QUOTA_TYPE_USAGE       InternalQuotaType = 2 // 用量型
-	InternalQuotaType_QUOTA_TYPE_SWITCH      InternalQuotaType = 3 // 开关型
+	InternalQuotaType_INTERNAL_QUOTA_TYPE_UNSPECIFIED InternalQuotaType = 0
+	InternalQuotaType_INTERNAL_QUOTA_TYPE_NUMERIC     InternalQuotaType = 1 // 数字型
+	InternalQuotaType_INTERNAL_QUOTA_TYPE_USAGE       InternalQuotaType = 2 // 用量型
+	InternalQuotaType_INTERNAL_QUOTA_TYPE_SWITCH      InternalQuotaType = 3 // 开关型
 )
 
 // Enum value maps for InternalQuotaType.
 var (
 	InternalQuotaType_name = map[int32]string{
-		0: "QUOTA_TYPE_UNSPECIFIED",
-		1: "QUOTA_TYPE_NUMERIC",
-		2: "QUOTA_TYPE_USAGE",
-		3: "QUOTA_TYPE_SWITCH",
+		0: "INTERNAL_QUOTA_TYPE_UNSPECIFIED",
+		1: "INTERNAL_QUOTA_TYPE_NUMERIC",
+		2: "INTERNAL_QUOTA_TYPE_USAGE",
+		3: "INTERNAL_QUOTA_TYPE_SWITCH",
 	}
 	InternalQuotaType_value = map[string]int32{
-		"QUOTA_TYPE_UNSPECIFIED": 0,
-		"QUOTA_TYPE_NUMERIC":     1,
-		"QUOTA_TYPE_USAGE":       2,
-		"QUOTA_TYPE_SWITCH":      3,
+		"INTERNAL_QUOTA_TYPE_UNSPECIFIED": 0,
+		"INTERNAL_QUOTA_TYPE_NUMERIC":     1,
+		"INTERNAL_QUOTA_TYPE_USAGE":       2,
+		"INTERNAL_QUOTA_TYPE_SWITCH":      3,
 	}
 )
 
@@ -140,31 +140,31 @@ func (InternalQuotaType) EnumDescriptor() ([]byte, []int) {
 type InternalOrderType int32
 
 const (
-	InternalOrderType_ORDER_TYPE_UNSPECIFIED InternalOrderType = 0
-	InternalOrderType_ORDER_TYPE_NEW         InternalOrderType = 1 // 新购
-	InternalOrderType_ORDER_TYPE_RENEW       InternalOrderType = 2 // 续费
-	InternalOrderType_ORDER_TYPE_UPGRADE     InternalOrderType = 3 // 升级
-	InternalOrderType_ORDER_TYPE_DOWNGRADE   InternalOrderType = 4 // 降级
-	InternalOrderType_ORDER_TYPE_TRIAL       InternalOrderType = 5 // 试用
+	InternalOrderType_INTERNAL_ORDER_TYPE_UNSPECIFIED InternalOrderType = 0
+	InternalOrderType_INTERNAL_ORDER_TYPE_NEW         InternalOrderType = 1 // 新购
+	InternalOrderType_INTERNAL_ORDER_TYPE_RENEW       InternalOrderType = 2 // 续费
+	InternalOrderType_INTERNAL_ORDER_TYPE_UPGRADE     InternalOrderType = 3 // 升级
+	InternalOrderType_INTERNAL_ORDER_TYPE_DOWNGRADE   InternalOrderType = 4 // 降级
+	InternalOrderType_INTERNAL_ORDER_TYPE_TRIAL       InternalOrderType = 5 // 试用
 )
 
 // Enum value maps for InternalOrderType.
 var (
 	InternalOrderType_name = map[int32]string{
-		0: "ORDER_TYPE_UNSPECIFIED",
-		1: "ORDER_TYPE_NEW",
-		2: "ORDER_TYPE_RENEW",
-		3: "ORDER_TYPE_UPGRADE",
-		4: "ORDER_TYPE_DOWNGRADE",
-		5: "ORDER_TYPE_TRIAL",
+		0: "INTERNAL_ORDER_TYPE_UNSPECIFIED",
+		1: "INTERNAL_ORDER_TYPE_NEW",
+		2: "INTERNAL_ORDER_TYPE_RENEW",
+		3: "INTERNAL_ORDER_TYPE_UPGRADE",
+		4: "INTERNAL_ORDER_TYPE_DOWNGRADE",
+		5: "INTERNAL_ORDER_TYPE_TRIAL",
 	}
 	InternalOrderType_value = map[string]int32{
-		"ORDER_TYPE_UNSPECIFIED": 0,
-		"ORDER_TYPE_NEW":         1,
-		"ORDER_TYPE_RENEW":       2,
-		"ORDER_TYPE_UPGRADE":     3,
-		"ORDER_TYPE_DOWNGRADE":   4,
-		"ORDER_TYPE_TRIAL":       5,
+		"INTERNAL_ORDER_TYPE_UNSPECIFIED": 0,
+		"INTERNAL_ORDER_TYPE_NEW":         1,
+		"INTERNAL_ORDER_TYPE_RENEW":       2,
+		"INTERNAL_ORDER_TYPE_UPGRADE":     3,
+		"INTERNAL_ORDER_TYPE_DOWNGRADE":   4,
+		"INTERNAL_ORDER_TYPE_TRIAL":       5,
 	}
 )
 
@@ -199,25 +199,25 @@ func (InternalOrderType) EnumDescriptor() ([]byte, []int) {
 type InternalBillingCycle int32
 
 const (
-	InternalBillingCycle_BILLING_CYCLE_UNSPECIFIED InternalBillingCycle = 0
-	InternalBillingCycle_BILLING_CYCLE_MONTHLY     InternalBillingCycle = 1 // 按月
-	InternalBillingCycle_BILLING_CYCLE_YEARLY      InternalBillingCycle = 2 // 按年
-	InternalBillingCycle_BILLING_CYCLE_LIFETIME    InternalBillingCycle = 3 // 终身
+	InternalBillingCycle_INTERNAL_BILLING_CYCLE_UNSPECIFIED InternalBillingCycle = 0
+	InternalBillingCycle_INTERNAL_BILLING_CYCLE_MONTHLY     InternalBillingCycle = 1 // 按月
+	InternalBillingCycle_INTERNAL_BILLING_CYCLE_YEARLY      InternalBillingCycle = 2 // 按年
+	InternalBillingCycle_INTERNAL_BILLING_CYCLE_LIFETIME    InternalBillingCycle = 3 // 终身
 )
 
 // Enum value maps for InternalBillingCycle.
 var (
 	InternalBillingCycle_name = map[int32]string{
-		0: "BILLING_CYCLE_UNSPECIFIED",
-		1: "BILLING_CYCLE_MONTHLY",
-		2: "BILLING_CYCLE_YEARLY",
-		3: "BILLING_CYCLE_LIFETIME",
+		0: "INTERNAL_BILLING_CYCLE_UNSPECIFIED",
+		1: "INTERNAL_BILLING_CYCLE_MONTHLY",
+		2: "INTERNAL_BILLING_CYCLE_YEARLY",
+		3: "INTERNAL_BILLING_CYCLE_LIFETIME",
 	}
 	InternalBillingCycle_value = map[string]int32{
-		"BILLING_CYCLE_UNSPECIFIED": 0,
-		"BILLING_CYCLE_MONTHLY":     1,
-		"BILLING_CYCLE_YEARLY":      2,
-		"BILLING_CYCLE_LIFETIME":    3,
+		"INTERNAL_BILLING_CYCLE_UNSPECIFIED": 0,
+		"INTERNAL_BILLING_CYCLE_MONTHLY":     1,
+		"INTERNAL_BILLING_CYCLE_YEARLY":      2,
+		"INTERNAL_BILLING_CYCLE_LIFETIME":    3,
 	}
 )
 
@@ -252,31 +252,31 @@ func (InternalBillingCycle) EnumDescriptor() ([]byte, []int) {
 type InternalOrderStatus int32
 
 const (
-	InternalOrderStatus_ORDER_STATUS_UNSPECIFIED InternalOrderStatus = 0
-	InternalOrderStatus_ORDER_STATUS_PENDING     InternalOrderStatus = 1 // 待支付
-	InternalOrderStatus_ORDER_STATUS_PAID        InternalOrderStatus = 2 // 已支付
-	InternalOrderStatus_ORDER_STATUS_CANCELLED   InternalOrderStatus = 3 // 已取消
-	InternalOrderStatus_ORDER_STATUS_REFUNDED    InternalOrderStatus = 4 // 已退款
-	InternalOrderStatus_ORDER_STATUS_FAILED      InternalOrderStatus = 5 // 支付失败
+	InternalOrderStatus_INTERNAL_ORDER_STATUS_UNSPECIFIED InternalOrderStatus = 0
+	InternalOrderStatus_INTERNAL_ORDER_STATUS_PENDING     InternalOrderStatus = 1 // 待支付
+	InternalOrderStatus_INTERNAL_ORDER_STATUS_PAID        InternalOrderStatus = 2 // 已支付
+	InternalOrderStatus_INTERNAL_ORDER_STATUS_CANCELLED   InternalOrderStatus = 3 // 已取消
+	InternalOrderStatus_INTERNAL_ORDER_STATUS_REFUNDED    InternalOrderStatus = 4 // 已退款
+	InternalOrderStatus_INTERNAL_ORDER_STATUS_FAILED      InternalOrderStatus = 5 // 支付失败
 )
 
 // Enum value maps for InternalOrderStatus.
 var (
 	InternalOrderStatus_name = map[int32]string{
-		0: "ORDER_STATUS_UNSPECIFIED",
-		1: "ORDER_STATUS_PENDING",
-		2: "ORDER_STATUS_PAID",
-		3: "ORDER_STATUS_CANCELLED",
-		4: "ORDER_STATUS_REFUNDED",
-		5: "ORDER_STATUS_FAILED",
+		0: "INTERNAL_ORDER_STATUS_UNSPECIFIED",
+		1: "INTERNAL_ORDER_STATUS_PENDING",
+		2: "INTERNAL_ORDER_STATUS_PAID",
+		3: "INTERNAL_ORDER_STATUS_CANCELLED",
+		4: "INTERNAL_ORDER_STATUS_REFUNDED",
+		5: "INTERNAL_ORDER_STATUS_FAILED",
 	}
 	InternalOrderStatus_value = map[string]int32{
-		"ORDER_STATUS_UNSPECIFIED": 0,
-		"ORDER_STATUS_PENDING":     1,
-		"ORDER_STATUS_PAID":        2,
-		"ORDER_STATUS_CANCELLED":   3,
-		"ORDER_STATUS_REFUNDED":    4,
-		"ORDER_STATUS_FAILED":      5,
+		"INTERNAL_ORDER_STATUS_UNSPECIFIED": 0,
+		"INTERNAL_ORDER_STATUS_PENDING":     1,
+		"INTERNAL_ORDER_STATUS_PAID":        2,
+		"INTERNAL_ORDER_STATUS_CANCELLED":   3,
+		"INTERNAL_ORDER_STATUS_REFUNDED":    4,
+		"INTERNAL_ORDER_STATUS_FAILED":      5,
 	}
 )
 
@@ -425,7 +425,7 @@ func (x *InternalSubscriptionInfo) GetStatus() InternalSubscriptionStatus {
 	if x != nil {
 		return x.Status
 	}
-	return InternalSubscriptionStatus_SUBSCRIPTION_STATUS_UNSPECIFIED
+	return InternalSubscriptionStatus_INTERNAL_SUBSCRIPTION_STATUS_UNSPECIFIED
 }
 
 func (x *InternalSubscriptionInfo) GetAutomaticRenewal() bool {
@@ -626,7 +626,7 @@ func (x *InternalQuotaUsageInfo) GetQuotaType() InternalQuotaType {
 	if x != nil {
 		return x.QuotaType
 	}
-	return InternalQuotaType_QUOTA_TYPE_UNSPECIFIED
+	return InternalQuotaType_INTERNAL_QUOTA_TYPE_UNSPECIFIED
 }
 
 // 订单信息
@@ -699,14 +699,14 @@ func (x *InternalSubscriptionOrderInfo) GetOrderType() InternalOrderType {
 	if x != nil {
 		return x.OrderType
 	}
-	return InternalOrderType_ORDER_TYPE_UNSPECIFIED
+	return InternalOrderType_INTERNAL_ORDER_TYPE_UNSPECIFIED
 }
 
 func (x *InternalSubscriptionOrderInfo) GetBillingCycle() InternalBillingCycle {
 	if x != nil {
 		return x.BillingCycle
 	}
-	return InternalBillingCycle_BILLING_CYCLE_UNSPECIFIED
+	return InternalBillingCycle_INTERNAL_BILLING_CYCLE_UNSPECIFIED
 }
 
 func (x *InternalSubscriptionOrderInfo) GetOriginalPrice() int64 {
@@ -755,7 +755,7 @@ func (x *InternalSubscriptionOrderInfo) GetStatus() InternalOrderStatus {
 	if x != nil {
 		return x.Status
 	}
-	return InternalOrderStatus_ORDER_STATUS_UNSPECIFIED
+	return InternalOrderStatus_INTERNAL_ORDER_STATUS_UNSPECIFIED
 }
 
 func (x *InternalSubscriptionOrderInfo) GetPaymentMethod() string {
@@ -920,7 +920,7 @@ func (x *InternalListSubscriptionsRequest) GetStatus() InternalSubscriptionStatu
 	if x != nil && x.Status != nil {
 		return *x.Status
 	}
-	return InternalSubscriptionStatus_SUBSCRIPTION_STATUS_UNSPECIFIED
+	return InternalSubscriptionStatus_INTERNAL_SUBSCRIPTION_STATUS_UNSPECIFIED
 }
 
 func (x *InternalListSubscriptionsRequest) GetIsTrial() bool {
@@ -1566,38 +1566,38 @@ const file_subscribe_v1_subscription_internal_proto_rawDesc = "" +
 	"\x05order\x18\x06 \x01(\v22.api.subscription.v1.InternalSubscriptionOrderInfoR\x05orderB\v\n" +
 	"\t_end_date\"x\n" +
 	"#InternalUpgradeSubscriptionResponse\x12Q\n" +
-	"\fsubscription\x18\x01 \x01(\v2-.api.subscription.v1.InternalSubscriptionInfoR\fsubscription*\xe7\x01\n" +
-	"\x1aInternalSubscriptionStatus\x12#\n" +
-	"\x1fSUBSCRIPTION_STATUS_UNSPECIFIED\x10\x00\x12\x1e\n" +
-	"\x1aSUBSCRIPTION_STATUS_ACTIVE\x10\x01\x12\x1d\n" +
-	"\x19SUBSCRIPTION_STATUS_TRIAL\x10\x02\x12!\n" +
-	"\x1dSUBSCRIPTION_STATUS_SUSPENDED\x10\x03\x12\x1f\n" +
-	"\x1bSUBSCRIPTION_STATUS_EXPIRED\x10\x04\x12!\n" +
-	"\x1dSUBSCRIPTION_STATUS_CANCELLED\x10\x05*t\n" +
-	"\x11InternalQuotaType\x12\x1a\n" +
-	"\x16QUOTA_TYPE_UNSPECIFIED\x10\x00\x12\x16\n" +
-	"\x12QUOTA_TYPE_NUMERIC\x10\x01\x12\x14\n" +
-	"\x10QUOTA_TYPE_USAGE\x10\x02\x12\x15\n" +
-	"\x11QUOTA_TYPE_SWITCH\x10\x03*\xa1\x01\n" +
-	"\x11InternalOrderType\x12\x1a\n" +
-	"\x16ORDER_TYPE_UNSPECIFIED\x10\x00\x12\x12\n" +
-	"\x0eORDER_TYPE_NEW\x10\x01\x12\x14\n" +
-	"\x10ORDER_TYPE_RENEW\x10\x02\x12\x16\n" +
-	"\x12ORDER_TYPE_UPGRADE\x10\x03\x12\x18\n" +
-	"\x14ORDER_TYPE_DOWNGRADE\x10\x04\x12\x14\n" +
-	"\x10ORDER_TYPE_TRIAL\x10\x05*\x86\x01\n" +
-	"\x14InternalBillingCycle\x12\x1d\n" +
-	"\x19BILLING_CYCLE_UNSPECIFIED\x10\x00\x12\x19\n" +
-	"\x15BILLING_CYCLE_MONTHLY\x10\x01\x12\x18\n" +
-	"\x14BILLING_CYCLE_YEARLY\x10\x02\x12\x1a\n" +
-	"\x16BILLING_CYCLE_LIFETIME\x10\x03*\xb4\x01\n" +
-	"\x13InternalOrderStatus\x12\x1c\n" +
-	"\x18ORDER_STATUS_UNSPECIFIED\x10\x00\x12\x18\n" +
-	"\x14ORDER_STATUS_PENDING\x10\x01\x12\x15\n" +
-	"\x11ORDER_STATUS_PAID\x10\x02\x12\x1a\n" +
-	"\x16ORDER_STATUS_CANCELLED\x10\x03\x12\x19\n" +
-	"\x15ORDER_STATUS_REFUNDED\x10\x04\x12\x17\n" +
-	"\x13ORDER_STATUS_FAILED\x10\x052\xda\x04\n" +
+	"\fsubscription\x18\x01 \x01(\v2-.api.subscription.v1.InternalSubscriptionInfoR\fsubscription*\x9d\x02\n" +
+	"\x1aInternalSubscriptionStatus\x12,\n" +
+	"(INTERNAL_SUBSCRIPTION_STATUS_UNSPECIFIED\x10\x00\x12'\n" +
+	"#INTERNAL_SUBSCRIPTION_STATUS_ACTIVE\x10\x01\x12&\n" +
+	"\"INTERNAL_SUBSCRIPTION_STATUS_TRIAL\x10\x02\x12*\n" +
+	"&INTERNAL_SUBSCRIPTION_STATUS_SUSPENDED\x10\x03\x12(\n" +
+	"$INTERNAL_SUBSCRIPTION_STATUS_EXPIRED\x10\x04\x12*\n" +
+	"&INTERNAL_SUBSCRIPTION_STATUS_CANCELLED\x10\x05*\x98\x01\n" +
+	"\x11InternalQuotaType\x12#\n" +
+	"\x1fINTERNAL_QUOTA_TYPE_UNSPECIFIED\x10\x00\x12\x1f\n" +
+	"\x1bINTERNAL_QUOTA_TYPE_NUMERIC\x10\x01\x12\x1d\n" +
+	"\x19INTERNAL_QUOTA_TYPE_USAGE\x10\x02\x12\x1e\n" +
+	"\x1aINTERNAL_QUOTA_TYPE_SWITCH\x10\x03*\xd7\x01\n" +
+	"\x11InternalOrderType\x12#\n" +
+	"\x1fINTERNAL_ORDER_TYPE_UNSPECIFIED\x10\x00\x12\x1b\n" +
+	"\x17INTERNAL_ORDER_TYPE_NEW\x10\x01\x12\x1d\n" +
+	"\x19INTERNAL_ORDER_TYPE_RENEW\x10\x02\x12\x1f\n" +
+	"\x1bINTERNAL_ORDER_TYPE_UPGRADE\x10\x03\x12!\n" +
+	"\x1dINTERNAL_ORDER_TYPE_DOWNGRADE\x10\x04\x12\x1d\n" +
+	"\x19INTERNAL_ORDER_TYPE_TRIAL\x10\x05*\xaa\x01\n" +
+	"\x14InternalBillingCycle\x12&\n" +
+	"\"INTERNAL_BILLING_CYCLE_UNSPECIFIED\x10\x00\x12\"\n" +
+	"\x1eINTERNAL_BILLING_CYCLE_MONTHLY\x10\x01\x12!\n" +
+	"\x1dINTERNAL_BILLING_CYCLE_YEARLY\x10\x02\x12#\n" +
+	"\x1fINTERNAL_BILLING_CYCLE_LIFETIME\x10\x03*\xea\x01\n" +
+	"\x13InternalOrderStatus\x12%\n" +
+	"!INTERNAL_ORDER_STATUS_UNSPECIFIED\x10\x00\x12!\n" +
+	"\x1dINTERNAL_ORDER_STATUS_PENDING\x10\x01\x12\x1e\n" +
+	"\x1aINTERNAL_ORDER_STATUS_PAID\x10\x02\x12#\n" +
+	"\x1fINTERNAL_ORDER_STATUS_CANCELLED\x10\x03\x12\"\n" +
+	"\x1eINTERNAL_ORDER_STATUS_REFUNDED\x10\x04\x12 \n" +
+	"\x1cINTERNAL_ORDER_STATUS_FAILED\x10\x052\xda\x04\n" +
 	"\x1bSubscriptionInternalService\x12\x8a\x01\n" +
 	"\x19InternalListSubscriptions\x125.api.subscription.v1.InternalListSubscriptionsRequest\x1a6.api.subscription.v1.InternalListSubscriptionsResponse\x12\x8d\x01\n" +
 	"\x1aInternalCreateSubscription\x126.api.subscription.v1.InternalCreateSubscriptionRequest\x1a7.api.subscription.v1.InternalCreateSubscriptionResponse\x12\x8a\x01\n" +
