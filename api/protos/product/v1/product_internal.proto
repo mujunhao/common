@@ -22,20 +22,20 @@ service ProductInternalService {
 
 // 套餐状态枚举
 enum InternalPlanStatus {
-  PLAN_STATUS_UNSPECIFIED = 0;
-  PLAN_STATUS_DRAFT = 1;        // 草稿
-  PLAN_STATUS_ACTIVE = 2;       // 上架
-  PLAN_STATUS_INACTIVE = 3;     // 下架
-  PLAN_STATUS_DISCONTINUED = 4; // 停产
+  INTERNAL_PLAN_STATUS_UNSPECIFIED = 0;
+  INTERNAL_PLAN_STATUS_DRAFT = 1;        // 草稿
+  INTERNAL_PLAN_STATUS_ACTIVE = 2;       // 上架
+  INTERNAL_PLAN_STATUS_INACTIVE = 3;     // 下架
+  INTERNAL_PLAN_STATUS_DISCONTINUED = 4; // 停产
 }
 
 // 值类型枚举
 enum InternalValueType {
-  VALUE_TYPE_UNSPECIFIED = 0;
-  VALUE_TYPE_STRING = 1;        // 字符串
-  VALUE_TYPE_NUMBER = 2;        // 数字
-  VALUE_TYPE_BOOLEAN = 3;       // 布尔值
-  VALUE_TYPE_DECIMAL = 4;       // 小数
+  INTERNAL_VALUE_TYPE_UNSPECIFIED = 0;
+  INTERNAL_VALUE_TYPE_STRING = 1;        // 字符串
+  INTERNAL_VALUE_TYPE_NUMBER = 2;        // 数字
+  INTERNAL_VALUE_TYPE_BOOLEAN = 3;       // 布尔值
+  INTERNAL_VALUE_TYPE_DECIMAL = 4;       // 小数
 }
 
 // 套餐规则配置
@@ -95,27 +95,27 @@ message InternalMerchantGetPlanResponse {
 
 // 规则类型枚举
 enum InternalRuleType {
-  RULE_TYPE_UNSPECIFIED = 0;
-  NUMERIC = 1;       // 数字型
-  USAGE = 2;         // 用量型
-  SWITCH = 3;        // 开关型
+  INTERNAL_RULE_TYPE_UNSPECIFIED = 0;
+  INTERNAL_NUMERIC = 1;       // 数字型
+  INTERNAL_USAGE = 2;         // 用量型
+  INTERNAL_SWITCH = 3;        // 开关型
 }
 
 // 规则状态枚举
 enum InternalRuleStatus {
-  RULE_STATUS_UNSPECIFIED = 0;
-  RULE_ACTIVE = 1;   // 启用
-  RULE_INACTIVE = 2; // 禁用
+  INTERNAL_RULE_STATUS_UNSPECIFIED = 0;
+  INTERNAL_RULE_ACTIVE = 1;   // 启用
+  INTERNAL_RULE_INACTIVE = 2; // 禁用
 }
 
 // 重置周期枚举
 enum InternalResetPeriod {
-  RESET_PERIOD_UNSPECIFIED = 0;
-  NONE = 1;          // 不重置
-  DAILY = 2;         // 每日
-  WEEKLY = 3;        // 每周
-  MONTHLY = 4;       // 每月
-  YEARLY = 5;        // 每年
+  INTERNAL_RESET_PERIOD_UNSPECIFIED = 0;
+  INTERNAL_NONE = 1;          // 不重置
+  INTERNAL_DAILY = 2;         // 每日
+  INTERNAL_WEEKLY = 3;        // 每周
+  INTERNAL_MONTHLY = 4;       // 每月
+  INTERNAL_YEARLY = 5;        // 每年
 }
 
 // 定价规则信息
@@ -159,15 +159,15 @@ message InternalListPricingRulesResponse {
 
 // 产品状态枚举
 enum InternalProductStatus {
-  PRODUCT_STATUS_UNSPECIFIED = 0;
+  INTERNAL_PRODUCT_STATUS_UNSPECIFIED = 0;
   // 草稿
-  PRODUCT_STATUS_DRAFT = 1;
+  INTERNAL_PRODUCT_STATUS_DRAFT = 1;
   // 上架
-  PRODUCT_STATUS_ACTIVE = 2;
+  INTERNAL_PRODUCT_STATUS_ACTIVE = 2;
   // 下架
-  PRODUCT_STATUS_INACTIVE = 3;
+  INTERNAL_PRODUCT_STATUS_INACTIVE = 3;
   // 停产
-  PRODUCT_STATUS_DISCONTINUED = 4;
+  INTERNAL_PRODUCT_STATUS_DISCONTINUED = 4;
 }
 
 // 产品信息
