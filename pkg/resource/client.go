@@ -209,14 +209,17 @@ type GetFileUrlsOptions struct {
 //
 // 参数:
 //   - ctx: 上下文
-//   - TenantCode: 租户ID
 //   - fileIDs: 文件ID列表（最多100个）
 //   - opts: 可选参数
 //
 // 返回:
 //   - map[string]*v1.InternalFileUrlInfo: 文件ID到URL信息的映射
 //   - error: 错误信息
-func (c *ResourceClient) GetFileUrls(ctx context.Context, tenantCode string, fileIDs []string, opts *GetFileUrlsOptions) (map[string]*v1.InternalFileUrlInfo, error) {
+//
+// 说明:
+//   - URL查询不需要租户隔离，支持平台级资源与租户资源混合使用
+//   - 租户隔离在下载时由其他接口处理
+func (c *ResourceClient) GetFileUrls(ctx context.Context, fileIDs []string, opts *GetFileUrlsOptions) (map[string]*v1.InternalFileUrlInfo, error) {
 	if len(fileIDs) == 0 {
 		return make(map[string]*v1.InternalFileUrlInfo), nil
 	}
@@ -229,8 +232,7 @@ func (c *ResourceClient) GetFileUrls(ctx context.Context, tenantCode string, fil
 	defer cancel()
 
 	req := &v1.InternalGetFileUrlsRequest{
-		TenantCode: tenantCode,
-		FileIds:    fileIDs,
+		FileIds: fileIDs,
 	}
 
 	if opts != nil {
@@ -240,7 +242,7 @@ func (c *ResourceClient) GetFileUrls(ctx context.Context, tenantCode string, fil
 
 	resp, err := c.client.InternalGetFileUrls(ctx, req)
 	if err != nil {
-		c.logger.WithContext(ctx).Errorf("批量获取文件URL失败: tenant_id=%d, count=%d, error=%v", tenantCode, len(fileIDs), err)
+		c.logger.WithContext(ctx).Errorf("批量获取文件URL失败: count=%d, error=%v", len(fileIDs), err)
 		return nil, err
 	}
 
@@ -251,14 +253,13 @@ func (c *ResourceClient) GetFileUrls(ctx context.Context, tenantCode string, fil
 //
 // 参数:
 //   - ctx: 上下文
-//   - TenantCode: 租户ID
 //   - fileID: 文件ID
 //
 // 返回:
 //   - string: 文件URL
 //   - error: 错误信息
-func (c *ResourceClient) GetFileUrl(ctx context.Context, tenantCode string, fileID string) (string, error) {
-	results, err := c.GetFileUrls(ctx, tenantCode, []string{fileID}, nil)
+func (c *ResourceClient) GetFileUrl(ctx context.Context, fileID string) (string, error) {
+	results, err := c.GetFileUrls(ctx, []string{fileID}, nil)
 	if err != nil {
 		return "", err
 	}

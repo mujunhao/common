@@ -235,8 +235,9 @@ message InternalGetFilesResponse {
 
 // InternalGetFileUrlsRequest 内部批量获取文件URL请求
 message InternalGetFileUrlsRequest {
-  // 租户ID（必填）
-  string tenant_code = 1;
+  // 租户ID（已废弃，无需传入，保留字段仅为向后兼容）
+  // URL查询不再需要租户隔离，支持平台级资源与租户资源混合使用
+  string tenant_code = 1 [deprecated = true];
   // 文件ID列表（必填，最多100个）
   repeated string file_ids = 2;
   // 是否包含变体URL（可选，默认false）
