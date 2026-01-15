@@ -21,11 +21,11 @@ type typeInfo struct {
 
 // fieldInfo 字段信息
 type fieldInfo struct {
-	srcIndex    int    // 源字段索引（用于普通字段映射）
-	dstIndex    int    // 目标字段索引
-	name        string // 字段名
-	fieldType   fieldType
-	idSrcIndex  int // ID来源字段索引（用于URL/URLs类型，从对应的ID字段获取值）
+	srcIndex   int    // 源字段索引（用于普通字段映射）
+	dstIndex   int    // 目标字段索引
+	name       string // 字段名
+	fieldType  fieldType
+	idSrcIndex int // ID来源字段索引（用于URL/URLs类型，从对应的ID字段获取值）
 	// 嵌套类型信息（slice/struct/map）
 	elemInfo *typeInfo
 	srcElem  reflect.Type
@@ -462,22 +462,118 @@ func mapMapAndCollect(srcField, dstField reflect.Value, fi fieldInfo, collector 
 	// 创建目标map
 	dstMap := reflect.MakeMap(dstField.Type())
 
+	// 检查源是否为 map[string]interface{} 类型
+	srcElemKind := deref(fi.srcElem).Kind()
+	isInterfaceSrc := srcElemKind == reflect.Interface
+
 	for _, key := range srcField.MapKeys() {
 		srcElem := srcField.MapIndex(key)
 
 		// 如果目标value是指针类型，需要创建新实例
 		if fi.dstElem.Kind() == reflect.Ptr {
 			newElem := reflect.New(fi.dstElem.Elem())
-			mapAndCollect(srcElem, newElem.Elem(), fi.elemInfo, collector)
+			if isInterfaceSrc {
+				// 源是 interface{} 类型，特殊处理
+				mapInterfaceToStruct(srcElem, newElem.Elem(), collector)
+			} else {
+				mapAndCollect(srcElem, newElem.Elem(), fi.elemInfo, collector)
+			}
 			dstMap.SetMapIndex(key, newElem)
 		} else {
 			newElem := reflect.New(fi.dstElem).Elem()
-			mapAndCollect(srcElem, newElem, fi.elemInfo, collector)
+			if isInterfaceSrc {
+				mapInterfaceToStruct(srcElem, newElem, collector)
+			} else {
+				mapAndCollect(srcElem, newElem, fi.elemInfo, collector)
+			}
 			dstMap.SetMapIndex(key, newElem)
 		}
 	}
 
 	dstField.Set(dstMap)
+}
+
+func mapInterfaceToStruct(srcVal, dstVal reflect.Value, collector *idCollector) {
+	srcVal = derefValue(srcVal)
+	dstVal = derefValue(dstVal)
+
+	if !srcVal.IsValid() || !dstVal.IsValid() {
+		return
+	}
+
+	if srcVal.Kind() != reflect.Map {
+		return
+	}
+
+	dstType := dstVal.Type()
+	if dstType.Kind() != reflect.Struct {
+		return
+	}
+
+	for i := 0; i < dstType.NumField(); i++ {
+		dstField := dstType.Field(i)
+		if !dstField.IsExported() {
+			continue
+		}
+
+		jsonTag := dstField.Tag.Get("json")
+		if jsonTag == "" || jsonTag == "-" {
+			jsonTag = dstField.Name
+		} else if idx := strings.Index(jsonTag, ","); idx != -1 {
+			jsonTag = jsonTag[:idx]
+		}
+
+		srcMapVal := srcVal.MapIndex(reflect.ValueOf(jsonTag))
+		if !srcMapVal.IsValid() {
+			continue
+		}
+
+		actualVal := derefValue(srcMapVal)
+		if !actualVal.IsValid() {
+			continue
+		}
+
+		dstFieldVal := dstVal.Field(i)
+		dstFieldType := dstField.Type
+
+		switch {
+		case dstFieldType.Kind() == reflect.String:
+			if actualVal.Kind() == reflect.String {
+				dstFieldVal.SetString(actualVal.String())
+			}
+		case dstFieldType == reflect.TypeOf(RichText("")):
+			if actualVal.Kind() == reflect.String {
+				text := actualVal.String()
+				dstFieldVal.SetString(text)
+				matches := dataHelfRegex.FindAllStringSubmatch(text, -1)
+				for _, m := range matches {
+					if len(m) > 1 {
+						collector.add(m[1])
+					}
+				}
+			}
+		case dstFieldType == reflect.TypeOf(FileID("")):
+			if actualVal.Kind() == reflect.String {
+				dstFieldVal.SetString(actualVal.String())
+				collector.add(actualVal.String())
+			}
+		case dstFieldType.Kind() == reflect.Int, dstFieldType.Kind() == reflect.Int64:
+			switch actualVal.Kind() {
+			case reflect.Float64:
+				dstFieldVal.SetInt(int64(actualVal.Float()))
+			case reflect.Int, reflect.Int64:
+				dstFieldVal.SetInt(actualVal.Int())
+			}
+		case dstFieldType.Kind() == reflect.Float64:
+			if actualVal.Kind() == reflect.Float64 {
+				dstFieldVal.SetFloat(actualVal.Float())
+			}
+		case dstFieldType.Kind() == reflect.Bool:
+			if actualVal.Kind() == reflect.Bool {
+				dstFieldVal.SetBool(actualVal.Bool())
+			}
+		}
+	}
 }
 
 // fillURLs 填充URL
@@ -562,11 +658,52 @@ func fillMapURLs(dstField reflect.Value, fi fieldInfo, resources map[string]*Res
 		return
 	}
 
+	// 检查源是否为 interface{} 类型
+	srcElemKind := deref(fi.srcElem).Kind()
+	isInterfaceSrc := srcElemKind == reflect.Interface
+
 	for _, key := range dstField.MapKeys() {
 		elem := dstField.MapIndex(key)
-		// map中的元素是不可寻址的，需要复制后修改再设置回去
 		if elem.Kind() == reflect.Ptr && !elem.IsNil() {
-			fillURLs(elem.Elem(), fi.elemInfo, resources)
+			if isInterfaceSrc {
+				fillInterfaceStructURLs(elem.Elem(), resources)
+			} else {
+				fillURLs(elem.Elem(), fi.elemInfo, resources)
+			}
+		}
+	}
+}
+
+// fillInterfaceStructURLs 填充从 interface{} 转换来的结构体中的URL
+func fillInterfaceStructURLs(dstVal reflect.Value, resources map[string]*ResourceInfo) {
+	dstVal = derefValue(dstVal)
+	if !dstVal.IsValid() || dstVal.Kind() != reflect.Struct {
+		return
+	}
+
+	dstType := dstVal.Type()
+	for i := 0; i < dstType.NumField(); i++ {
+		dstField := dstType.Field(i)
+		if !dstField.IsExported() {
+			continue
+		}
+
+		fieldVal := dstVal.Field(i)
+		fieldType := dstField.Type
+
+		switch {
+		case fieldType == reflect.TypeOf(RichText("")):
+			text := fieldVal.String()
+			newText := dataHelfRegex.ReplaceAllStringFunc(text, func(match string) string {
+				m := dataHelfRegex.FindStringSubmatch(match)
+				if len(m) > 1 {
+					if res, ok := resources[m[1]]; ok && res.Success {
+						return `src="` + res.URL + `"`
+					}
+				}
+				return match
+			})
+			fieldVal.SetString(newText)
 		}
 	}
 }
