@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	MerchantIamService_SetTenantPermissions_FullMethodName = "/common.merchant.v1.merchantIamService/SetTenantPermissions"
+	MerchantIamService_InternalListTenant_FullMethodName   = "/common.merchant.v1.merchantIamService/InternalListTenant"
 )
 
 // MerchantIamServiceClient is the client API for MerchantIamService service.
@@ -30,6 +31,8 @@ const (
 type MerchantIamServiceClient interface {
 	// 将codes(string) set permission
 	SetTenantPermissions(ctx context.Context, in *SetTenantPermissionsRequest, opts ...grpc.CallOption) (*SetTenantPermissionsResponse, error)
+	// 获取商户列表
+	InternalListTenant(ctx context.Context, in *InternalListTenantRequest, opts ...grpc.CallOption) (*InternalListTenantResponse, error)
 }
 
 type merchantIamServiceClient struct {
@@ -50,6 +53,16 @@ func (c *merchantIamServiceClient) SetTenantPermissions(ctx context.Context, in 
 	return out, nil
 }
 
+func (c *merchantIamServiceClient) InternalListTenant(ctx context.Context, in *InternalListTenantRequest, opts ...grpc.CallOption) (*InternalListTenantResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(InternalListTenantResponse)
+	err := c.cc.Invoke(ctx, MerchantIamService_InternalListTenant_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MerchantIamServiceServer is the server API for MerchantIamService service.
 // All implementations must embed UnimplementedMerchantIamServiceServer
 // for forward compatibility.
@@ -58,6 +71,8 @@ func (c *merchantIamServiceClient) SetTenantPermissions(ctx context.Context, in 
 type MerchantIamServiceServer interface {
 	// 将codes(string) set permission
 	SetTenantPermissions(context.Context, *SetTenantPermissionsRequest) (*SetTenantPermissionsResponse, error)
+	// 获取商户列表
+	InternalListTenant(context.Context, *InternalListTenantRequest) (*InternalListTenantResponse, error)
 	mustEmbedUnimplementedMerchantIamServiceServer()
 }
 
@@ -70,6 +85,9 @@ type UnimplementedMerchantIamServiceServer struct{}
 
 func (UnimplementedMerchantIamServiceServer) SetTenantPermissions(context.Context, *SetTenantPermissionsRequest) (*SetTenantPermissionsResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method SetTenantPermissions not implemented")
+}
+func (UnimplementedMerchantIamServiceServer) InternalListTenant(context.Context, *InternalListTenantRequest) (*InternalListTenantResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method InternalListTenant not implemented")
 }
 func (UnimplementedMerchantIamServiceServer) mustEmbedUnimplementedMerchantIamServiceServer() {}
 func (UnimplementedMerchantIamServiceServer) testEmbeddedByValue()                            {}
@@ -110,6 +128,24 @@ func _MerchantIamService_SetTenantPermissions_Handler(srv interface{}, ctx conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _MerchantIamService_InternalListTenant_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InternalListTenantRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MerchantIamServiceServer).InternalListTenant(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MerchantIamService_InternalListTenant_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MerchantIamServiceServer).InternalListTenant(ctx, req.(*InternalListTenantRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // MerchantIamService_ServiceDesc is the grpc.ServiceDesc for MerchantIamService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -120,6 +156,10 @@ var MerchantIamService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SetTenantPermissions",
 			Handler:    _MerchantIamService_SetTenantPermissions_Handler,
+		},
+		{
+			MethodName: "InternalListTenant",
+			Handler:    _MerchantIamService_InternalListTenant_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

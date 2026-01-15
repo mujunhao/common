@@ -19,8 +19,64 @@ message SetTenantPermissionsResponse {
   int32 total_count = 2;
 }
 
+enum TenantStatus {
+  TENANT_STATUS_PENDING = 0;
+  TENANT_STATUS_ACTIVE = 1;
+  TENANT_STATUS_PAST_DUE = 2;
+  TENANT_STATUS_SUSPENDED = 3;
+  TENANT_STATUS_TERMINATED = 4;
+}
+
+enum TenantType {
+  TENANT_TYPE_PERSONAL = 0;
+  TENANT_TYPE_ENTERPRISE = 1;
+}
+
+enum AccessLevel {
+  ACCESS_LEVEL_GA = 0;
+  ACCESS_LEVEL_BETA = 1;
+  ACCESS_LEVEL_DEV = 2;
+}
+
+message InternalTenant {
+  string code = 1 [json_name = "code"]; // 租户唯一标识码
+  string name = 2 [json_name = "name"]; // 租户名称
+  string email = 3 [json_name = "email"]; // 邮箱
+  TenantType type = 4 [json_name = "type"]; // 类型
+  string country = 6 [json_name = "country"]; // 国家
+  TenantStatus status = 7 [json_name = "status"]; // 租户状态
+  int32 members_num = 8 [json_name = "membersNum"]; // 成员数
+  int32 subscription_num = 9 [json_name = "subscriptionNum"]; // 订阅数
+  google.protobuf.Timestamp create_time = 10 [json_name = "createTime"]; // 创建时间
+  repeated AccessLevel access_levels = 11 [json_name = "accessLevels"]; // 访问等级
+}
+
+message InternalListTenantRequest {
+  // 页码
+  int32 page = 1 [json_name = "page"];
+  // 数量
+  int32 limit = 2 [json_name = "limit"];
+  // 命名
+  optional string name = 3 [json_name = "name"];
+  // 状态
+  optional TenantStatus status = 4 [json_name = "status"];
+  // 国家
+  optional string country = 5 [json_name = "country"];
+  // 类型
+  optional TenantType type = 6 [json_name = "type"];
+  // 访问等级
+  optional AccessLevel access_level = 7 [json_name = "accessLevel"];
+}
+
+message InternalListTenantResponse {
+  repeated InternalTenant items = 1 [json_name = "items"];
+  int64 total = 2 [json_name = "total"];
+}
+
 // 内部IAM服务（仅 gRPC，不暴露 HTTP）
 service merchantIamService {
   // 将codes(string) set permission
   rpc SetTenantPermissions(SetTenantPermissionsRequest) returns (SetTenantPermissionsResponse);
+  // 获取商户列表
+  rpc InternalListTenant(InternalListTenantRequest) returns (InternalListTenantResponse);
 }

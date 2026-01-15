@@ -18,6 +18,8 @@ service SubscriptionInternalService {
   rpc InternalReNewSubscription(InternalReNewSubscriptionRequest) returns (InternalReNewSubscriptionResponse);
   // UpgradeSubscription 商户升级订阅
   rpc InternalUpgradeSubscription(InternalUpgradeSubscriptionRequest) returns (InternalUpgradeSubscriptionResponse);
+  // InternalGetSubscriptionStats 获取商户订阅状态
+  rpc InternalGetSubscriptionStats(InternalGetSubscriptionStatsRequest) returns (InternalGetSubscriptionStatsResponse);
 }
 
 // 订阅状态枚举
@@ -151,7 +153,7 @@ message InternalListSubscriptionsRequest {
   optional int32 page_size = 2 [json_name = "pageSize"];                      // 每页数量
   optional string tenant_code = 3 [json_name = "tenantCode"];                 // 租户Code筛选
   optional string product_code = 4 [json_name = "productCode"];               // 产品编码筛选
-  optional InternalSubscriptionStatus status = 5 [json_name = "status"];              // 状态筛选
+  optional InternalSubscriptionStatus status = 5 [json_name = "status"];      // 状态筛选
   optional bool is_trial = 6 [json_name = "isTrial"];                         // 是否试用期筛选
   optional string search = 7 [json_name = "search"];                          // 搜索关键词（租户名、产品名）
   optional string sort_by = 8 [json_name = "sortBy"];                         // 排序字段（create_time, end_date）
@@ -210,4 +212,18 @@ message InternalUpgradeSubscriptionRequest{
 // 升级订阅回复
 message InternalUpgradeSubscriptionResponse {
   InternalSubscriptionInfo subscription = 1 [json_name = "subscription"];            // 订阅信息
+}
+
+
+// 获取商户订阅状态请求
+message InternalGetSubscriptionStatsRequest {
+  string tenant_code = 1[json_name = "tenantCode"]; // 商户code
+}
+
+// 获取商户订阅状态回复
+message InternalGetSubscriptionStatsResponse {
+  int32 active_count = 1 [json_name = "activeCount"];                         // 已订阅数量
+  int32 trial_count = 2 [json_name = "trialCount"];                           // 试用中数量
+  int32 expiring_soon_count = 3 [json_name = "expiringSooncount"];            // 即将到期数量
+  int64 month_price = 4 [json_name = "monthPrice"];                           // 当月消费金额
 }
