@@ -501,6 +501,14 @@ func mapInterfaceToStruct(srcVal, dstVal reflect.Value, collector *idCollector) 
 		return
 	}
 
+	// 处理 interface{} 类型 - 提取内部的实际值
+	if srcVal.Kind() == reflect.Interface {
+		srcVal = srcVal.Elem()
+		if !srcVal.IsValid() {
+			return
+		}
+	}
+
 	if srcVal.Kind() != reflect.Map {
 		return
 	}
@@ -531,6 +539,14 @@ func mapInterfaceToStruct(srcVal, dstVal reflect.Value, collector *idCollector) 
 		actualVal := derefValue(srcMapVal)
 		if !actualVal.IsValid() {
 			continue
+		}
+
+		// 处理 interface{} 类型 - 提取内部的实际值
+		if actualVal.Kind() == reflect.Interface {
+			actualVal = actualVal.Elem()
+			if !actualVal.IsValid() {
+				continue
+			}
 		}
 
 		dstFieldVal := dstVal.Field(i)
