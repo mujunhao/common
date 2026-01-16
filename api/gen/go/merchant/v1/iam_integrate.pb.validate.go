@@ -657,3 +657,577 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = InternalListTenantResponseValidationError{}
+
+// Validate checks the field values on InternalPlatformUser with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *InternalPlatformUser) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on InternalPlatformUser with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// InternalPlatformUserMultiError, or nil if none found.
+func (m *InternalPlatformUser) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *InternalPlatformUser) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for UserCode
+
+	// no validation rules for Nickname
+
+	// no validation rules for Email
+
+	// no validation rules for AvatarUrl
+
+	// no validation rules for Status
+
+	// no validation rules for Phone
+
+	// no validation rules for Ip
+
+	if all {
+		switch v := interface{}(m.GetLastLoginTime()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, InternalPlatformUserValidationError{
+					field:  "LastLoginTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, InternalPlatformUserValidationError{
+					field:  "LastLoginTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetLastLoginTime()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return InternalPlatformUserValidationError{
+				field:  "LastLoginTime",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetCreateTime()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, InternalPlatformUserValidationError{
+					field:  "CreateTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, InternalPlatformUserValidationError{
+					field:  "CreateTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetCreateTime()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return InternalPlatformUserValidationError{
+				field:  "CreateTime",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	for idx, item := range m.GetAssociation() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, InternalPlatformUserValidationError{
+						field:  fmt.Sprintf("Association[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, InternalPlatformUserValidationError{
+						field:  fmt.Sprintf("Association[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return InternalPlatformUserValidationError{
+					field:  fmt.Sprintf("Association[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return InternalPlatformUserMultiError(errors)
+	}
+
+	return nil
+}
+
+// InternalPlatformUserMultiError is an error wrapping multiple validation
+// errors returned by InternalPlatformUser.ValidateAll() if the designated
+// constraints aren't met.
+type InternalPlatformUserMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m InternalPlatformUserMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m InternalPlatformUserMultiError) AllErrors() []error { return m }
+
+// InternalPlatformUserValidationError is the validation error returned by
+// InternalPlatformUser.Validate if the designated constraints aren't met.
+type InternalPlatformUserValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e InternalPlatformUserValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e InternalPlatformUserValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e InternalPlatformUserValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e InternalPlatformUserValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e InternalPlatformUserValidationError) ErrorName() string {
+	return "InternalPlatformUserValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e InternalPlatformUserValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sInternalPlatformUser.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = InternalPlatformUserValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = InternalPlatformUserValidationError{}
+
+// Validate checks the field values on InternalAssociationInfo with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *InternalAssociationInfo) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on InternalAssociationInfo with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// InternalAssociationInfoMultiError, or nil if none found.
+func (m *InternalAssociationInfo) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *InternalAssociationInfo) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for TenantCode
+
+	// no validation rules for TenantName
+
+	if len(errors) > 0 {
+		return InternalAssociationInfoMultiError(errors)
+	}
+
+	return nil
+}
+
+// InternalAssociationInfoMultiError is an error wrapping multiple validation
+// errors returned by InternalAssociationInfo.ValidateAll() if the designated
+// constraints aren't met.
+type InternalAssociationInfoMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m InternalAssociationInfoMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m InternalAssociationInfoMultiError) AllErrors() []error { return m }
+
+// InternalAssociationInfoValidationError is the validation error returned by
+// InternalAssociationInfo.Validate if the designated constraints aren't met.
+type InternalAssociationInfoValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e InternalAssociationInfoValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e InternalAssociationInfoValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e InternalAssociationInfoValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e InternalAssociationInfoValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e InternalAssociationInfoValidationError) ErrorName() string {
+	return "InternalAssociationInfoValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e InternalAssociationInfoValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sInternalAssociationInfo.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = InternalAssociationInfoValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = InternalAssociationInfoValidationError{}
+
+// Validate checks the field values on InternalListPlatformUserRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *InternalListPlatformUserRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on InternalListPlatformUserRequest with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// InternalListPlatformUserRequestMultiError, or nil if none found.
+func (m *InternalListPlatformUserRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *InternalListPlatformUserRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Page
+
+	// no validation rules for Limit
+
+	if m.P != nil {
+		// no validation rules for P
+	}
+
+	if m.Status != nil {
+		// no validation rules for Status
+	}
+
+	if m.AssociationNum != nil {
+		// no validation rules for AssociationNum
+	}
+
+	if len(errors) > 0 {
+		return InternalListPlatformUserRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// InternalListPlatformUserRequestMultiError is an error wrapping multiple
+// validation errors returned by InternalListPlatformUserRequest.ValidateAll()
+// if the designated constraints aren't met.
+type InternalListPlatformUserRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m InternalListPlatformUserRequestMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m InternalListPlatformUserRequestMultiError) AllErrors() []error { return m }
+
+// InternalListPlatformUserRequestValidationError is the validation error
+// returned by InternalListPlatformUserRequest.Validate if the designated
+// constraints aren't met.
+type InternalListPlatformUserRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e InternalListPlatformUserRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e InternalListPlatformUserRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e InternalListPlatformUserRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e InternalListPlatformUserRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e InternalListPlatformUserRequestValidationError) ErrorName() string {
+	return "InternalListPlatformUserRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e InternalListPlatformUserRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sInternalListPlatformUserRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = InternalListPlatformUserRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = InternalListPlatformUserRequestValidationError{}
+
+// Validate checks the field values on InternalListPlatformUserResponse with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the first error encountered is returned, or nil if there are
+// no violations.
+func (m *InternalListPlatformUserResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on InternalListPlatformUserResponse with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// InternalListPlatformUserResponseMultiError, or nil if none found.
+func (m *InternalListPlatformUserResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *InternalListPlatformUserResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetItems() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, InternalListPlatformUserResponseValidationError{
+						field:  fmt.Sprintf("Items[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, InternalListPlatformUserResponseValidationError{
+						field:  fmt.Sprintf("Items[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return InternalListPlatformUserResponseValidationError{
+					field:  fmt.Sprintf("Items[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	// no validation rules for Total
+
+	if len(errors) > 0 {
+		return InternalListPlatformUserResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// InternalListPlatformUserResponseMultiError is an error wrapping multiple
+// validation errors returned by
+// InternalListPlatformUserResponse.ValidateAll() if the designated
+// constraints aren't met.
+type InternalListPlatformUserResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m InternalListPlatformUserResponseMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m InternalListPlatformUserResponseMultiError) AllErrors() []error { return m }
+
+// InternalListPlatformUserResponseValidationError is the validation error
+// returned by InternalListPlatformUserResponse.Validate if the designated
+// constraints aren't met.
+type InternalListPlatformUserResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e InternalListPlatformUserResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e InternalListPlatformUserResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e InternalListPlatformUserResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e InternalListPlatformUserResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e InternalListPlatformUserResponseValidationError) ErrorName() string {
+	return "InternalListPlatformUserResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e InternalListPlatformUserResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sInternalListPlatformUserResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = InternalListPlatformUserResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = InternalListPlatformUserResponseValidationError{}

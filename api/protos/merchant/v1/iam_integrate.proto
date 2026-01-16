@@ -73,10 +73,50 @@ message InternalListTenantResponse {
   int64 total = 2 [json_name = "total"];
 }
 
+enum InternalUserStatus {
+  USER_STATUS_PENDING = 0;
+  USER_STATUS_ACTIVE = 1;
+  USER_STATUS_DISABLED = 2;
+}
+
+message InternalPlatformUser {
+  string user_code = 1 [json_name = "user_code"]; // 用户code
+  string nickname = 2 [json_name = "nickname"]; // 昵称
+  string email = 3 [json_name = "email"]; // 邮箱
+  string avatar_url = 4 [json_name = "avatar_url"]; // 头像URL
+  InternalUserStatus status = 5 [json_name = "status"]; // 状态
+  string phone = 6 [json_name = "phone"]; // 手机号
+  string ip = 7 [json_name = "ip"]; // 最后登录IP
+  google.protobuf.Timestamp last_login_time = 10 [json_name = "lastLoginTime"]; // 最后登录时间
+  google.protobuf.Timestamp create_time = 8 [json_name = "create_time"]; // 创建时间
+  repeated InternalAssociationInfo association = 9 [json_name = "association"]; // 关联租户信息
+}
+
+message InternalAssociationInfo {
+  string tenant_code = 1 [json_name = "tenant_code"]; // 租户code
+  string tenant_name = 2 [json_name = "tenant_name"]; // 租户名称
+  repeated string group_name = 3 [json_name = "group_name"]; // 关联的用户组名称列表
+}
+
+message InternalListPlatformUserRequest {
+  int32 page = 1 [json_name = "page"];
+  int32 limit = 2 [json_name = "limit"];
+  optional string p = 3 [json_name = "p"]; // 关键词
+  optional InternalUserStatus status = 4 [json_name = "status"]; // 状态过滤
+  optional int32 association_num = 5 [json_name = "association_num"]; // 关联租户数量过滤
+}
+
+message InternalListPlatformUserResponse {
+  repeated InternalPlatformUser items = 1 [json_name = "items"];
+  int64 total = 2 [json_name = "total"];
+}
+
 // 内部IAM服务（仅 gRPC，不暴露 HTTP）
 service merchantIamService {
   // 将codes(string) set permission
   rpc SetTenantPermissions(SetTenantPermissionsRequest) returns (SetTenantPermissionsResponse);
   // 获取商户列表
   rpc InternalListTenant(InternalListTenantRequest) returns (InternalListTenantResponse);
+  // 平台获取用户列表
+  rpc InternalListPlatformUser (InternalListPlatformUserRequest) returns (InternalListPlatformUserResponse);
 }

@@ -220,6 +220,37 @@ func (c *IAMClient) ListTenant(ctx context.Context, page, limit int32, opt *List
 	return resp, nil
 }
 
+type ListPlatformUserOptions struct {
+	P              *string                // 关键词
+	Status         *v1.InternalUserStatus // 状态
+	AssociationNum *int32                 // 关联租户数量过滤
+}
+
+func (c *IAMClient) ListPlatformUser(ctx context.Context, page, limit int32, opt *ListPlatformUserOptions) (*v1.InternalListPlatformUserResponse, error) {
+	if page <= 0 {
+		page = 1
+	}
+	if limit <= 0 || limit > 20 {
+		limit = 20
+	}
+	req := &v1.InternalListPlatformUserRequest{
+		Page:  page,
+		Limit: limit,
+	}
+	if opt != nil {
+		req.P = opt.P
+		req.Status = opt.Status
+		req.AssociationNum = opt.AssociationNum
+	}
+	resp, err := c.client.InternalListPlatformUser(ctx, req)
+	if err != nil {
+		c.logger.WithContext(ctx).Errorf("获取用户列表失败, opt=%v, err=%v", opt, err)
+		return nil, err
+	}
+
+	return resp, nil
+}
+
 // ========== 辅助函数 ==========
 
 // getStringValue 获取指针字符串的值

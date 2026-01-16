@@ -19,8 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	MerchantIamService_SetTenantPermissions_FullMethodName = "/common.merchant.v1.merchantIamService/SetTenantPermissions"
-	MerchantIamService_InternalListTenant_FullMethodName   = "/common.merchant.v1.merchantIamService/InternalListTenant"
+	MerchantIamService_SetTenantPermissions_FullMethodName     = "/common.merchant.v1.merchantIamService/SetTenantPermissions"
+	MerchantIamService_InternalListTenant_FullMethodName       = "/common.merchant.v1.merchantIamService/InternalListTenant"
+	MerchantIamService_InternalListPlatformUser_FullMethodName = "/common.merchant.v1.merchantIamService/InternalListPlatformUser"
 )
 
 // MerchantIamServiceClient is the client API for MerchantIamService service.
@@ -33,6 +34,8 @@ type MerchantIamServiceClient interface {
 	SetTenantPermissions(ctx context.Context, in *SetTenantPermissionsRequest, opts ...grpc.CallOption) (*SetTenantPermissionsResponse, error)
 	// 获取商户列表
 	InternalListTenant(ctx context.Context, in *InternalListTenantRequest, opts ...grpc.CallOption) (*InternalListTenantResponse, error)
+	// 平台获取用户列表
+	InternalListPlatformUser(ctx context.Context, in *InternalListPlatformUserRequest, opts ...grpc.CallOption) (*InternalListPlatformUserResponse, error)
 }
 
 type merchantIamServiceClient struct {
@@ -63,6 +66,16 @@ func (c *merchantIamServiceClient) InternalListTenant(ctx context.Context, in *I
 	return out, nil
 }
 
+func (c *merchantIamServiceClient) InternalListPlatformUser(ctx context.Context, in *InternalListPlatformUserRequest, opts ...grpc.CallOption) (*InternalListPlatformUserResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(InternalListPlatformUserResponse)
+	err := c.cc.Invoke(ctx, MerchantIamService_InternalListPlatformUser_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MerchantIamServiceServer is the server API for MerchantIamService service.
 // All implementations must embed UnimplementedMerchantIamServiceServer
 // for forward compatibility.
@@ -73,6 +86,8 @@ type MerchantIamServiceServer interface {
 	SetTenantPermissions(context.Context, *SetTenantPermissionsRequest) (*SetTenantPermissionsResponse, error)
 	// 获取商户列表
 	InternalListTenant(context.Context, *InternalListTenantRequest) (*InternalListTenantResponse, error)
+	// 平台获取用户列表
+	InternalListPlatformUser(context.Context, *InternalListPlatformUserRequest) (*InternalListPlatformUserResponse, error)
 	mustEmbedUnimplementedMerchantIamServiceServer()
 }
 
@@ -88,6 +103,9 @@ func (UnimplementedMerchantIamServiceServer) SetTenantPermissions(context.Contex
 }
 func (UnimplementedMerchantIamServiceServer) InternalListTenant(context.Context, *InternalListTenantRequest) (*InternalListTenantResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method InternalListTenant not implemented")
+}
+func (UnimplementedMerchantIamServiceServer) InternalListPlatformUser(context.Context, *InternalListPlatformUserRequest) (*InternalListPlatformUserResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method InternalListPlatformUser not implemented")
 }
 func (UnimplementedMerchantIamServiceServer) mustEmbedUnimplementedMerchantIamServiceServer() {}
 func (UnimplementedMerchantIamServiceServer) testEmbeddedByValue()                            {}
@@ -146,6 +164,24 @@ func _MerchantIamService_InternalListTenant_Handler(srv interface{}, ctx context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _MerchantIamService_InternalListPlatformUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InternalListPlatformUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MerchantIamServiceServer).InternalListPlatformUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MerchantIamService_InternalListPlatformUser_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MerchantIamServiceServer).InternalListPlatformUser(ctx, req.(*InternalListPlatformUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // MerchantIamService_ServiceDesc is the grpc.ServiceDesc for MerchantIamService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -160,6 +196,10 @@ var MerchantIamService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "InternalListTenant",
 			Handler:    _MerchantIamService_InternalListTenant_Handler,
+		},
+		{
+			MethodName: "InternalListPlatformUser",
+			Handler:    _MerchantIamService_InternalListPlatformUser_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
