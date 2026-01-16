@@ -32,7 +32,7 @@ const (
 type ProductInternalServiceClient interface {
 	// 获取套餐详情
 	InternalGetPlan(ctx context.Context, in *InternalGetPlanRequest, opts ...grpc.CallOption) (*InternalGetPlanResponse, error)
-	// 商户获取套餐详情
+	//  商户获取套餐详情
 	InternalMerchantGetPlan(ctx context.Context, in *InternalMerchantGetPlanRequest, opts ...grpc.CallOption) (*InternalMerchantGetPlanResponse, error)
 	// 获取定价规则列表
 	InternalListPricingRules(ctx context.Context, in *InternalListPricingRulesRequest, opts ...grpc.CallOption) (*InternalListPricingRulesResponse, error)
@@ -106,7 +106,7 @@ func (c *productInternalServiceClient) InternalMerchantGetProduct(ctx context.Co
 type ProductInternalServiceServer interface {
 	// 获取套餐详情
 	InternalGetPlan(context.Context, *InternalGetPlanRequest) (*InternalGetPlanResponse, error)
-	// 商户获取套餐详情
+	//  商户获取套餐详情
 	InternalMerchantGetPlan(context.Context, *InternalMerchantGetPlanRequest) (*InternalMerchantGetPlanResponse, error)
 	// 获取定价规则列表
 	InternalListPricingRules(context.Context, *InternalListPricingRulesRequest) (*InternalListPricingRulesResponse, error)

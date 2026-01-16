@@ -185,6 +185,41 @@ func (c *IAMClient) SetTenantPermissions(ctx context.Context, tenantCode string,
 	return resp, nil
 }
 
+type ListTenantOptions struct {
+	Name        *string          // 名称
+	Status      *v1.TenantStatus // 状态
+	Country     *string          // 国家
+	Type        *v1.TenantType   // 类型
+	AccessLevel *v1.AccessLevel  // 访问等级
+}
+
+// 获取租户列表
+func (c *IAMClient) ListTenant(ctx context.Context, page, limit int32, opt *ListTenantOptions) (*v1.InternalListTenantResponse, error) {
+	if page <= 0 {
+		page = 1
+	}
+	if limit <= 0 || limit > 20 {
+		limit = 20
+	}
+	req := &v1.InternalListTenantRequest{
+		Page:  page,
+		Limit: limit,
+	}
+	if opt != nil {
+		req.Name = opt.Name
+		req.Status = opt.Status
+		req.Country = opt.Country
+		req.Type = opt.Type
+	}
+	resp, err := c.client.InternalListTenant(ctx, req)
+	if err != nil {
+		c.logger.WithContext(ctx).Errorf("获取租户列表失败, opt=%v, err=%v", opt, err)
+		return nil, err
+	}
+
+	return resp, nil
+}
+
 // ========== 辅助函数 ==========
 
 // getStringValue 获取指针字符串的值

@@ -219,3 +219,17 @@ func (c *SubscribeClient) UpgradeSubscription(ctx context.Context, productCode s
 
 	return resp.Subscription, nil
 }
+
+// 获取商户订阅状态
+func (c *SubscribeClient) InternalGetSubscriptionStats(ctx context.Context, tenantCode string) (*v1.InternalGetSubscriptionStatsResponse, error) {
+	ctx, cancel := context.WithTimeout(ctx, c.config.Timeout)
+	defer cancel()
+
+	resp, err := c.client.InternalGetSubscriptionStats(ctx, &v1.InternalGetSubscriptionStatsRequest{TenantCode: tenantCode})
+	if err != nil {
+		c.logger.WithContext(ctx).Errorf("获取商户订阅状态失败:tenant_code=%serr=%v", err)
+		return nil, err
+	}
+
+	return resp, nil
+}
