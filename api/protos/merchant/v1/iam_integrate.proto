@@ -111,6 +111,14 @@ message InternalListPlatformUserResponse {
   int64 total = 2 [json_name = "total"];
 }
 
+message InternalGetTenantRequest {
+  string tenant_code = 1 [json_name = "tenant_code"];
+}
+
+message InternalGetTenantResponse {
+  InternalTenant tenant = 1 [json_name = "tenant"];
+}
+
 // 内部IAM服务（仅 gRPC，不暴露 HTTP）
 service merchantIamService {
   // 将codes(string) set permission
@@ -119,4 +127,6 @@ service merchantIamService {
   rpc InternalListTenant(InternalListTenantRequest) returns (InternalListTenantResponse);
   // 平台获取用户列表
   rpc InternalListPlatformUser (InternalListPlatformUserRequest) returns (InternalListPlatformUserResponse);
+  // 获取商户信息
+  rpc InternalGetTenant(InternalGetTenantRequest) returns (InternalGetTenantResponse);
 }

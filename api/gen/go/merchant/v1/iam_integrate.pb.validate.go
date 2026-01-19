@@ -1231,3 +1231,238 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = InternalListPlatformUserResponseValidationError{}
+
+// Validate checks the field values on InternalGetTenantRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *InternalGetTenantRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on InternalGetTenantRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// InternalGetTenantRequestMultiError, or nil if none found.
+func (m *InternalGetTenantRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *InternalGetTenantRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for TenantCode
+
+	if len(errors) > 0 {
+		return InternalGetTenantRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// InternalGetTenantRequestMultiError is an error wrapping multiple validation
+// errors returned by InternalGetTenantRequest.ValidateAll() if the designated
+// constraints aren't met.
+type InternalGetTenantRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m InternalGetTenantRequestMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m InternalGetTenantRequestMultiError) AllErrors() []error { return m }
+
+// InternalGetTenantRequestValidationError is the validation error returned by
+// InternalGetTenantRequest.Validate if the designated constraints aren't met.
+type InternalGetTenantRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e InternalGetTenantRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e InternalGetTenantRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e InternalGetTenantRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e InternalGetTenantRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e InternalGetTenantRequestValidationError) ErrorName() string {
+	return "InternalGetTenantRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e InternalGetTenantRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sInternalGetTenantRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = InternalGetTenantRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = InternalGetTenantRequestValidationError{}
+
+// Validate checks the field values on InternalGetTenantResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *InternalGetTenantResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on InternalGetTenantResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// InternalGetTenantResponseMultiError, or nil if none found.
+func (m *InternalGetTenantResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *InternalGetTenantResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetTenant()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, InternalGetTenantResponseValidationError{
+					field:  "Tenant",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, InternalGetTenantResponseValidationError{
+					field:  "Tenant",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetTenant()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return InternalGetTenantResponseValidationError{
+				field:  "Tenant",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return InternalGetTenantResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// InternalGetTenantResponseMultiError is an error wrapping multiple validation
+// errors returned by InternalGetTenantResponse.ValidateAll() if the
+// designated constraints aren't met.
+type InternalGetTenantResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m InternalGetTenantResponseMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m InternalGetTenantResponseMultiError) AllErrors() []error { return m }
+
+// InternalGetTenantResponseValidationError is the validation error returned by
+// InternalGetTenantResponse.Validate if the designated constraints aren't met.
+type InternalGetTenantResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e InternalGetTenantResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e InternalGetTenantResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e InternalGetTenantResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e InternalGetTenantResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e InternalGetTenantResponseValidationError) ErrorName() string {
+	return "InternalGetTenantResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e InternalGetTenantResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sInternalGetTenantResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = InternalGetTenantResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = InternalGetTenantResponseValidationError{}

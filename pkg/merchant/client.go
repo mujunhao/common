@@ -251,6 +251,16 @@ func (c *IAMClient) ListPlatformUser(ctx context.Context, page, limit int32, opt
 	return resp, nil
 }
 
+func (c *IAMClient) InternalGetTenant(ctx context.Context, tenantCode string) (*v1.InternalGetTenantResponse, error) {
+	resp, err := c.client.InternalGetTenant(ctx, &v1.InternalGetTenantRequest{TenantCode: tenantCode})
+	if err != nil {
+		c.logger.WithContext(ctx).Errorf("获取用户信息失败, tenantCode=%v, err=%v", tenantCode, err)
+		return nil, err
+	}
+
+	return resp, nil
+}
+
 // ========== 辅助函数 ==========
 
 // getStringValue 获取指针字符串的值

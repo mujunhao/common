@@ -899,6 +899,94 @@ func (x *InternalListPlatformUserResponse) GetTotal() int64 {
 	return 0
 }
 
+type InternalGetTenantRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	TenantCode    string                 `protobuf:"bytes,1,opt,name=tenant_code,proto3" json:"tenant_code,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *InternalGetTenantRequest) Reset() {
+	*x = InternalGetTenantRequest{}
+	mi := &file_merchant_v1_iam_integrate_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *InternalGetTenantRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*InternalGetTenantRequest) ProtoMessage() {}
+
+func (x *InternalGetTenantRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_merchant_v1_iam_integrate_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use InternalGetTenantRequest.ProtoReflect.Descriptor instead.
+func (*InternalGetTenantRequest) Descriptor() ([]byte, []int) {
+	return file_merchant_v1_iam_integrate_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *InternalGetTenantRequest) GetTenantCode() string {
+	if x != nil {
+		return x.TenantCode
+	}
+	return ""
+}
+
+type InternalGetTenantResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Tenant        *InternalTenant        `protobuf:"bytes,1,opt,name=tenant,proto3" json:"tenant,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *InternalGetTenantResponse) Reset() {
+	*x = InternalGetTenantResponse{}
+	mi := &file_merchant_v1_iam_integrate_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *InternalGetTenantResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*InternalGetTenantResponse) ProtoMessage() {}
+
+func (x *InternalGetTenantResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_merchant_v1_iam_integrate_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use InternalGetTenantResponse.ProtoReflect.Descriptor instead.
+func (*InternalGetTenantResponse) Descriptor() ([]byte, []int) {
+	return file_merchant_v1_iam_integrate_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *InternalGetTenantResponse) GetTenant() *InternalTenant {
+	if x != nil {
+		return x.Tenant
+	}
+	return nil
+}
+
 var File_merchant_v1_iam_integrate_proto protoreflect.FileDescriptor
 
 const file_merchant_v1_iam_integrate_proto_rawDesc = "" +
@@ -975,7 +1063,11 @@ const file_merchant_v1_iam_integrate_proto_rawDesc = "" +
 	"\x10_association_num\"x\n" +
 	" InternalListPlatformUserResponse\x12>\n" +
 	"\x05items\x18\x01 \x03(\v2(.common.merchant.v1.InternalPlatformUserR\x05items\x12\x14\n" +
-	"\x05total\x18\x02 \x01(\x03R\x05total*\x9a\x01\n" +
+	"\x05total\x18\x02 \x01(\x03R\x05total\"<\n" +
+	"\x18InternalGetTenantRequest\x12 \n" +
+	"\vtenant_code\x18\x01 \x01(\tR\vtenant_code\"W\n" +
+	"\x19InternalGetTenantResponse\x12:\n" +
+	"\x06tenant\x18\x01 \x01(\v2\".common.merchant.v1.InternalTenantR\x06tenant*\x9a\x01\n" +
 	"\fTenantStatus\x12\x19\n" +
 	"\x15TENANT_STATUS_PENDING\x10\x00\x12\x18\n" +
 	"\x14TENANT_STATUS_ACTIVE\x10\x01\x12\x1a\n" +
@@ -993,11 +1085,12 @@ const file_merchant_v1_iam_integrate_proto_rawDesc = "" +
 	"\x12InternalUserStatus\x12\x17\n" +
 	"\x13USER_STATUS_PENDING\x10\x00\x12\x16\n" +
 	"\x12USER_STATUS_ACTIVE\x10\x01\x12\x18\n" +
-	"\x14USER_STATUS_DISABLED\x10\x022\x8c\x03\n" +
+	"\x14USER_STATUS_DISABLED\x10\x022\xfe\x03\n" +
 	"\x12merchantIamService\x12y\n" +
 	"\x14SetTenantPermissions\x12/.common.merchant.v1.SetTenantPermissionsRequest\x1a0.common.merchant.v1.SetTenantPermissionsResponse\x12s\n" +
 	"\x12InternalListTenant\x12-.common.merchant.v1.InternalListTenantRequest\x1a..common.merchant.v1.InternalListTenantResponse\x12\x85\x01\n" +
-	"\x18InternalListPlatformUser\x123.common.merchant.v1.InternalListPlatformUserRequest\x1a4.common.merchant.v1.InternalListPlatformUserResponseB\xd3\x01\n" +
+	"\x18InternalListPlatformUser\x123.common.merchant.v1.InternalListPlatformUserRequest\x1a4.common.merchant.v1.InternalListPlatformUserResponse\x12p\n" +
+	"\x11InternalGetTenant\x12,.common.merchant.v1.InternalGetTenantRequest\x1a-.common.merchant.v1.InternalGetTenantResponseB\xd3\x01\n" +
 	"\x16com.common.merchant.v1B\x11IamIntegrateProtoP\x01Z<github.com/heyinLab/common/api/gen/go/merchant/v1;merchantv1\xa2\x02\x03CMX\xaa\x02\x12Common.Merchant.V1\xca\x02\x12Common\\Merchant\\V1\xe2\x02\x1eCommon\\Merchant\\V1\\GPBMetadata\xea\x02\x14Common::Merchant::V1b\x06proto3"
 
 var (
@@ -1013,7 +1106,7 @@ func file_merchant_v1_iam_integrate_proto_rawDescGZIP() []byte {
 }
 
 var file_merchant_v1_iam_integrate_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
-var file_merchant_v1_iam_integrate_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_merchant_v1_iam_integrate_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_merchant_v1_iam_integrate_proto_goTypes = []any{
 	(TenantStatus)(0),                        // 0: common.merchant.v1.TenantStatus
 	(TenantType)(0),                          // 1: common.merchant.v1.TenantType
@@ -1028,34 +1121,39 @@ var file_merchant_v1_iam_integrate_proto_goTypes = []any{
 	(*InternalAssociationInfo)(nil),          // 10: common.merchant.v1.InternalAssociationInfo
 	(*InternalListPlatformUserRequest)(nil),  // 11: common.merchant.v1.InternalListPlatformUserRequest
 	(*InternalListPlatformUserResponse)(nil), // 12: common.merchant.v1.InternalListPlatformUserResponse
-	(*timestamppb.Timestamp)(nil),            // 13: google.protobuf.Timestamp
+	(*InternalGetTenantRequest)(nil),         // 13: common.merchant.v1.InternalGetTenantRequest
+	(*InternalGetTenantResponse)(nil),        // 14: common.merchant.v1.InternalGetTenantResponse
+	(*timestamppb.Timestamp)(nil),            // 15: google.protobuf.Timestamp
 }
 var file_merchant_v1_iam_integrate_proto_depIdxs = []int32{
 	1,  // 0: common.merchant.v1.InternalTenant.type:type_name -> common.merchant.v1.TenantType
 	0,  // 1: common.merchant.v1.InternalTenant.status:type_name -> common.merchant.v1.TenantStatus
-	13, // 2: common.merchant.v1.InternalTenant.create_time:type_name -> google.protobuf.Timestamp
+	15, // 2: common.merchant.v1.InternalTenant.create_time:type_name -> google.protobuf.Timestamp
 	2,  // 3: common.merchant.v1.InternalTenant.access_levels:type_name -> common.merchant.v1.AccessLevel
 	0,  // 4: common.merchant.v1.InternalListTenantRequest.status:type_name -> common.merchant.v1.TenantStatus
 	1,  // 5: common.merchant.v1.InternalListTenantRequest.type:type_name -> common.merchant.v1.TenantType
 	2,  // 6: common.merchant.v1.InternalListTenantRequest.access_level:type_name -> common.merchant.v1.AccessLevel
 	6,  // 7: common.merchant.v1.InternalListTenantResponse.items:type_name -> common.merchant.v1.InternalTenant
 	3,  // 8: common.merchant.v1.InternalPlatformUser.status:type_name -> common.merchant.v1.InternalUserStatus
-	13, // 9: common.merchant.v1.InternalPlatformUser.last_login_time:type_name -> google.protobuf.Timestamp
-	13, // 10: common.merchant.v1.InternalPlatformUser.create_time:type_name -> google.protobuf.Timestamp
+	15, // 9: common.merchant.v1.InternalPlatformUser.last_login_time:type_name -> google.protobuf.Timestamp
+	15, // 10: common.merchant.v1.InternalPlatformUser.create_time:type_name -> google.protobuf.Timestamp
 	10, // 11: common.merchant.v1.InternalPlatformUser.association:type_name -> common.merchant.v1.InternalAssociationInfo
 	3,  // 12: common.merchant.v1.InternalListPlatformUserRequest.status:type_name -> common.merchant.v1.InternalUserStatus
 	9,  // 13: common.merchant.v1.InternalListPlatformUserResponse.items:type_name -> common.merchant.v1.InternalPlatformUser
-	4,  // 14: common.merchant.v1.merchantIamService.SetTenantPermissions:input_type -> common.merchant.v1.SetTenantPermissionsRequest
-	7,  // 15: common.merchant.v1.merchantIamService.InternalListTenant:input_type -> common.merchant.v1.InternalListTenantRequest
-	11, // 16: common.merchant.v1.merchantIamService.InternalListPlatformUser:input_type -> common.merchant.v1.InternalListPlatformUserRequest
-	5,  // 17: common.merchant.v1.merchantIamService.SetTenantPermissions:output_type -> common.merchant.v1.SetTenantPermissionsResponse
-	8,  // 18: common.merchant.v1.merchantIamService.InternalListTenant:output_type -> common.merchant.v1.InternalListTenantResponse
-	12, // 19: common.merchant.v1.merchantIamService.InternalListPlatformUser:output_type -> common.merchant.v1.InternalListPlatformUserResponse
-	17, // [17:20] is the sub-list for method output_type
-	14, // [14:17] is the sub-list for method input_type
-	14, // [14:14] is the sub-list for extension type_name
-	14, // [14:14] is the sub-list for extension extendee
-	0,  // [0:14] is the sub-list for field type_name
+	6,  // 14: common.merchant.v1.InternalGetTenantResponse.tenant:type_name -> common.merchant.v1.InternalTenant
+	4,  // 15: common.merchant.v1.merchantIamService.SetTenantPermissions:input_type -> common.merchant.v1.SetTenantPermissionsRequest
+	7,  // 16: common.merchant.v1.merchantIamService.InternalListTenant:input_type -> common.merchant.v1.InternalListTenantRequest
+	11, // 17: common.merchant.v1.merchantIamService.InternalListPlatformUser:input_type -> common.merchant.v1.InternalListPlatformUserRequest
+	13, // 18: common.merchant.v1.merchantIamService.InternalGetTenant:input_type -> common.merchant.v1.InternalGetTenantRequest
+	5,  // 19: common.merchant.v1.merchantIamService.SetTenantPermissions:output_type -> common.merchant.v1.SetTenantPermissionsResponse
+	8,  // 20: common.merchant.v1.merchantIamService.InternalListTenant:output_type -> common.merchant.v1.InternalListTenantResponse
+	12, // 21: common.merchant.v1.merchantIamService.InternalListPlatformUser:output_type -> common.merchant.v1.InternalListPlatformUserResponse
+	14, // 22: common.merchant.v1.merchantIamService.InternalGetTenant:output_type -> common.merchant.v1.InternalGetTenantResponse
+	19, // [19:23] is the sub-list for method output_type
+	15, // [15:19] is the sub-list for method input_type
+	15, // [15:15] is the sub-list for extension type_name
+	15, // [15:15] is the sub-list for extension extendee
+	0,  // [0:15] is the sub-list for field type_name
 }
 
 func init() { file_merchant_v1_iam_integrate_proto_init() }
@@ -1072,7 +1170,7 @@ func file_merchant_v1_iam_integrate_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_merchant_v1_iam_integrate_proto_rawDesc), len(file_merchant_v1_iam_integrate_proto_rawDesc)),
 			NumEnums:      4,
-			NumMessages:   9,
+			NumMessages:   11,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
