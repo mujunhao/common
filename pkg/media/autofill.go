@@ -8,11 +8,81 @@ import (
 	"sync"
 )
 
-// dataHrefRegex 匹配任意标签的 data-href="xxx" src="..." 属性组合
-// 用于提取文件ID并替换过期的URL
-// 支持 <img>, <video>, <audio> 等任意标签
-// 格式: data-href="file_id" src="old_url" -> data-href="file_id" src="new_url"
-var dataHrefRegex = regexp.MustCompile(`data-href=["']([^"']+)["']\s+src=["'][^"']*["']`)
+// dataHrefRegex1 匹配 data-href 在前的格式: data-href="file_id" ... src="old_url"
+// 允许 data-href 和 src 之间有其他属性
+var dataHrefRegex1 = regexp.MustCompile(`data-href=["']([^"']+)["'][^>]*src=["']([^"']*)["']`)
+
+// dataHrefRegex2 匹配 src 在前的格式: src="old_url" ... data-href="file_id"
+// 允许 src 和 data-href 之间有其他属性（如 alt="", style="" 等）
+var dataHrefRegex2 = regexp.MustCompile(`src=["']([^"']*)["'][^>]*data-href=["']([^"']+)["']`)
+
+// extractDataHrefIDs 从富文本中提取所有 data-href 中的文件ID
+// 支持两种属性顺序: data-href...src 和 src...data-href
+func extractDataHrefIDs(text string) []string {
+	var ids []string
+	seen := make(map[string]struct{})
+
+	// 匹配格式1: data-href="xxx" ... src="yyy"
+	// 捕获组1是 file_id，捕获组2是 src
+	for _, m := range dataHrefRegex1.FindAllStringSubmatch(text, -1) {
+		if len(m) > 1 && m[1] != "" {
+			if _, ok := seen[m[1]]; !ok {
+				ids = append(ids, m[1])
+				seen[m[1]] = struct{}{}
+			}
+		}
+	}
+
+	// 匹配格式2: src="yyy" ... data-href="xxx"
+	// 捕获组1是 src，捕获组2是 file_id
+	for _, m := range dataHrefRegex2.FindAllStringSubmatch(text, -1) {
+		if len(m) > 2 && m[2] != "" {
+			if _, ok := seen[m[2]]; !ok {
+				ids = append(ids, m[2])
+				seen[m[2]] = struct{}{}
+			}
+		}
+	}
+
+	return ids
+}
+
+// srcAttrRegex 用于替换 src 属性值
+var srcAttrRegex = regexp.MustCompile(`src=["']([^"']*)["']`)
+
+// replaceDataHrefURLs 替换富文本中所有 data-href 对应的 src URL
+// 支持两种属性顺序，替换后保持原有顺序和其他属性
+func replaceDataHrefURLs(text string, resources map[string]*ResourceInfo) string {
+	// 替换格式1: data-href="xxx" ... src="yyy"
+	// 捕获组1是 file_id，捕获组2是 src
+	text = dataHrefRegex1.ReplaceAllStringFunc(text, func(match string) string {
+		m := dataHrefRegex1.FindStringSubmatch(match)
+		if len(m) > 1 {
+			fileID := m[1]
+			if res, ok := resources[fileID]; ok && res.Success {
+				// 只替换 src 的值，保留其他所有属性
+				return srcAttrRegex.ReplaceAllString(match, `src="`+res.URL+`"`)
+			}
+		}
+		return match
+	})
+
+	// 替换格式2: src="yyy" ... data-href="xxx"
+	// 捕获组1是 src，捕获组2是 file_id
+	text = dataHrefRegex2.ReplaceAllStringFunc(text, func(match string) string {
+		m := dataHrefRegex2.FindStringSubmatch(match)
+		if len(m) > 2 {
+			fileID := m[2]
+			if res, ok := resources[fileID]; ok && res.Success {
+				// 只替换 src 的值，保留其他所有属性
+				return srcAttrRegex.ReplaceAllString(match, `src="`+res.URL+`"`)
+			}
+		}
+		return match
+	})
+
+	return text
+}
 
 // ==================== 类型缓存 ====================
 
@@ -388,11 +458,10 @@ func mapAndCollect(srcVal, dstVal reflect.Value, info *typeInfo, collector *idCo
 			// 复制值并提取ID
 			text := getStringValue(srcField)
 			dstField.SetString(text)
-			matches := dataHrefRegex.FindAllStringSubmatch(text, -1)
-			for _, m := range matches {
-				if len(m) > 1 {
-					collector.add(m[1])
-				}
+			// 使用辅助函数提取所有 data-href ID（支持两种属性顺序）
+			ids := extractDataHrefIDs(text)
+			for _, id := range ids {
+				collector.add(id)
 			}
 
 		case fieldTypeSlice:
@@ -563,11 +632,10 @@ func mapInterfaceToStruct(srcVal, dstVal reflect.Value, collector *idCollector) 
 			if actualVal.Kind() == reflect.String {
 				text := actualVal.String()
 				dstFieldVal.SetString(text)
-				matches := dataHrefRegex.FindAllStringSubmatch(text, -1)
-				for _, m := range matches {
-					if len(m) > 1 {
-						collector.add(m[1])
-					}
+				// 使用辅助函数提取所有 data-href ID（支持两种属性顺序）
+				ids := extractDataHrefIDs(text)
+				for _, id := range ids {
+					collector.add(id)
 				}
 			}
 		case dstFieldType == reflect.TypeOf(FileID("")):
@@ -623,17 +691,8 @@ func fillURLs(dstVal reflect.Value, info *typeInfo, resources map[string]*Resour
 
 		case fieldTypeRichText:
 			text := dstField.String()
-			newText := dataHrefRegex.ReplaceAllStringFunc(text, func(match string) string {
-				m := dataHrefRegex.FindStringSubmatch(match)
-				if len(m) > 1 {
-					fileID := m[1]
-					if res, ok := resources[fileID]; ok && res.Success {
-						// 保留 data-href，更新 src 为新URL
-						return `data-href="` + fileID + `" src="` + res.URL + `"`
-					}
-				}
-				return match
-			})
+			// 使用辅助函数替换所有 data-href 对应的 src URL（支持两种属性顺序）
+			newText := replaceDataHrefURLs(text, resources)
 			dstField.SetString(newText)
 
 		case fieldTypeSlice:
@@ -713,17 +772,8 @@ func fillInterfaceStructURLs(dstVal reflect.Value, resources map[string]*Resourc
 		switch {
 		case fieldType == reflect.TypeOf(RichText("")):
 			text := fieldVal.String()
-			newText := dataHrefRegex.ReplaceAllStringFunc(text, func(match string) string {
-				m := dataHrefRegex.FindStringSubmatch(match)
-				if len(m) > 1 {
-					fileID := m[1]
-					if res, ok := resources[fileID]; ok && res.Success {
-						// 保留 data-href，更新 src 为新URL
-						return `data-href="` + fileID + `" src="` + res.URL + `"`
-					}
-				}
-				return match
-			})
+			// 使用辅助函数替换所有 data-href 对应的 src URL（支持两种属性顺序）
+			newText := replaceDataHrefURLs(text, resources)
 			fieldVal.SetString(newText)
 		}
 	}
