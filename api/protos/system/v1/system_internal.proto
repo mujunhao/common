@@ -1,0 +1,79 @@
+syntax = "proto3";
+
+package api.system.v1;
+
+option go_package = "system/v1;v1";
+
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+
+service SystemInternalService {
+  // 获取详情
+  rpc InternalGetCountryInfo(InternalGetCountryInfoRequest) returns (InternalGetCountryInfoResponse);
+}
+
+message InternalGetCountryInfoRequest{
+  optional uint32 id = 1 [json_name = "id"];
+  optional string country_code = 2 [json_name = "countryCode"];
+  optional string country_name = 3 [json_name = "countryName"];
+}
+
+message InternalGetCountryInfoResponse{
+  optional InternalCountry country = 1 [json_name = "country"];
+}
+
+// 国家
+message InternalCountry {
+  // ID
+  uint32 id = 1 [json_name = "id"];
+
+  // 国家代码 (ISO 3166-1 alpha-2)
+  string code = 2 [json_name = "code"];
+
+  // 本地名称
+  string name = 3 [json_name = "name"];
+
+  // 国家旗帜emoji
+  optional string flag = 4 [json_name = "flag"];
+
+  // 电话前缀
+  optional string phone_prefix = 5 [json_name = "phonePrefix"];
+
+  // 默认货币代码
+  optional string currency = 6 [json_name = "currency"];
+
+  // 国家默认语言ID
+  uint32 default_language_id = 7 [json_name = "defaultLanguageId"];
+
+  bool is_default = 8 [json_name = "isDefault"];
+
+  // 排序号
+  int32 sort = 9 [json_name = "sort"];
+
+  // 所属区域
+  InternalRegion region = 10 [json_name = "region"];
+
+  // 是否启用
+  bool is_active = 11 [json_name = "isActive"];
+
+  // x 个租户正在使用
+  uint32 tenant_used = 12 [json_name = "tenantUsed"];
+
+  // 创建时间
+  google.protobuf.Timestamp created_at = 14 [json_name = "createdAt"];
+
+  // 更新时间
+  google.protobuf.Timestamp updated_at = 15 [json_name = "updatedAt"];
+}
+
+// 区域枚举
+enum InternalRegion {
+  INTERNAL_REGION_UNSPECIFIED = 0;
+  INTERNAL_ASIA = 1;      // 亚洲
+  INTERNAL_EUROPE = 2;    // 欧洲
+  INTERNAL_NORTH_AMERICA = 3;   // 美洲
+  INTERNAL_SOUTH_AMERICA = 4;   // 美洲
+  INTERNAL_OCEANIA = 5;   // 大洋洲
+  INTERNAL_AFRICA = 6;    // 非洲
+  INTERNAL_Antarctica = 7;
+}
