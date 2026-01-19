@@ -227,7 +227,22 @@ func (c *SubscribeClient) InternalGetSubscriptionStats(ctx context.Context, tena
 
 	resp, err := c.client.InternalGetSubscriptionStats(ctx, &v1.InternalGetSubscriptionStatsRequest{TenantCode: tenantCode})
 	if err != nil {
-		c.logger.WithContext(ctx).Errorf("获取商户订阅状态失败:tenant_code=%serr=%v", err)
+		c.logger.WithContext(ctx).Errorf("获取商户订阅状态失败:tenant_code=%serr=%v", tenantCode, err)
+		return nil, err
+	}
+
+	return resp, nil
+}
+
+func (c *SubscribeClient) InternalGetSubscriptionStatsByProductCode(ctx context.Context, productCode string) (
+	*v1.InternalGetSubscriptionStatsByProductCodeResponse, error) {
+	ctx, cancel := context.WithTimeout(ctx, c.config.Timeout)
+	defer cancel()
+
+	resp, err := c.client.InternalGetSubscriptionStatsByProductCode(ctx,
+		&v1.InternalGetSubscriptionStatsByProductCodeRequest{ProductCode: productCode})
+	if err != nil {
+		c.logger.WithContext(ctx).Errorf("获取产品订阅状态失败:productCode=%serr=%v", productCode, err)
 		return nil, err
 	}
 
