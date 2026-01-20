@@ -40,11 +40,11 @@ type Product struct {
 
 type ProductLangDTO struct {
 	Name        string   `json:"name"`
-	Cover       FileID   `json:"cover"`                  // ID 保持不变
-	CoverURL    URL      `json:"cover_url" media:"Cover"` // URL 从 Cover 获取
-	Gallery     FileIDs  `json:"gallery"`                 // IDs 保持不变
+	Cover       FileID   `json:"cover"`                       // ID 保持不变
+	CoverURL    URL      `json:"cover_url" media:"Cover"`     // URL 从 Cover 获取
+	Gallery     FileIDs  `json:"gallery"`                     // IDs 保持不变
 	GalleryURL  URLs     `json:"gallery_url" media:"Gallery"` // URLs 从 Gallery 获取
-	Description RichText `json:"description"`             // 富文本
+	Description RichText `json:"description"`                 // 富文本
 }
 
 type ProductDTO struct {
@@ -79,7 +79,7 @@ func TestAutoFill(t *testing.T) {
 					Name:        "商品A",
 					Cover:       "cover_id",
 					Gallery:     []string{"gallery_1", "gallery_2"},
-					Description: `<p>介绍</p><img data-helf="rich_img"><video data-helf="video_id"></video>`,
+					Description: `<p>介绍</p><img data-href="rich_img"><video data-href="video_id"></video>`,
 				},
 				"en": {
 					Name:        "Product A",
@@ -215,4 +215,178 @@ func TestAutoFillOne(t *testing.T) {
 	}
 
 	t.Log("AutoFillOne test passed!")
+}
+
+// ========== 模拟实际 ent.Product 结构（I18n 是 map[string]interface{}）==========
+
+type EntProduct struct {
+	ID          uint32
+	ProductCode string
+	ProductName string
+	Image       string                 // 文件ID (UUID)
+	I18n        map[string]interface{} // 多语言内容，模拟 ent 的 JSON 字段
+}
+
+// ========== 目标结构体（模拟实际 ProductDTO）==========
+
+type TestProductLangDTO struct {
+	Name        string   `json:"name"`
+	Description RichText `json:"description"` // 富文本，包含 data-href
+}
+
+type TestProductDTO struct {
+	ID          uint32                         `json:"id"`
+	ProductCode string                         `json:"product_code"`
+	ProductName string                         `json:"product_name"`
+	Image       FileID                         `json:"image"`                   // ID 保持不变
+	ImageURL    URL                            `json:"image_url" media:"Image"` // URL 从 Image 获取
+	I18n        map[string]*TestProductLangDTO `json:"i18n"`                    // 多语言
+}
+
+// TestAutoFillWithInterfaceMap 测试 map[string]interface{} 到 map[string]*Struct 的转换
+// 这是实际 MerchantGetProduct API 的场景
+func TestAutoFillWithInterfaceMap(t *testing.T) {
+	// 模拟文件URL映射 - 使用实际的 ULID 格式
+	resolver := &autoFillMockResolver{
+		data: map[string]*ResourceInfo{
+			"01KEVAE4NE69CFVG0XJ3K6R82Z": {URL: "https://cdn.example.com/new-image.jpg?sign=fresh123", Success: true},
+			"01KEXGF5VGAMAH4TVMAG28CRMM": {URL: "https://cdn.example.com/new-rich.jpg?sign=fresh456", Success: true},
+			"01KES4MXS651DAAXBDS1N1574T": {URL: "https://cdn.example.com/new-rich2.jpg?sign=fresh789", Success: true},
+		},
+	}
+	filler := NewFiller(resolver)
+
+	// 模拟实际 API 返回的数据格式
+	// 注意：src 属性在前，data-href 在后（这是实际数据的格式）
+	products := []*EntProduct{
+		{
+			ID:          46,
+			ProductCode: "1768876056614-4f6e2566867641488f5ba6aa2f526d8e",
+			ProductName: "ipone(测试详情页)",
+			Image:       "01KEVAE4NE69CFVG0XJ3K6R82Z",
+			I18n: map[string]interface{}{
+				"zh-CN": map[string]interface{}{
+					"name":        "ipone(测试详情页)",
+					"description": `<p>测试<img src="https://old-url.com/old.jpg?old-sign" alt="" data-href="01KEXGF5VGAMAH4TVMAG28CRMM" style=""/></p>`,
+				},
+				"en-US": map[string]interface{}{
+					"name":        "ipone(测试详情页)",
+					"description": `<p>测试English</p><p><img src="https://old-url.com/old2.jpg?old-sign" alt="" data-href="01KEXGF5VGAMAH4TVMAG28CRMM" style=""/></p>`,
+				},
+				"ar-SA": map[string]interface{}{
+					"name":        "ipone(测试详情页)",
+					"description": `<p>测试<img src="https://old-url.com/old3.jpg?old-sign" alt="" data-href="01KES4MXS651DAAXBDS1N1574T" style=""/></p>`,
+				},
+			},
+		},
+	}
+
+	// 执行 AutoFill
+	var result []*TestProductDTO
+	err := AutoFill(context.Background(), filler, products, &result)
+	if err != nil {
+		t.Fatalf("AutoFill error: %v", err)
+	}
+
+	// 验证结果
+	if len(result) != 1 {
+		t.Fatalf("expected 1 result, got %d", len(result))
+	}
+
+	dto := result[0]
+
+	// 验证基本字段
+	if dto.ID != 46 {
+		t.Errorf("ID: expected 46, got %d", dto.ID)
+	}
+	if dto.ProductCode != "1768876056614-4f6e2566867641488f5ba6aa2f526d8e" {
+		t.Errorf("ProductCode mismatch")
+	}
+
+	// 验证 Image URL 转换
+	if string(dto.Image) != "01KEVAE4NE69CFVG0XJ3K6R82Z" {
+		t.Errorf("Image (ID): expected 01KEVAE4NE69CFVG0XJ3K6R82Z, got %s", dto.Image)
+	}
+	if string(dto.ImageURL) != "https://cdn.example.com/new-image.jpg?sign=fresh123" {
+		t.Errorf("ImageURL: expected fresh URL, got %s", dto.ImageURL)
+	}
+
+	// 验证 I18n 不为空
+	if dto.I18n == nil {
+		t.Fatal("I18n is nil")
+	}
+
+	// 验证中文
+	zhCN := dto.I18n["zh-CN"]
+	if zhCN == nil {
+		t.Fatal("zh-CN language is nil")
+	}
+	if zhCN.Name != "ipone(测试详情页)" {
+		t.Errorf("zh-CN.Name: expected ipone(测试详情页), got %s", zhCN.Name)
+	}
+
+	// 验证富文本 URL 被替换（关键测试！）
+	// 原始: src="https://old-url.com/old.jpg?old-sign" ... data-href="01KEXGF5VGAMAH4TVMAG28CRMM"
+	// 期望: src="https://cdn.example.com/new-rich.jpg?sign=fresh456" ... data-href="01KEXGF5VGAMAH4TVMAG28CRMM"
+	expectedZhDesc := `<p>测试<img src="https://cdn.example.com/new-rich.jpg?sign=fresh456" alt="" data-href="01KEXGF5VGAMAH4TVMAG28CRMM" style=""/></p>`
+	if string(zhCN.Description) != expectedZhDesc {
+		t.Errorf("zh-CN.Description URL not replaced!\nexpected: %s\ngot: %s", expectedZhDesc, zhCN.Description)
+	}
+
+	// 验证英文
+	enUS := dto.I18n["en-US"]
+	if enUS == nil {
+		t.Fatal("en-US language is nil")
+	}
+	expectedEnDesc := `<p>测试English</p><p><img src="https://cdn.example.com/new-rich.jpg?sign=fresh456" alt="" data-href="01KEXGF5VGAMAH4TVMAG28CRMM" style=""/></p>`
+	if string(enUS.Description) != expectedEnDesc {
+		t.Errorf("en-US.Description URL not replaced!\nexpected: %s\ngot: %s", expectedEnDesc, enUS.Description)
+	}
+
+	// 验证阿拉伯语（使用不同的 data-href ID）
+	arSA := dto.I18n["ar-SA"]
+	if arSA == nil {
+		t.Fatal("ar-SA language is nil")
+	}
+	expectedArDesc := `<p>测试<img src="https://cdn.example.com/new-rich2.jpg?sign=fresh789" alt="" data-href="01KES4MXS651DAAXBDS1N1574T" style=""/></p>`
+	if string(arSA.Description) != expectedArDesc {
+		t.Errorf("ar-SA.Description URL not replaced!\nexpected: %s\ngot: %s", expectedArDesc, arSA.Description)
+	}
+
+	t.Log("TestAutoFillWithInterfaceMap passed!")
+	t.Logf("Image (ID): %s", dto.Image)
+	t.Logf("ImageURL: %s", dto.ImageURL)
+	t.Logf("zh-CN.Description: %s", zhCN.Description)
+	t.Logf("en-US.Description: %s", enUS.Description)
+	t.Logf("ar-SA.Description: %s", arSA.Description)
+}
+
+// TestDataHrefRegex 单独测试正则表达式
+func TestDataHrefRegex(t *testing.T) {
+	// 测试实际数据格式：src 在前，data-href 在后
+	html := `<img src="https://old-url.com/old.jpg?q-sign=xxx" alt="" data-href="01KEXGF5VGAMAH4TVMAG28CRMM" style=""/>`
+
+	// 测试提取 ID
+	ids := extractDataHrefIDs(html)
+	if len(ids) != 1 {
+		t.Fatalf("expected 1 ID, got %d", len(ids))
+	}
+	if ids[0] != "01KEXGF5VGAMAH4TVMAG28CRMM" {
+		t.Errorf("expected 01KEXGF5VGAMAH4TVMAG28CRMM, got %s", ids[0])
+	}
+	t.Logf("Extracted IDs: %v", ids)
+
+	// 测试替换 URL
+	resources := map[string]*ResourceInfo{
+		"01KEXGF5VGAMAH4TVMAG28CRMM": {URL: "https://new-url.com/fresh-signed-url.jpg", Success: true},
+	}
+	newHTML := replaceDataHrefURLs(html, resources)
+
+	expectedHTML := `<img src="https://new-url.com/fresh-signed-url.jpg" alt="" data-href="01KEXGF5VGAMAH4TVMAG28CRMM" style=""/>`
+	if newHTML != expectedHTML {
+		t.Errorf("URL replacement failed!\nexpected: %s\ngot: %s", expectedHTML, newHTML)
+	}
+
+	t.Logf("Original HTML: %s", html[:80]+"...")
+	t.Logf("New HTML: %s", newHTML[:80]+"...")
 }
