@@ -123,19 +123,20 @@ message InternalGetTenantResponse {
 message InternalGetTenantStatsRequest {}
 
 message InternalGetTenantStatsResponse{
-  int32 total_tenants = 1 [json_name = "total_tenants"];
-  int32 active_tenants = 2 [json_name = "active_tenants"];
-  int32 pending_tenants = 3 [json_name = "pending_tenants"];
-  int32 suspended_tenants = 4 [json_name = "suspended_tenants"];
+  int32 total_tenants = 1 [json_name = "total_tenants"]; // 总数
+  int32 active_tenants = 2 [json_name = "active_tenants"];// 活跃
+  int32 pending_tenants = 3 [json_name = "pending_tenants"]; // 待定
+  int32 suspended_tenants = 4 [json_name = "suspended_tenants"];// 暂停
+  int32 terminated_tenants = 5 [json_name = "terminated_tenants"];// 终止
 }
 
 message InternalGetUserStatsRequest{}
 
 message InternalGetUserStatsResponse {
-  int32 total_users = 1 [json_name = "total_users"];
-  int32 active_users = 2 [json_name = "active_users"];
-  int32 has_tenant_users = 3 [json_name = "hasTenantUsers"];
-  int32 disabled_users = 4 [json_name = "disabled_users"];
+  int32 total_users = 1 [json_name = "total_users"]; // 总数
+  int32 active_users = 2 [json_name = "active_users"]; // 活跃
+  int32 has_tenant_users = 3 [json_name = "hasTenantUsers"]; // 关联
+  int32 disabled_users = 4 [json_name = "disabled_users"];// 禁用
 }
 
 // 内部IAM服务（仅 gRPC，不暴露 HTTP）

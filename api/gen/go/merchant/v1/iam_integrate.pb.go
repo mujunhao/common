@@ -1032,13 +1032,14 @@ func (*InternalGetTenantStatsRequest) Descriptor() ([]byte, []int) {
 }
 
 type InternalGetTenantStatsResponse struct {
-	state            protoimpl.MessageState `protogen:"open.v1"`
-	TotalTenants     int32                  `protobuf:"varint,1,opt,name=total_tenants,proto3" json:"total_tenants,omitempty"`
-	ActiveTenants    int32                  `protobuf:"varint,2,opt,name=active_tenants,proto3" json:"active_tenants,omitempty"`
-	PendingTenants   int32                  `protobuf:"varint,3,opt,name=pending_tenants,proto3" json:"pending_tenants,omitempty"`
-	SuspendedTenants int32                  `protobuf:"varint,4,opt,name=suspended_tenants,proto3" json:"suspended_tenants,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	TotalTenants      int32                  `protobuf:"varint,1,opt,name=total_tenants,proto3" json:"total_tenants,omitempty"`           // 总数
+	ActiveTenants     int32                  `protobuf:"varint,2,opt,name=active_tenants,proto3" json:"active_tenants,omitempty"`         // 活跃
+	PendingTenants    int32                  `protobuf:"varint,3,opt,name=pending_tenants,proto3" json:"pending_tenants,omitempty"`       // 待定
+	SuspendedTenants  int32                  `protobuf:"varint,4,opt,name=suspended_tenants,proto3" json:"suspended_tenants,omitempty"`   // 暂停
+	TerminatedTenants int32                  `protobuf:"varint,5,opt,name=terminated_tenants,proto3" json:"terminated_tenants,omitempty"` // 终止
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
 func (x *InternalGetTenantStatsResponse) Reset() {
@@ -1099,6 +1100,13 @@ func (x *InternalGetTenantStatsResponse) GetSuspendedTenants() int32 {
 	return 0
 }
 
+func (x *InternalGetTenantStatsResponse) GetTerminatedTenants() int32 {
+	if x != nil {
+		return x.TerminatedTenants
+	}
+	return 0
+}
+
 type InternalGetUserStatsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
@@ -1137,10 +1145,10 @@ func (*InternalGetUserStatsRequest) Descriptor() ([]byte, []int) {
 
 type InternalGetUserStatsResponse struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
-	TotalUsers     int32                  `protobuf:"varint,1,opt,name=total_users,proto3" json:"total_users,omitempty"`
-	ActiveUsers    int32                  `protobuf:"varint,2,opt,name=active_users,proto3" json:"active_users,omitempty"`
-	HasTenantUsers int32                  `protobuf:"varint,3,opt,name=has_tenant_users,json=hasTenantUsers,proto3" json:"has_tenant_users,omitempty"`
-	DisabledUsers  int32                  `protobuf:"varint,4,opt,name=disabled_users,proto3" json:"disabled_users,omitempty"`
+	TotalUsers     int32                  `protobuf:"varint,1,opt,name=total_users,proto3" json:"total_users,omitempty"`                               // 总数
+	ActiveUsers    int32                  `protobuf:"varint,2,opt,name=active_users,proto3" json:"active_users,omitempty"`                             // 活跃
+	HasTenantUsers int32                  `protobuf:"varint,3,opt,name=has_tenant_users,json=hasTenantUsers,proto3" json:"has_tenant_users,omitempty"` // 关联
+	DisabledUsers  int32                  `protobuf:"varint,4,opt,name=disabled_users,proto3" json:"disabled_users,omitempty"`                         // 禁用
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -1285,12 +1293,13 @@ const file_merchant_v1_iam_integrate_proto_rawDesc = "" +
 	"\vtenant_code\x18\x01 \x01(\tR\vtenant_code\"W\n" +
 	"\x19InternalGetTenantResponse\x12:\n" +
 	"\x06tenant\x18\x01 \x01(\v2\".common.merchant.v1.InternalTenantR\x06tenant\"\x1f\n" +
-	"\x1dInternalGetTenantStatsRequest\"\xc6\x01\n" +
+	"\x1dInternalGetTenantStatsRequest\"\xf6\x01\n" +
 	"\x1eInternalGetTenantStatsResponse\x12$\n" +
 	"\rtotal_tenants\x18\x01 \x01(\x05R\rtotal_tenants\x12&\n" +
 	"\x0eactive_tenants\x18\x02 \x01(\x05R\x0eactive_tenants\x12(\n" +
 	"\x0fpending_tenants\x18\x03 \x01(\x05R\x0fpending_tenants\x12,\n" +
-	"\x11suspended_tenants\x18\x04 \x01(\x05R\x11suspended_tenants\"\x1d\n" +
+	"\x11suspended_tenants\x18\x04 \x01(\x05R\x11suspended_tenants\x12.\n" +
+	"\x12terminated_tenants\x18\x05 \x01(\x05R\x12terminated_tenants\"\x1d\n" +
 	"\x1bInternalGetUserStatsRequest\"\xb6\x01\n" +
 	"\x1cInternalGetUserStatsResponse\x12 \n" +
 	"\vtotal_users\x18\x01 \x01(\x05R\vtotal_users\x12\"\n" +
