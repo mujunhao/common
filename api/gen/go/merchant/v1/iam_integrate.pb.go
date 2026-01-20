@@ -1144,11 +1144,12 @@ func (*InternalGetUserStatsRequest) Descriptor() ([]byte, []int) {
 }
 
 type InternalGetUserStatsResponse struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	TotalUsers     int32                  `protobuf:"varint,1,opt,name=total_users,proto3" json:"total_users,omitempty"`                               // 总数
-	ActiveUsers    int32                  `protobuf:"varint,2,opt,name=active_users,proto3" json:"active_users,omitempty"`                             // 活跃
-	HasTenantUsers int32                  `protobuf:"varint,3,opt,name=has_tenant_users,json=hasTenantUsers,proto3" json:"has_tenant_users,omitempty"` // 关联
-	DisabledUsers  int32                  `protobuf:"varint,4,opt,name=disabled_users,proto3" json:"disabled_users,omitempty"`                         // 禁用
+	state       protoimpl.MessageState `protogen:"open.v1"`
+	TotalUsers  int32                  `protobuf:"varint,1,opt,name=total_users,proto3" json:"total_users,omitempty"`   // 总数
+	ActiveUsers int32                  `protobuf:"varint,2,opt,name=active_users,proto3" json:"active_users,omitempty"` // 活跃
+	// int32 has_tenant_users = 3 [json_name = "hasTenantUsers"]; // 关联
+	DisabledUsers  int32 `protobuf:"varint,4,opt,name=disabled_users,proto3" json:"disabled_users,omitempty"`                         // 禁用
+	PastDueTenants int32 `protobuf:"varint,6,opt,name=past_due_tenants,json=pastDueTenants,proto3" json:"past_due_tenants,omitempty"` // 逾期
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -1197,16 +1198,16 @@ func (x *InternalGetUserStatsResponse) GetActiveUsers() int32 {
 	return 0
 }
 
-func (x *InternalGetUserStatsResponse) GetHasTenantUsers() int32 {
+func (x *InternalGetUserStatsResponse) GetDisabledUsers() int32 {
 	if x != nil {
-		return x.HasTenantUsers
+		return x.DisabledUsers
 	}
 	return 0
 }
 
-func (x *InternalGetUserStatsResponse) GetDisabledUsers() int32 {
+func (x *InternalGetUserStatsResponse) GetPastDueTenants() int32 {
 	if x != nil {
-		return x.DisabledUsers
+		return x.PastDueTenants
 	}
 	return 0
 }
@@ -1303,9 +1304,9 @@ const file_merchant_v1_iam_integrate_proto_rawDesc = "" +
 	"\x1bInternalGetUserStatsRequest\"\xb6\x01\n" +
 	"\x1cInternalGetUserStatsResponse\x12 \n" +
 	"\vtotal_users\x18\x01 \x01(\x05R\vtotal_users\x12\"\n" +
-	"\factive_users\x18\x02 \x01(\x05R\factive_users\x12(\n" +
-	"\x10has_tenant_users\x18\x03 \x01(\x05R\x0ehasTenantUsers\x12&\n" +
-	"\x0edisabled_users\x18\x04 \x01(\x05R\x0edisabled_users*\x9a\x01\n" +
+	"\factive_users\x18\x02 \x01(\x05R\factive_users\x12&\n" +
+	"\x0edisabled_users\x18\x04 \x01(\x05R\x0edisabled_users\x12(\n" +
+	"\x10past_due_tenants\x18\x06 \x01(\x05R\x0epastDueTenants*\x9a\x01\n" +
 	"\fTenantStatus\x12\x19\n" +
 	"\x15TENANT_STATUS_PENDING\x10\x00\x12\x18\n" +
 	"\x14TENANT_STATUS_ACTIVE\x10\x01\x12\x1a\n" +

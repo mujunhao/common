@@ -135,8 +135,9 @@ message InternalGetUserStatsRequest{}
 message InternalGetUserStatsResponse {
   int32 total_users = 1 [json_name = "total_users"]; // 总数
   int32 active_users = 2 [json_name = "active_users"]; // 活跃
-  int32 has_tenant_users = 3 [json_name = "hasTenantUsers"]; // 关联
+  // int32 has_tenant_users = 3 [json_name = "hasTenantUsers"]; // 关联
   int32 disabled_users = 4 [json_name = "disabled_users"];// 禁用
+  int32 past_due_tenants = 6 [json_name = "pastDueTenants"];// 逾期
 }
 
 // 内部IAM服务（仅 gRPC，不暴露 HTTP）
