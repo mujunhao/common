@@ -49,6 +49,7 @@ message InternalTenant {
   int32 subscription_num = 9 [json_name = "subscriptionNum"]; // 订阅数
   google.protobuf.Timestamp create_time = 10 [json_name = "createTime"]; // 创建时间
   repeated AccessLevel access_levels = 11 [json_name = "accessLevels"]; // 访问等级
+  string logo_url = 12[json_name = "logo_url"]; // logo url
 }
 
 message InternalListTenantRequest {
@@ -119,6 +120,24 @@ message InternalGetTenantResponse {
   InternalTenant tenant = 1 [json_name = "tenant"];
 }
 
+message InternalGetTenantStatsRequest {}
+
+message InternalGetTenantStatsResponse{
+  int32 total_tenants = 1 [json_name = "total_tenants"];
+  int32 active_tenants = 2 [json_name = "active_tenants"];
+  int32 pending_tenants = 3 [json_name = "pending_tenants"];
+  int32 suspended_tenants = 4 [json_name = "suspended_tenants"];
+}
+
+message InternalGetUserStatsRequest{}
+
+message InternalGetUserStatsResponse {
+  int32 total_users = 1 [json_name = "total_users"];
+  int32 active_users = 2 [json_name = "active_users"];
+  int32 has_tenant_users = 3 [json_name = "hasTenantUsers"];
+  int32 disabled_users = 4 [json_name = "disabled_users"];
+}
+
 // 内部IAM服务（仅 gRPC，不暴露 HTTP）
 service merchantIamService {
   // 将codes(string) set permission
@@ -129,4 +148,8 @@ service merchantIamService {
   rpc InternalListPlatformUser (InternalListPlatformUserRequest) returns (InternalListPlatformUserResponse);
   // 获取商户信息
   rpc InternalGetTenant(InternalGetTenantRequest) returns (InternalGetTenantResponse);
+  // 获取商户统计信息
+  rpc InternalGetTenantStats(InternalGetTenantStatsRequest) returns (InternalGetTenantStatsResponse);
+  // 获取用户统计信息
+  rpc InternalGetUserStats(InternalGetUserStatsRequest) returns (InternalGetUserStatsResponse);
 }
