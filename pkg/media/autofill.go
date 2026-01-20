@@ -53,14 +53,16 @@ var srcAttrRegex = regexp.MustCompile(`src=["']([^"']*)["']`)
 // replaceDataHrefURLs 替换富文本中所有 data-href 对应的 src URL
 // 支持两种属性顺序，替换后保持原有顺序和其他属性
 func replaceDataHrefURLs(text string, resources map[string]*ResourceInfo) string {
+	if text == "" {
+		return text
+	}
+
 	// 替换格式1: data-href="xxx" ... src="yyy"
-	// 捕获组1是 file_id，捕获组2是 src
 	text = dataHrefRegex1.ReplaceAllStringFunc(text, func(match string) string {
 		m := dataHrefRegex1.FindStringSubmatch(match)
 		if len(m) > 1 {
 			fileID := m[1]
 			if res, ok := resources[fileID]; ok && res.Success {
-				// 只替换 src 的值，保留其他所有属性
 				return srcAttrRegex.ReplaceAllString(match, `src="`+res.URL+`"`)
 			}
 		}
@@ -68,13 +70,11 @@ func replaceDataHrefURLs(text string, resources map[string]*ResourceInfo) string
 	})
 
 	// 替换格式2: src="yyy" ... data-href="xxx"
-	// 捕获组1是 src，捕获组2是 file_id
 	text = dataHrefRegex2.ReplaceAllStringFunc(text, func(match string) string {
 		m := dataHrefRegex2.FindStringSubmatch(match)
 		if len(m) > 2 {
 			fileID := m[2]
 			if res, ok := resources[fileID]; ok && res.Success {
-				// 只替换 src 的值，保留其他所有属性
 				return srcAttrRegex.ReplaceAllString(match, `src="`+res.URL+`"`)
 			}
 		}
@@ -624,10 +624,7 @@ func mapInterfaceToStruct(srcVal, dstVal reflect.Value, collector *idCollector) 
 		dstFieldType := dstField.Type
 
 		switch {
-		case dstFieldType.Kind() == reflect.String:
-			if actualVal.Kind() == reflect.String {
-				dstFieldVal.SetString(actualVal.String())
-			}
+		// 注意：RichText 必须在 string 之前检查，因为 RichText 的底层类型是 string
 		case dstFieldType == reflect.TypeOf(RichText("")):
 			if actualVal.Kind() == reflect.String {
 				text := actualVal.String()
@@ -642,6 +639,10 @@ func mapInterfaceToStruct(srcVal, dstVal reflect.Value, collector *idCollector) 
 			if actualVal.Kind() == reflect.String {
 				dstFieldVal.SetString(actualVal.String())
 				collector.add(actualVal.String())
+			}
+		case dstFieldType.Kind() == reflect.String:
+			if actualVal.Kind() == reflect.String {
+				dstFieldVal.SetString(actualVal.String())
 			}
 		case dstFieldType.Kind() == reflect.Int, dstFieldType.Kind() == reflect.Int64:
 			switch actualVal.Kind() {
@@ -748,6 +749,16 @@ func fillMapURLs(dstField reflect.Value, fi fieldInfo, resources map[string]*Res
 			} else {
 				fillURLs(elem.Elem(), fi.elemInfo, resources)
 			}
+		} else if elem.Kind() == reflect.Struct {
+			// 非指针结构体需要创建副本，修改后重新设置回 map
+			newElem := reflect.New(elem.Type()).Elem()
+			newElem.Set(elem)
+			if isInterfaceSrc {
+				fillInterfaceStructURLs(newElem, resources)
+			} else {
+				fillURLs(newElem, fi.elemInfo, resources)
+			}
+			dstField.SetMapIndex(key, newElem)
 		}
 	}
 }
@@ -760,6 +771,7 @@ func fillInterfaceStructURLs(dstVal reflect.Value, resources map[string]*Resourc
 	}
 
 	dstType := dstVal.Type()
+
 	for i := 0; i < dstType.NumField(); i++ {
 		dstField := dstType.Field(i)
 		if !dstField.IsExported() {
