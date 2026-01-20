@@ -1604,6 +1604,8 @@ func (m *InternalGetTenantStatsResponse) validate(all bool) error {
 
 	// no validation rules for TerminatedTenants
 
+	// no validation rules for PastDueTenants
+
 	if len(errors) > 0 {
 		return InternalGetTenantStatsResponseMultiError(errors)
 	}
@@ -1815,8 +1817,6 @@ func (m *InternalGetUserStatsResponse) validate(all bool) error {
 	// no validation rules for ActiveUsers
 
 	// no validation rules for DisabledUsers
-
-	// no validation rules for PastDueTenants
 
 	if len(errors) > 0 {
 		return InternalGetUserStatsResponseMultiError(errors)
