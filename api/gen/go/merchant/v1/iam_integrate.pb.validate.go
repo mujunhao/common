@@ -1818,6 +1818,8 @@ func (m *InternalGetUserStatsResponse) validate(all bool) error {
 
 	// no validation rules for DisabledUsers
 
+	// no validation rules for PastDueTenants
+
 	if len(errors) > 0 {
 		return InternalGetUserStatsResponseMultiError(errors)
 	}
