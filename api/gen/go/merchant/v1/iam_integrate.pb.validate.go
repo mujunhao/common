@@ -1814,8 +1814,6 @@ func (m *InternalGetUserStatsResponse) validate(all bool) error {
 
 	// no validation rules for ActiveUsers
 
-	// no validation rules for HasTenantUsers
-
 	// no validation rules for DisabledUsers
 
 	// no validation rules for PastDueTenants
