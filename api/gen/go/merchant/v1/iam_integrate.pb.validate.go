@@ -1466,3 +1466,431 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = InternalGetTenantResponseValidationError{}
+
+// Validate checks the field values on InternalGetTenantStatsRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *InternalGetTenantStatsRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on InternalGetTenantStatsRequest with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// InternalGetTenantStatsRequestMultiError, or nil if none found.
+func (m *InternalGetTenantStatsRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *InternalGetTenantStatsRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return InternalGetTenantStatsRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// InternalGetTenantStatsRequestMultiError is an error wrapping multiple
+// validation errors returned by InternalGetTenantStatsRequest.ValidateAll()
+// if the designated constraints aren't met.
+type InternalGetTenantStatsRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m InternalGetTenantStatsRequestMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m InternalGetTenantStatsRequestMultiError) AllErrors() []error { return m }
+
+// InternalGetTenantStatsRequestValidationError is the validation error
+// returned by InternalGetTenantStatsRequest.Validate if the designated
+// constraints aren't met.
+type InternalGetTenantStatsRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e InternalGetTenantStatsRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e InternalGetTenantStatsRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e InternalGetTenantStatsRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e InternalGetTenantStatsRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e InternalGetTenantStatsRequestValidationError) ErrorName() string {
+	return "InternalGetTenantStatsRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e InternalGetTenantStatsRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sInternalGetTenantStatsRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = InternalGetTenantStatsRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = InternalGetTenantStatsRequestValidationError{}
+
+// Validate checks the field values on InternalGetTenantStatsResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *InternalGetTenantStatsResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on InternalGetTenantStatsResponse with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// InternalGetTenantStatsResponseMultiError, or nil if none found.
+func (m *InternalGetTenantStatsResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *InternalGetTenantStatsResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for TotalTenants
+
+	// no validation rules for ActiveTenants
+
+	// no validation rules for PendingTenants
+
+	// no validation rules for SuspendedTenants
+
+	if len(errors) > 0 {
+		return InternalGetTenantStatsResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// InternalGetTenantStatsResponseMultiError is an error wrapping multiple
+// validation errors returned by InternalGetTenantStatsResponse.ValidateAll()
+// if the designated constraints aren't met.
+type InternalGetTenantStatsResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m InternalGetTenantStatsResponseMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m InternalGetTenantStatsResponseMultiError) AllErrors() []error { return m }
+
+// InternalGetTenantStatsResponseValidationError is the validation error
+// returned by InternalGetTenantStatsResponse.Validate if the designated
+// constraints aren't met.
+type InternalGetTenantStatsResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e InternalGetTenantStatsResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e InternalGetTenantStatsResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e InternalGetTenantStatsResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e InternalGetTenantStatsResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e InternalGetTenantStatsResponseValidationError) ErrorName() string {
+	return "InternalGetTenantStatsResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e InternalGetTenantStatsResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sInternalGetTenantStatsResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = InternalGetTenantStatsResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = InternalGetTenantStatsResponseValidationError{}
+
+// Validate checks the field values on InternalGetUserStatsRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *InternalGetUserStatsRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on InternalGetUserStatsRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// InternalGetUserStatsRequestMultiError, or nil if none found.
+func (m *InternalGetUserStatsRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *InternalGetUserStatsRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return InternalGetUserStatsRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// InternalGetUserStatsRequestMultiError is an error wrapping multiple
+// validation errors returned by InternalGetUserStatsRequest.ValidateAll() if
+// the designated constraints aren't met.
+type InternalGetUserStatsRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m InternalGetUserStatsRequestMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m InternalGetUserStatsRequestMultiError) AllErrors() []error { return m }
+
+// InternalGetUserStatsRequestValidationError is the validation error returned
+// by InternalGetUserStatsRequest.Validate if the designated constraints
+// aren't met.
+type InternalGetUserStatsRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e InternalGetUserStatsRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e InternalGetUserStatsRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e InternalGetUserStatsRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e InternalGetUserStatsRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e InternalGetUserStatsRequestValidationError) ErrorName() string {
+	return "InternalGetUserStatsRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e InternalGetUserStatsRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sInternalGetUserStatsRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = InternalGetUserStatsRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = InternalGetUserStatsRequestValidationError{}
+
+// Validate checks the field values on InternalGetUserStatsResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *InternalGetUserStatsResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on InternalGetUserStatsResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// InternalGetUserStatsResponseMultiError, or nil if none found.
+func (m *InternalGetUserStatsResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *InternalGetUserStatsResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for TotalUsers
+
+	// no validation rules for ActiveUsers
+
+	// no validation rules for HasTenantUsers
+
+	// no validation rules for DisabledUsers
+
+	if len(errors) > 0 {
+		return InternalGetUserStatsResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// InternalGetUserStatsResponseMultiError is an error wrapping multiple
+// validation errors returned by InternalGetUserStatsResponse.ValidateAll() if
+// the designated constraints aren't met.
+type InternalGetUserStatsResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m InternalGetUserStatsResponseMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m InternalGetUserStatsResponseMultiError) AllErrors() []error { return m }
+
+// InternalGetUserStatsResponseValidationError is the validation error returned
+// by InternalGetUserStatsResponse.Validate if the designated constraints
+// aren't met.
+type InternalGetUserStatsResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e InternalGetUserStatsResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e InternalGetUserStatsResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e InternalGetUserStatsResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e InternalGetUserStatsResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e InternalGetUserStatsResponseValidationError) ErrorName() string {
+	return "InternalGetUserStatsResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e InternalGetUserStatsResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sInternalGetUserStatsResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = InternalGetUserStatsResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = InternalGetUserStatsResponseValidationError{}

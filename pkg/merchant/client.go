@@ -261,6 +261,26 @@ func (c *IAMClient) InternalGetTenant(ctx context.Context, tenantCode string) (*
 	return resp, nil
 }
 
+func (c *IAMClient) GetTenantStats(ctx context.Context) (*v1.InternalGetTenantStatsResponse, error) {
+	resp, err := c.client.InternalGetTenantStats(ctx, &v1.InternalGetTenantStatsRequest{})
+	if err != nil {
+		c.logger.WithContext(ctx).Errorf("获取商户统计信息失败, err=%v", err)
+		return nil, err
+	}
+
+	return resp, nil
+}
+
+func (c *IAMClient) GetUserStats(ctx context.Context) (*v1.InternalGetUserStatsResponse, error) {
+	resp, err := c.client.InternalGetUserStats(ctx, &v1.InternalGetUserStatsRequest{})
+	if err != nil {
+		c.logger.WithContext(ctx).Errorf("获取用户统计信息失败, err=%v", err)
+		return nil, err
+	}
+
+	return resp, nil
+}
+
 // ========== 辅助函数 ==========
 
 // getStringValue 获取指针字符串的值

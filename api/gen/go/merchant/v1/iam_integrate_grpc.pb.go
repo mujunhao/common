@@ -23,6 +23,8 @@ const (
 	MerchantIamService_InternalListTenant_FullMethodName       = "/common.merchant.v1.merchantIamService/InternalListTenant"
 	MerchantIamService_InternalListPlatformUser_FullMethodName = "/common.merchant.v1.merchantIamService/InternalListPlatformUser"
 	MerchantIamService_InternalGetTenant_FullMethodName        = "/common.merchant.v1.merchantIamService/InternalGetTenant"
+	MerchantIamService_InternalGetTenantStats_FullMethodName   = "/common.merchant.v1.merchantIamService/InternalGetTenantStats"
+	MerchantIamService_InternalGetUserStats_FullMethodName     = "/common.merchant.v1.merchantIamService/InternalGetUserStats"
 )
 
 // MerchantIamServiceClient is the client API for MerchantIamService service.
@@ -39,6 +41,10 @@ type MerchantIamServiceClient interface {
 	InternalListPlatformUser(ctx context.Context, in *InternalListPlatformUserRequest, opts ...grpc.CallOption) (*InternalListPlatformUserResponse, error)
 	// 获取商户信息
 	InternalGetTenant(ctx context.Context, in *InternalGetTenantRequest, opts ...grpc.CallOption) (*InternalGetTenantResponse, error)
+	// 获取商户统计信息
+	InternalGetTenantStats(ctx context.Context, in *InternalGetTenantStatsRequest, opts ...grpc.CallOption) (*InternalGetTenantStatsResponse, error)
+	// 获取用户统计信息
+	InternalGetUserStats(ctx context.Context, in *InternalGetUserStatsRequest, opts ...grpc.CallOption) (*InternalGetUserStatsResponse, error)
 }
 
 type merchantIamServiceClient struct {
@@ -89,6 +95,26 @@ func (c *merchantIamServiceClient) InternalGetTenant(ctx context.Context, in *In
 	return out, nil
 }
 
+func (c *merchantIamServiceClient) InternalGetTenantStats(ctx context.Context, in *InternalGetTenantStatsRequest, opts ...grpc.CallOption) (*InternalGetTenantStatsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(InternalGetTenantStatsResponse)
+	err := c.cc.Invoke(ctx, MerchantIamService_InternalGetTenantStats_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *merchantIamServiceClient) InternalGetUserStats(ctx context.Context, in *InternalGetUserStatsRequest, opts ...grpc.CallOption) (*InternalGetUserStatsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(InternalGetUserStatsResponse)
+	err := c.cc.Invoke(ctx, MerchantIamService_InternalGetUserStats_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MerchantIamServiceServer is the server API for MerchantIamService service.
 // All implementations must embed UnimplementedMerchantIamServiceServer
 // for forward compatibility.
@@ -103,6 +129,10 @@ type MerchantIamServiceServer interface {
 	InternalListPlatformUser(context.Context, *InternalListPlatformUserRequest) (*InternalListPlatformUserResponse, error)
 	// 获取商户信息
 	InternalGetTenant(context.Context, *InternalGetTenantRequest) (*InternalGetTenantResponse, error)
+	// 获取商户统计信息
+	InternalGetTenantStats(context.Context, *InternalGetTenantStatsRequest) (*InternalGetTenantStatsResponse, error)
+	// 获取用户统计信息
+	InternalGetUserStats(context.Context, *InternalGetUserStatsRequest) (*InternalGetUserStatsResponse, error)
 	mustEmbedUnimplementedMerchantIamServiceServer()
 }
 
@@ -124,6 +154,12 @@ func (UnimplementedMerchantIamServiceServer) InternalListPlatformUser(context.Co
 }
 func (UnimplementedMerchantIamServiceServer) InternalGetTenant(context.Context, *InternalGetTenantRequest) (*InternalGetTenantResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method InternalGetTenant not implemented")
+}
+func (UnimplementedMerchantIamServiceServer) InternalGetTenantStats(context.Context, *InternalGetTenantStatsRequest) (*InternalGetTenantStatsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method InternalGetTenantStats not implemented")
+}
+func (UnimplementedMerchantIamServiceServer) InternalGetUserStats(context.Context, *InternalGetUserStatsRequest) (*InternalGetUserStatsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method InternalGetUserStats not implemented")
 }
 func (UnimplementedMerchantIamServiceServer) mustEmbedUnimplementedMerchantIamServiceServer() {}
 func (UnimplementedMerchantIamServiceServer) testEmbeddedByValue()                            {}
@@ -218,6 +254,42 @@ func _MerchantIamService_InternalGetTenant_Handler(srv interface{}, ctx context.
 	return interceptor(ctx, in, info, handler)
 }
 
+func _MerchantIamService_InternalGetTenantStats_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InternalGetTenantStatsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MerchantIamServiceServer).InternalGetTenantStats(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MerchantIamService_InternalGetTenantStats_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MerchantIamServiceServer).InternalGetTenantStats(ctx, req.(*InternalGetTenantStatsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MerchantIamService_InternalGetUserStats_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InternalGetUserStatsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MerchantIamServiceServer).InternalGetUserStats(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MerchantIamService_InternalGetUserStats_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MerchantIamServiceServer).InternalGetUserStats(ctx, req.(*InternalGetUserStatsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // MerchantIamService_ServiceDesc is the grpc.ServiceDesc for MerchantIamService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -240,6 +312,14 @@ var MerchantIamService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "InternalGetTenant",
 			Handler:    _MerchantIamService_InternalGetTenant_Handler,
+		},
+		{
+			MethodName: "InternalGetTenantStats",
+			Handler:    _MerchantIamService_InternalGetTenantStats_Handler,
+		},
+		{
+			MethodName: "InternalGetUserStats",
+			Handler:    _MerchantIamService_InternalGetUserStats_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
