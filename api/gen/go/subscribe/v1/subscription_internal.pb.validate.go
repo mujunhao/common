@@ -2407,3 +2407,235 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = InternalGetSubscriptionStatsResponseValidationError{}
+
+// Validate checks the field values on
+// InternalGetSubscriptionStatsByProductCodeRequest with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *InternalGetSubscriptionStatsByProductCodeRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on
+// InternalGetSubscriptionStatsByProductCodeRequest with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in
+// InternalGetSubscriptionStatsByProductCodeRequestMultiError, or nil if none found.
+func (m *InternalGetSubscriptionStatsByProductCodeRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *InternalGetSubscriptionStatsByProductCodeRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for ProductCode
+
+	if len(errors) > 0 {
+		return InternalGetSubscriptionStatsByProductCodeRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// InternalGetSubscriptionStatsByProductCodeRequestMultiError is an error
+// wrapping multiple validation errors returned by
+// InternalGetSubscriptionStatsByProductCodeRequest.ValidateAll() if the
+// designated constraints aren't met.
+type InternalGetSubscriptionStatsByProductCodeRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m InternalGetSubscriptionStatsByProductCodeRequestMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m InternalGetSubscriptionStatsByProductCodeRequestMultiError) AllErrors() []error { return m }
+
+// InternalGetSubscriptionStatsByProductCodeRequestValidationError is the
+// validation error returned by
+// InternalGetSubscriptionStatsByProductCodeRequest.Validate if the designated
+// constraints aren't met.
+type InternalGetSubscriptionStatsByProductCodeRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e InternalGetSubscriptionStatsByProductCodeRequestValidationError) Field() string {
+	return e.field
+}
+
+// Reason function returns reason value.
+func (e InternalGetSubscriptionStatsByProductCodeRequestValidationError) Reason() string {
+	return e.reason
+}
+
+// Cause function returns cause value.
+func (e InternalGetSubscriptionStatsByProductCodeRequestValidationError) Cause() error {
+	return e.cause
+}
+
+// Key function returns key value.
+func (e InternalGetSubscriptionStatsByProductCodeRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e InternalGetSubscriptionStatsByProductCodeRequestValidationError) ErrorName() string {
+	return "InternalGetSubscriptionStatsByProductCodeRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e InternalGetSubscriptionStatsByProductCodeRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sInternalGetSubscriptionStatsByProductCodeRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = InternalGetSubscriptionStatsByProductCodeRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = InternalGetSubscriptionStatsByProductCodeRequestValidationError{}
+
+// Validate checks the field values on
+// InternalGetSubscriptionStatsByProductCodeResponse with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *InternalGetSubscriptionStatsByProductCodeResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on
+// InternalGetSubscriptionStatsByProductCodeResponse with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in
+// InternalGetSubscriptionStatsByProductCodeResponseMultiError, or nil if none found.
+func (m *InternalGetSubscriptionStatsByProductCodeResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *InternalGetSubscriptionStatsByProductCodeResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for ActiveCount
+
+	// no validation rules for TrialCount
+
+	if len(errors) > 0 {
+		return InternalGetSubscriptionStatsByProductCodeResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// InternalGetSubscriptionStatsByProductCodeResponseMultiError is an error
+// wrapping multiple validation errors returned by
+// InternalGetSubscriptionStatsByProductCodeResponse.ValidateAll() if the
+// designated constraints aren't met.
+type InternalGetSubscriptionStatsByProductCodeResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m InternalGetSubscriptionStatsByProductCodeResponseMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m InternalGetSubscriptionStatsByProductCodeResponseMultiError) AllErrors() []error { return m }
+
+// InternalGetSubscriptionStatsByProductCodeResponseValidationError is the
+// validation error returned by
+// InternalGetSubscriptionStatsByProductCodeResponse.Validate if the
+// designated constraints aren't met.
+type InternalGetSubscriptionStatsByProductCodeResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e InternalGetSubscriptionStatsByProductCodeResponseValidationError) Field() string {
+	return e.field
+}
+
+// Reason function returns reason value.
+func (e InternalGetSubscriptionStatsByProductCodeResponseValidationError) Reason() string {
+	return e.reason
+}
+
+// Cause function returns cause value.
+func (e InternalGetSubscriptionStatsByProductCodeResponseValidationError) Cause() error {
+	return e.cause
+}
+
+// Key function returns key value.
+func (e InternalGetSubscriptionStatsByProductCodeResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e InternalGetSubscriptionStatsByProductCodeResponseValidationError) ErrorName() string {
+	return "InternalGetSubscriptionStatsByProductCodeResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e InternalGetSubscriptionStatsByProductCodeResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sInternalGetSubscriptionStatsByProductCodeResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = InternalGetSubscriptionStatsByProductCodeResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = InternalGetSubscriptionStatsByProductCodeResponseValidationError{}

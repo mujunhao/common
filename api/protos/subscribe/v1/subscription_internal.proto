@@ -20,6 +20,8 @@ service SubscriptionInternalService {
   rpc InternalUpgradeSubscription(InternalUpgradeSubscriptionRequest) returns (InternalUpgradeSubscriptionResponse);
   // InternalGetSubscriptionStats 获取商户订阅状态
   rpc InternalGetSubscriptionStats(InternalGetSubscriptionStatsRequest) returns (InternalGetSubscriptionStatsResponse);
+  // InternalGetSubscriptionStatsByProductCode 通过产品code获取订阅状态
+  rpc InternalGetSubscriptionStatsByProductCode(InternalGetSubscriptionStatsByProductCodeRequest) returns (InternalGetSubscriptionStatsByProductCodeResponse);
 }
 
 // 订阅状态枚举
@@ -226,4 +228,13 @@ message InternalGetSubscriptionStatsResponse {
   int32 trial_count = 2 [json_name = "trialCount"];                           // 试用中数量
   int32 expiring_soon_count = 3 [json_name = "expiringSooncount"];            // 即将到期数量
   int64 month_price = 4 [json_name = "monthPrice"];                           // 当月消费金额
+}
+
+message InternalGetSubscriptionStatsByProductCodeRequest {
+  string product_code = 1[json_name = "productCode"]; // 产品code
+}
+
+message InternalGetSubscriptionStatsByProductCodeResponse {
+  int32 active_count = 1 [json_name = "activeCount"];                         // 已订阅数量
+  int32 trial_count = 2 [json_name = "trialCount"];                           // 试用中数量
 }

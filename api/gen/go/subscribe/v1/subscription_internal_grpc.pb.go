@@ -19,11 +19,12 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	SubscriptionInternalService_InternalListSubscriptions_FullMethodName    = "/api.subscription.v1.SubscriptionInternalService/InternalListSubscriptions"
-	SubscriptionInternalService_InternalCreateSubscription_FullMethodName   = "/api.subscription.v1.SubscriptionInternalService/InternalCreateSubscription"
-	SubscriptionInternalService_InternalReNewSubscription_FullMethodName    = "/api.subscription.v1.SubscriptionInternalService/InternalReNewSubscription"
-	SubscriptionInternalService_InternalUpgradeSubscription_FullMethodName  = "/api.subscription.v1.SubscriptionInternalService/InternalUpgradeSubscription"
-	SubscriptionInternalService_InternalGetSubscriptionStats_FullMethodName = "/api.subscription.v1.SubscriptionInternalService/InternalGetSubscriptionStats"
+	SubscriptionInternalService_InternalListSubscriptions_FullMethodName                 = "/api.subscription.v1.SubscriptionInternalService/InternalListSubscriptions"
+	SubscriptionInternalService_InternalCreateSubscription_FullMethodName                = "/api.subscription.v1.SubscriptionInternalService/InternalCreateSubscription"
+	SubscriptionInternalService_InternalReNewSubscription_FullMethodName                 = "/api.subscription.v1.SubscriptionInternalService/InternalReNewSubscription"
+	SubscriptionInternalService_InternalUpgradeSubscription_FullMethodName               = "/api.subscription.v1.SubscriptionInternalService/InternalUpgradeSubscription"
+	SubscriptionInternalService_InternalGetSubscriptionStats_FullMethodName              = "/api.subscription.v1.SubscriptionInternalService/InternalGetSubscriptionStats"
+	SubscriptionInternalService_InternalGetSubscriptionStatsByProductCode_FullMethodName = "/api.subscription.v1.SubscriptionInternalService/InternalGetSubscriptionStatsByProductCode"
 )
 
 // SubscriptionInternalServiceClient is the client API for SubscriptionInternalService service.
@@ -42,6 +43,8 @@ type SubscriptionInternalServiceClient interface {
 	InternalUpgradeSubscription(ctx context.Context, in *InternalUpgradeSubscriptionRequest, opts ...grpc.CallOption) (*InternalUpgradeSubscriptionResponse, error)
 	// InternalGetSubscriptionStats 获取商户订阅状态
 	InternalGetSubscriptionStats(ctx context.Context, in *InternalGetSubscriptionStatsRequest, opts ...grpc.CallOption) (*InternalGetSubscriptionStatsResponse, error)
+	// InternalGetSubscriptionStatsByProductCode 通过产品code获取订阅状态
+	InternalGetSubscriptionStatsByProductCode(ctx context.Context, in *InternalGetSubscriptionStatsByProductCodeRequest, opts ...grpc.CallOption) (*InternalGetSubscriptionStatsByProductCodeResponse, error)
 }
 
 type subscriptionInternalServiceClient struct {
@@ -102,6 +105,16 @@ func (c *subscriptionInternalServiceClient) InternalGetSubscriptionStats(ctx con
 	return out, nil
 }
 
+func (c *subscriptionInternalServiceClient) InternalGetSubscriptionStatsByProductCode(ctx context.Context, in *InternalGetSubscriptionStatsByProductCodeRequest, opts ...grpc.CallOption) (*InternalGetSubscriptionStatsByProductCodeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(InternalGetSubscriptionStatsByProductCodeResponse)
+	err := c.cc.Invoke(ctx, SubscriptionInternalService_InternalGetSubscriptionStatsByProductCode_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SubscriptionInternalServiceServer is the server API for SubscriptionInternalService service.
 // All implementations must embed UnimplementedSubscriptionInternalServiceServer
 // for forward compatibility.
@@ -118,6 +131,8 @@ type SubscriptionInternalServiceServer interface {
 	InternalUpgradeSubscription(context.Context, *InternalUpgradeSubscriptionRequest) (*InternalUpgradeSubscriptionResponse, error)
 	// InternalGetSubscriptionStats 获取商户订阅状态
 	InternalGetSubscriptionStats(context.Context, *InternalGetSubscriptionStatsRequest) (*InternalGetSubscriptionStatsResponse, error)
+	// InternalGetSubscriptionStatsByProductCode 通过产品code获取订阅状态
+	InternalGetSubscriptionStatsByProductCode(context.Context, *InternalGetSubscriptionStatsByProductCodeRequest) (*InternalGetSubscriptionStatsByProductCodeResponse, error)
 	mustEmbedUnimplementedSubscriptionInternalServiceServer()
 }
 
@@ -142,6 +157,9 @@ func (UnimplementedSubscriptionInternalServiceServer) InternalUpgradeSubscriptio
 }
 func (UnimplementedSubscriptionInternalServiceServer) InternalGetSubscriptionStats(context.Context, *InternalGetSubscriptionStatsRequest) (*InternalGetSubscriptionStatsResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method InternalGetSubscriptionStats not implemented")
+}
+func (UnimplementedSubscriptionInternalServiceServer) InternalGetSubscriptionStatsByProductCode(context.Context, *InternalGetSubscriptionStatsByProductCodeRequest) (*InternalGetSubscriptionStatsByProductCodeResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method InternalGetSubscriptionStatsByProductCode not implemented")
 }
 func (UnimplementedSubscriptionInternalServiceServer) mustEmbedUnimplementedSubscriptionInternalServiceServer() {
 }
@@ -255,6 +273,24 @@ func _SubscriptionInternalService_InternalGetSubscriptionStats_Handler(srv inter
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SubscriptionInternalService_InternalGetSubscriptionStatsByProductCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InternalGetSubscriptionStatsByProductCodeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SubscriptionInternalServiceServer).InternalGetSubscriptionStatsByProductCode(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SubscriptionInternalService_InternalGetSubscriptionStatsByProductCode_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SubscriptionInternalServiceServer).InternalGetSubscriptionStatsByProductCode(ctx, req.(*InternalGetSubscriptionStatsByProductCodeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // SubscriptionInternalService_ServiceDesc is the grpc.ServiceDesc for SubscriptionInternalService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -281,6 +317,10 @@ var SubscriptionInternalService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "InternalGetSubscriptionStats",
 			Handler:    _SubscriptionInternalService_InternalGetSubscriptionStats_Handler,
+		},
+		{
+			MethodName: "InternalGetSubscriptionStatsByProductCode",
+			Handler:    _SubscriptionInternalService_InternalGetSubscriptionStatsByProductCode_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
