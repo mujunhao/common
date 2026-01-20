@@ -128,6 +128,7 @@ message InternalGetTenantStatsResponse{
   int32 pending_tenants = 3 [json_name = "pending_tenants"]; // 待定
   int32 suspended_tenants = 4 [json_name = "suspended_tenants"];// 暂停
   int32 terminated_tenants = 5 [json_name = "terminated_tenants"];// 终止
+  int32 past_due_tenants = 6 [json_name = "pastDueTenants"];// 逾期
 }
 
 message InternalGetUserStatsRequest{}
@@ -137,7 +138,6 @@ message InternalGetUserStatsResponse {
   int32 active_users = 2 [json_name = "active_users"]; // 活跃
   // int32 has_tenant_users = 3 [json_name = "hasTenantUsers"]; // 关联
   int32 disabled_users = 4 [json_name = "disabled_users"];// 禁用
-  int32 past_due_tenants = 6 [json_name = "pastDueTenants"];// 逾期
 }
 
 // 内部IAM服务（仅 gRPC，不暴露 HTTP）
