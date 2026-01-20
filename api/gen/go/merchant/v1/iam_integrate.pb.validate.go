@@ -316,6 +316,8 @@ func (m *InternalTenant) validate(all bool) error {
 		}
 	}
 
+	// no validation rules for LogoUrl
+
 	if len(errors) > 0 {
 		return InternalTenantMultiError(errors)
 	}

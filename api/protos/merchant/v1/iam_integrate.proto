@@ -49,6 +49,7 @@ message InternalTenant {
   int32 subscription_num = 9 [json_name = "subscriptionNum"]; // 订阅数
   google.protobuf.Timestamp create_time = 10 [json_name = "createTime"]; // 创建时间
   repeated AccessLevel access_levels = 11 [json_name = "accessLevels"]; // 访问等级
+  string logo_url = 12[json_name = "logo_url"]; // logo url
 }
 
 message InternalListTenantRequest {

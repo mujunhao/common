@@ -340,6 +340,7 @@ type InternalTenant struct {
 	SubscriptionNum int32                  `protobuf:"varint,9,opt,name=subscription_num,json=subscriptionNum,proto3" json:"subscription_num,omitempty"`                                    // 订阅数
 	CreateTime      *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=create_time,json=createTime,proto3" json:"create_time,omitempty"`                                                   // 创建时间
 	AccessLevels    []AccessLevel          `protobuf:"varint,11,rep,packed,name=access_levels,json=accessLevels,proto3,enum=common.merchant.v1.AccessLevel" json:"access_levels,omitempty"` // 访问等级
+	LogoUrl         string                 `protobuf:"bytes,12,opt,name=logo_url,proto3" json:"logo_url,omitempty"`                                                                         // logo url
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -442,6 +443,13 @@ func (x *InternalTenant) GetAccessLevels() []AccessLevel {
 		return x.AccessLevels
 	}
 	return nil
+}
+
+func (x *InternalTenant) GetLogoUrl() string {
+	if x != nil {
+		return x.LogoUrl
+	}
+	return ""
 }
 
 type InternalListTenantRequest struct {
@@ -1208,7 +1216,7 @@ const file_merchant_v1_iam_integrate_proto_rawDesc = "" +
 	"\x1cSetTenantPermissionsResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x1f\n" +
 	"\vtotal_count\x18\x02 \x01(\x05R\n" +
-	"totalCount\"\xa5\x03\n" +
+	"totalCount\"\xc1\x03\n" +
 	"\x0eInternalTenant\x12\x12\n" +
 	"\x04code\x18\x01 \x01(\tR\x04code\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +
@@ -1222,7 +1230,8 @@ const file_merchant_v1_iam_integrate_proto_rawDesc = "" +
 	"\vcreate_time\x18\n" +
 	" \x01(\v2\x1a.google.protobuf.TimestampR\n" +
 	"createTime\x12D\n" +
-	"\raccess_levels\x18\v \x03(\x0e2\x1f.common.merchant.v1.AccessLevelR\faccessLevels\"\xf8\x02\n" +
+	"\raccess_levels\x18\v \x03(\x0e2\x1f.common.merchant.v1.AccessLevelR\faccessLevels\x12\x1a\n" +
+	"\blogo_url\x18\f \x01(\tR\blogo_url\"\xf8\x02\n" +
 	"\x19InternalListTenantRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x14\n" +
 	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x17\n" +
