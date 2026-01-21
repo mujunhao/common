@@ -6,6 +6,7 @@ option go_package = "github.com/heyinLab/common/api/gen/go/platform/v1;v1";
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 import "google/api/field_behavior.proto";
+import "google/protobuf/struct.proto";
 
 // ==================== 权限相关消息 ====================
 
@@ -88,6 +89,106 @@ message GetTenantPermissionsTreeResponse {
   uint32 total = 2 [json_name = "total"];
 }
 
+// 公告信息
+message CAnnouncement {
+  // 公告编码
+  string code =1[json_name="code"];
+  // 公告标题
+  google.protobuf.Struct title =2[json_name="title"];
+  // 优先级
+  CPriority priority =3[json_name="priority"];
+  // 公告类型
+  CAnnouncementType type =4[json_name="type"];
+  // 摘要
+  optional google.protobuf.Struct summary =5[json_name="summary"];
+  // 内容
+  google.protobuf.Struct content =6[json_name="content"];
+  // 发布范围
+  CAnnouncementScope scope = 7[json_name="scope"];
+  // 指定的范围
+  repeated string scope_content = 8[json_name="scopeContent"];
+  // 发布时间
+  google.protobuf.Timestamp release_time =9[json_name="releaseTime"];
+  // 到期时间
+  google.protobuf.Timestamp expire_time =10[json_name="expireTime"];
+  // 创建时间
+  google.protobuf.Timestamp create_time =11[json_name="createTime"];
+  // 更新时间
+  google.protobuf.Timestamp update_time =12[json_name="updateTime"];
+  // 弹窗
+  bool popup = 13[json_name="popup"];
+  // 需要确认
+  bool need_confirm = 14[json_name="needConfirm"];
+  // 状态
+  CAnnouncementStatus status = 15[json_name="status"];
+  // 阅读数
+  int64 read_count = 16[json_name="readCount"];
+  // 阅读用户数
+  int64 read_user_count = 17[json_name="readUserCount"];
+  // 确认数
+  int64 confirm_count = 18[json_name="confirmCount"];
+  // 阅读率
+  string read_rate = 19[json_name="readRate"];
+  // 确认率
+  string confirm_rate = 20[json_name="confirmRate"];
+  // 指定范围-指定角色
+  bool scope_is_super = 21[json_name="scopeIsSuper"];
+  // 置顶
+  bool top_story = 22[json_name="topStory"];
+}
+
+// 公告优先级
+enum CPriority {
+  // 低
+  PRIORITY_LOW = 0;
+  // 普通
+  PRIORITY_ORDINARY = 1;
+  // 高
+  PRIORITY_HIGH = 2;
+  // 紧急
+  PRIORITY_URGENT = 3;
+}
+
+// 公告类型
+enum CAnnouncementType {
+  // 普通公告
+  ANNOUNCEMENT_TYPE_ORDINARY = 0;
+  // 维护通知
+  ANNOUNCEMENT_TYPE_MAINTENANCE = 1;
+  // 版本更新
+  ANNOUNCEMENT_TYPE_UPDATE = 2;
+  // 活动公告
+  ANNOUNCEMENT_TYPE_ACTIVITY = 3;
+  // 政策公告
+  ANNOUNCEMENT_TYPE_POLICY = 4;
+}
+
+// 发布范围
+enum CAnnouncementScope {
+  // 全部用户
+  ANNOUNCEMENT_SCOPE_ALL_USER = 0;
+  // 指定租户
+  ANNOUNCEMENT_SCOPE_TENANT = 1;
+  // 指定角色
+  ANNOUNCEMENT_SCOPE_ROLE = 2;
+  // 指定用户
+  ANNOUNCEMENT_SCOPE_USER = 3;
+}
+
+// 公告状态
+enum CAnnouncementStatus {
+  // 草稿
+  ANNOUNCEMENT_STATUS_DRAFT = 0;
+  // 待发布
+  ANNOUNCEMENT_STATUS_PENDING = 1;
+  // 已发布
+  ANNOUNCEMENT_STATUS_RELEASED = 2;
+  // 已过期
+  ANNOUNCEMENT_STATUS_EXPIRED = 3;
+  // 已撤回
+  ANNOUNCEMENT_STATUS_WITHDRAWN = 4;
+}
+
 
 // ==================== 内部 IAM 服务 ====================
 // 根据产品ID获取权限codes请求
@@ -103,10 +204,34 @@ message GetPermissionCodesByProductResponse {
   uint32 total = 2 [json_name = "total"];
 }
 
+message CListAnnouncementsRequest {
+  // 页码
+  optional int32 page =1[json_name="page"];
+  // 每页数量
+  optional int32 page_size =2[json_name="pageSize"];
+  // 优先级筛选
+  optional CPriority priority =3[json_name="priority"];
+  // 公告类型筛选
+  optional CAnnouncementType type =4[json_name="type"];
+  // 状态筛选
+  optional CAnnouncementStatus status =5[json_name="status"];
+  // 标题筛选
+  optional string title =6[json_name="title"];
+}
+
+message CListAnnouncementsResponse {
+  // 总数
+  int64 total = 1[json_name="total"];
+  // 公告列表
+  repeated CAnnouncement items = 2[json_name="items"];
+}
+
 // 内部IAM服务（仅 gRPC，不暴露 HTTP）
 service PlatformIamService {
   // 获取完整租户权限树（树结构，包含 children，用于前端菜单渲染和权限分配）
   rpc GetTenantPermissionsTree(GetTenantPermissionsTreeRequest) returns (GetTenantPermissionsTreeResponse);
   // 根据产品ID获取权限codes（扁平列表，用于权限校验）
   rpc GetPermissionCodesByProduct (GetPermissionCodesByProductRequest) returns (GetPermissionCodesByProductResponse);
+  // 获取公告列表
+  rpc ListAnnouncements(CListAnnouncementsRequest) returns (CListAnnouncementsResponse);
 }
