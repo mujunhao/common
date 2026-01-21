@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	PlatformIamService_GetTenantPermissionsTree_FullMethodName    = "/common.platform.v1.PlatformIamService/GetTenantPermissionsTree"
 	PlatformIamService_GetPermissionCodesByProduct_FullMethodName = "/common.platform.v1.PlatformIamService/GetPermissionCodesByProduct"
+	PlatformIamService_ListAnnouncements_FullMethodName           = "/common.platform.v1.PlatformIamService/ListAnnouncements"
 )
 
 // PlatformIamServiceClient is the client API for PlatformIamService service.
@@ -33,6 +34,8 @@ type PlatformIamServiceClient interface {
 	GetTenantPermissionsTree(ctx context.Context, in *GetTenantPermissionsTreeRequest, opts ...grpc.CallOption) (*GetTenantPermissionsTreeResponse, error)
 	// 根据产品ID获取权限codes（扁平列表，用于权限校验）
 	GetPermissionCodesByProduct(ctx context.Context, in *GetPermissionCodesByProductRequest, opts ...grpc.CallOption) (*GetPermissionCodesByProductResponse, error)
+	// 获取公告列表
+	ListAnnouncements(ctx context.Context, in *CListAnnouncementsRequest, opts ...grpc.CallOption) (*CListAnnouncementsResponse, error)
 }
 
 type platformIamServiceClient struct {
@@ -63,6 +66,16 @@ func (c *platformIamServiceClient) GetPermissionCodesByProduct(ctx context.Conte
 	return out, nil
 }
 
+func (c *platformIamServiceClient) ListAnnouncements(ctx context.Context, in *CListAnnouncementsRequest, opts ...grpc.CallOption) (*CListAnnouncementsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CListAnnouncementsResponse)
+	err := c.cc.Invoke(ctx, PlatformIamService_ListAnnouncements_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PlatformIamServiceServer is the server API for PlatformIamService service.
 // All implementations must embed UnimplementedPlatformIamServiceServer
 // for forward compatibility.
@@ -73,6 +86,8 @@ type PlatformIamServiceServer interface {
 	GetTenantPermissionsTree(context.Context, *GetTenantPermissionsTreeRequest) (*GetTenantPermissionsTreeResponse, error)
 	// 根据产品ID获取权限codes（扁平列表，用于权限校验）
 	GetPermissionCodesByProduct(context.Context, *GetPermissionCodesByProductRequest) (*GetPermissionCodesByProductResponse, error)
+	// 获取公告列表
+	ListAnnouncements(context.Context, *CListAnnouncementsRequest) (*CListAnnouncementsResponse, error)
 	mustEmbedUnimplementedPlatformIamServiceServer()
 }
 
@@ -88,6 +103,9 @@ func (UnimplementedPlatformIamServiceServer) GetTenantPermissionsTree(context.Co
 }
 func (UnimplementedPlatformIamServiceServer) GetPermissionCodesByProduct(context.Context, *GetPermissionCodesByProductRequest) (*GetPermissionCodesByProductResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetPermissionCodesByProduct not implemented")
+}
+func (UnimplementedPlatformIamServiceServer) ListAnnouncements(context.Context, *CListAnnouncementsRequest) (*CListAnnouncementsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListAnnouncements not implemented")
 }
 func (UnimplementedPlatformIamServiceServer) mustEmbedUnimplementedPlatformIamServiceServer() {}
 func (UnimplementedPlatformIamServiceServer) testEmbeddedByValue()                            {}
@@ -146,6 +164,24 @@ func _PlatformIamService_GetPermissionCodesByProduct_Handler(srv interface{}, ct
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PlatformIamService_ListAnnouncements_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CListAnnouncementsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PlatformIamServiceServer).ListAnnouncements(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PlatformIamService_ListAnnouncements_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PlatformIamServiceServer).ListAnnouncements(ctx, req.(*CListAnnouncementsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PlatformIamService_ServiceDesc is the grpc.ServiceDesc for PlatformIamService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -160,6 +196,10 @@ var PlatformIamService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetPermissionCodesByProduct",
 			Handler:    _PlatformIamService_GetPermissionCodesByProduct_Handler,
+		},
+		{
+			MethodName: "ListAnnouncements",
+			Handler:    _PlatformIamService_ListAnnouncements_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
