@@ -959,6 +959,341 @@ var _ interface {
 	ErrorName() string
 } = GetTenantPermissionsTreeResponseValidationError{}
 
+// Validate checks the field values on CAnnouncement with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *CAnnouncement) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CAnnouncement with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in CAnnouncementMultiError, or
+// nil if none found.
+func (m *CAnnouncement) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CAnnouncement) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Code
+
+	if all {
+		switch v := interface{}(m.GetTitle()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, CAnnouncementValidationError{
+					field:  "Title",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, CAnnouncementValidationError{
+					field:  "Title",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetTitle()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return CAnnouncementValidationError{
+				field:  "Title",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	// no validation rules for Priority
+
+	// no validation rules for Type
+
+	if all {
+		switch v := interface{}(m.GetContent()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, CAnnouncementValidationError{
+					field:  "Content",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, CAnnouncementValidationError{
+					field:  "Content",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetContent()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return CAnnouncementValidationError{
+				field:  "Content",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	// no validation rules for Scope
+
+	if all {
+		switch v := interface{}(m.GetReleaseTime()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, CAnnouncementValidationError{
+					field:  "ReleaseTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, CAnnouncementValidationError{
+					field:  "ReleaseTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetReleaseTime()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return CAnnouncementValidationError{
+				field:  "ReleaseTime",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetExpireTime()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, CAnnouncementValidationError{
+					field:  "ExpireTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, CAnnouncementValidationError{
+					field:  "ExpireTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetExpireTime()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return CAnnouncementValidationError{
+				field:  "ExpireTime",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetCreateTime()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, CAnnouncementValidationError{
+					field:  "CreateTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, CAnnouncementValidationError{
+					field:  "CreateTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetCreateTime()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return CAnnouncementValidationError{
+				field:  "CreateTime",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetUpdateTime()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, CAnnouncementValidationError{
+					field:  "UpdateTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, CAnnouncementValidationError{
+					field:  "UpdateTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetUpdateTime()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return CAnnouncementValidationError{
+				field:  "UpdateTime",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	// no validation rules for Popup
+
+	// no validation rules for NeedConfirm
+
+	// no validation rules for Status
+
+	// no validation rules for ReadCount
+
+	// no validation rules for ReadUserCount
+
+	// no validation rules for ConfirmCount
+
+	// no validation rules for ReadRate
+
+	// no validation rules for ConfirmRate
+
+	// no validation rules for ScopeIsSuper
+
+	// no validation rules for TopStory
+
+	if m.Summary != nil {
+
+		if all {
+			switch v := interface{}(m.GetSummary()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, CAnnouncementValidationError{
+						field:  "Summary",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, CAnnouncementValidationError{
+						field:  "Summary",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetSummary()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return CAnnouncementValidationError{
+					field:  "Summary",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return CAnnouncementMultiError(errors)
+	}
+
+	return nil
+}
+
+// CAnnouncementMultiError is an error wrapping multiple validation errors
+// returned by CAnnouncement.ValidateAll() if the designated constraints
+// aren't met.
+type CAnnouncementMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CAnnouncementMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CAnnouncementMultiError) AllErrors() []error { return m }
+
+// CAnnouncementValidationError is the validation error returned by
+// CAnnouncement.Validate if the designated constraints aren't met.
+type CAnnouncementValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CAnnouncementValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CAnnouncementValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CAnnouncementValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CAnnouncementValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CAnnouncementValidationError) ErrorName() string { return "CAnnouncementValidationError" }
+
+// Error satisfies the builtin error interface
+func (e CAnnouncementValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCAnnouncement.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CAnnouncementValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CAnnouncementValidationError{}
+
 // Validate checks the field values on GetPermissionCodesByProductRequest with
 // the rules defined in the proto definition for this message. If any rules
 // are violated, the first error encountered is returned, or nil if there are
@@ -1176,3 +1511,267 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = GetPermissionCodesByProductResponseValidationError{}
+
+// Validate checks the field values on CListAnnouncementsRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *CListAnnouncementsRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CListAnnouncementsRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// CListAnnouncementsRequestMultiError, or nil if none found.
+func (m *CListAnnouncementsRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CListAnnouncementsRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.Page != nil {
+		// no validation rules for Page
+	}
+
+	if m.PageSize != nil {
+		// no validation rules for PageSize
+	}
+
+	if m.Priority != nil {
+		// no validation rules for Priority
+	}
+
+	if m.Type != nil {
+		// no validation rules for Type
+	}
+
+	if m.Status != nil {
+		// no validation rules for Status
+	}
+
+	if m.Title != nil {
+		// no validation rules for Title
+	}
+
+	if len(errors) > 0 {
+		return CListAnnouncementsRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// CListAnnouncementsRequestMultiError is an error wrapping multiple validation
+// errors returned by CListAnnouncementsRequest.ValidateAll() if the
+// designated constraints aren't met.
+type CListAnnouncementsRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CListAnnouncementsRequestMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CListAnnouncementsRequestMultiError) AllErrors() []error { return m }
+
+// CListAnnouncementsRequestValidationError is the validation error returned by
+// CListAnnouncementsRequest.Validate if the designated constraints aren't met.
+type CListAnnouncementsRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CListAnnouncementsRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CListAnnouncementsRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CListAnnouncementsRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CListAnnouncementsRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CListAnnouncementsRequestValidationError) ErrorName() string {
+	return "CListAnnouncementsRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e CListAnnouncementsRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCListAnnouncementsRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CListAnnouncementsRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CListAnnouncementsRequestValidationError{}
+
+// Validate checks the field values on CListAnnouncementsResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *CListAnnouncementsResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CListAnnouncementsResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// CListAnnouncementsResponseMultiError, or nil if none found.
+func (m *CListAnnouncementsResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CListAnnouncementsResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Total
+
+	for idx, item := range m.GetItems() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, CListAnnouncementsResponseValidationError{
+						field:  fmt.Sprintf("Items[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, CListAnnouncementsResponseValidationError{
+						field:  fmt.Sprintf("Items[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return CListAnnouncementsResponseValidationError{
+					field:  fmt.Sprintf("Items[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return CListAnnouncementsResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// CListAnnouncementsResponseMultiError is an error wrapping multiple
+// validation errors returned by CListAnnouncementsResponse.ValidateAll() if
+// the designated constraints aren't met.
+type CListAnnouncementsResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CListAnnouncementsResponseMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CListAnnouncementsResponseMultiError) AllErrors() []error { return m }
+
+// CListAnnouncementsResponseValidationError is the validation error returned
+// by CListAnnouncementsResponse.Validate if the designated constraints aren't met.
+type CListAnnouncementsResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CListAnnouncementsResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CListAnnouncementsResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CListAnnouncementsResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CListAnnouncementsResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CListAnnouncementsResponseValidationError) ErrorName() string {
+	return "CListAnnouncementsResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e CListAnnouncementsResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCListAnnouncementsResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CListAnnouncementsResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CListAnnouncementsResponseValidationError{}

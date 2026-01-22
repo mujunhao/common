@@ -292,6 +292,41 @@ func (c *IAMClient) GetPermissionCodesByProduct(ctx context.Context, productCode
 	return resp.Codes, resp.Total, nil
 }
 
+type AnnouncementOptions struct {
+	Page     *int32
+	PageSize *int32
+	AType    *v1.CAnnouncementType // 类型
+	Priority *v1.CPriority
+	Status   *v1.CAnnouncementStatus
+	Title    *string
+}
+
+func (c *IAMClient) ListAnnouncements(ctx context.Context, opt *AnnouncementOptions) ([]*v1.CAnnouncement, error) {
+	req := &v1.CListAnnouncementsRequest{
+		Page:     nil,
+		PageSize: nil,
+		Priority: nil,
+		Type:     nil,
+		Status:   nil,
+		Title:    nil,
+	}
+	if opt != nil {
+		req.Title = opt.Title
+		req.Page = opt.Page
+		req.PageSize = opt.PageSize
+		req.Priority = opt.Priority
+		req.Status = opt.Status
+		req.Type = opt.AType
+	}
+
+	rsp, err := c.client.ListAnnouncements(ctx, req)
+	if err != nil {
+		c.logger.WithContext(ctx).Errorf("获取公告列表失败: opt=%v, error=%v", opt, err)
+		return nil, err
+	}
+	return rsp.Items, nil
+}
+
 // ========== 辅助函数 ==========
 
 // getStringValue 获取指针字符串的值
