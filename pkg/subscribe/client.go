@@ -217,19 +217,23 @@ func (c *Client) GetSubscriptionStatsByProduct(ctx context.Context, productCode 
 	return resp, nil
 }
 
-// UseResult 使用配额的结果
-type UseResult struct {
-	Success         bool
-	DimensionKey    string
-	QuotaLimit      int32
-	QuotaUsedBefore int32
-	QuotaUsedAfter  int32
-	QuotaRemaining  int32
-	IsUnlimited     bool
+// QuotaResult 配额操作结果
+
+type QuotaResult struct {
+	Success         bool    // 是否成功
+	DimensionKey    string  // 维度键
+	QuotaLimit      int32   // 配额上限
+	QuotaUsed       int32   // 当前已使用量
+	QuotaUsedBefore int32   // 操作前已使用量
+	QuotaUsedAfter  int32   // 操作后已使用量
+	QuotaRemaining  int32   // 剩余配额
+	IsUnlimited     bool    // 是否无限制
+	UsagePercentage float64 // 使用百分比
+	Unit            *string // 单位
 }
 
 // Use 使用配额
-func (c *Client) Use(ctx context.Context, tenantCode, productCode, dimensionKey string, amount int32) (*UseResult, error) {
+func (c *Client) Use(ctx context.Context, tenantCode, productCode, dimensionKey string, amount int32) (*QuotaResult, error) {
 	if amount <= 0 {
 		amount = 1
 	}
@@ -249,7 +253,7 @@ func (c *Client) Use(ctx context.Context, tenantCode, productCode, dimensionKey 
 		return nil, err
 	}
 
-	return &UseResult{
+	return &QuotaResult{
 		Success:         resp.Success,
 		DimensionKey:    resp.DimensionKey,
 		QuotaLimit:      resp.QuotaLimit,
@@ -272,16 +276,8 @@ func (c *Client) MustUse(ctx context.Context, tenantCode, productCode, dimension
 	return nil
 }
 
-// ReleaseResult 释放配额的结果
-type ReleaseResult struct {
-	Success         bool
-	DimensionKey    string
-	QuotaUsedBefore int32
-	QuotaUsedAfter  int32
-}
-
 // Release 释放配额（-N）
-func (c *Client) Release(ctx context.Context, tenantCode, productCode, dimensionKey string, amount int32) (*ReleaseResult, error) {
+func (c *Client) Release(ctx context.Context, tenantCode, productCode, dimensionKey string, amount int32) (*QuotaResult, error) {
 	if amount <= 0 {
 		amount = 1
 	}
@@ -301,7 +297,7 @@ func (c *Client) Release(ctx context.Context, tenantCode, productCode, dimension
 		return nil, err
 	}
 
-	return &ReleaseResult{
+	return &QuotaResult{
 		Success:         resp.Success,
 		DimensionKey:    resp.DimensionKey,
 		QuotaUsedBefore: resp.QuotaUsedBefore,
@@ -309,19 +305,8 @@ func (c *Client) Release(ctx context.Context, tenantCode, productCode, dimension
 	}, nil
 }
 
-// QuotaUsage 配额使用情况
-type QuotaUsage struct {
-	DimensionKey    string
-	QuotaLimit      int32
-	QuotaUsed       int32
-	QuotaRemaining  int32
-	IsUnlimited     bool
-	UsagePercentage float64
-	Unit            *string
-}
-
 // GetUsage 查询配额使用情况
-func (c *Client) GetUsage(ctx context.Context, tenantCode, productCode string, dimensionKey *string) ([]*QuotaUsage, error) {
+func (c *Client) GetUsage(ctx context.Context, tenantCode, productCode string, dimensionKey *string) ([]*QuotaResult, error) {
 	ctx, cancel := context.WithTimeout(ctx, c.config.Timeout)
 	defer cancel()
 
@@ -336,9 +321,10 @@ func (c *Client) GetUsage(ctx context.Context, tenantCode, productCode string, d
 		return nil, err
 	}
 
-	usages := make([]*QuotaUsage, 0, len(resp.Usages))
+	usages := make([]*QuotaResult, 0, len(resp.Usages))
 	for _, u := range resp.Usages {
-		usages = append(usages, &QuotaUsage{
+		usages = append(usages, &QuotaResult{
+			Success:         true,
 			DimensionKey:    u.DimensionKey,
 			QuotaLimit:      u.QuotaLimit,
 			QuotaUsed:       u.QuotaUsed,
