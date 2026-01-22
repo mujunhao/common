@@ -125,7 +125,6 @@ message InternalPricingRuleInfo {
   google.protobuf.Struct i18n = 3 [json_name = "i18n"];                   // 多语言内容
   InternalRuleType rule_type = 4 [json_name = "ruleType"];                        // 规则类型
   optional string unit = 5 [json_name = "unit"];                          // 单位
-  repeated string checkpoints = 6 [json_name = "checkpoints"];            // 检查点列表
   bool is_visible = 7 [json_name = "isVisible"];                          // 是否显示在前端
   bool is_accumulative = 8 [json_name = "isAccumulative"];                // 是否累加计算
   bool is_reset_periodically = 9 [json_name = "isResetPeriodically"];    // 是否按周期重置
