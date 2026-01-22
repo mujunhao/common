@@ -835,7 +835,6 @@ type InternalPricingRuleInfo struct {
 	I18N                *structpb.Struct       `protobuf:"bytes,3,opt,name=i18n,proto3" json:"i18n,omitempty"`                                                                            // 多语言内容
 	RuleType            InternalRuleType       `protobuf:"varint,4,opt,name=rule_type,json=ruleType,proto3,enum=api.product.v1.InternalRuleType" json:"rule_type,omitempty"`              // 规则类型
 	Unit                *string                `protobuf:"bytes,5,opt,name=unit,proto3,oneof" json:"unit,omitempty"`                                                                      // 单位
-	Checkpoints         []string               `protobuf:"bytes,6,rep,name=checkpoints,proto3" json:"checkpoints,omitempty"`                                                              // 检查点列表
 	IsVisible           bool                   `protobuf:"varint,7,opt,name=is_visible,json=isVisible,proto3" json:"is_visible,omitempty"`                                                // 是否显示在前端
 	IsAccumulative      bool                   `protobuf:"varint,8,opt,name=is_accumulative,json=isAccumulative,proto3" json:"is_accumulative,omitempty"`                                 // 是否累加计算
 	IsResetPeriodically bool                   `protobuf:"varint,9,opt,name=is_reset_periodically,json=isResetPeriodically,proto3" json:"is_reset_periodically,omitempty"`                // 是否按周期重置
@@ -913,13 +912,6 @@ func (x *InternalPricingRuleInfo) GetUnit() string {
 		return *x.Unit
 	}
 	return ""
-}
-
-func (x *InternalPricingRuleInfo) GetCheckpoints() []string {
-	if x != nil {
-		return x.Checkpoints
-	}
-	return nil
 }
 
 func (x *InternalPricingRuleInfo) GetIsVisible() bool {
@@ -1708,14 +1700,13 @@ const file_product_v1_product_internal_proto_rawDesc = "" +
 	"\x12include_parameters\x18\x02 \x01(\bH\x00R\x11includeParameters\x88\x01\x01B\x15\n" +
 	"\x13_include_parameters\"^\n" +
 	"\x1fInternalMerchantGetPlanResponse\x12;\n" +
-	"\x04plan\x18\x01 \x01(\v2'.api.product.v1.InternalProductPlanInfoR\x04plan\"\xd7\x05\n" +
+	"\x04plan\x18\x01 \x01(\v2'.api.product.v1.InternalProductPlanInfoR\x04plan\"\xb5\x05\n" +
 	"\x17InternalPricingRuleInfo\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12\x19\n" +
 	"\brule_key\x18\x02 \x01(\tR\aruleKey\x12+\n" +
 	"\x04i18n\x18\x03 \x01(\v2\x17.google.protobuf.StructR\x04i18n\x12=\n" +
 	"\trule_type\x18\x04 \x01(\x0e2 .api.product.v1.InternalRuleTypeR\bruleType\x12\x17\n" +
-	"\x04unit\x18\x05 \x01(\tH\x00R\x04unit\x88\x01\x01\x12 \n" +
-	"\vcheckpoints\x18\x06 \x03(\tR\vcheckpoints\x12\x1d\n" +
+	"\x04unit\x18\x05 \x01(\tH\x00R\x04unit\x88\x01\x01\x12\x1d\n" +
 	"\n" +
 	"is_visible\x18\a \x01(\bR\tisVisible\x12'\n" +
 	"\x0fis_accumulative\x18\b \x01(\bR\x0eisAccumulative\x122\n" +
