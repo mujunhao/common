@@ -2102,3 +2102,231 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = InternalMerchantGetProductResponseValidationError{}
+
+// Validate checks the field values on InternalGetDimensionByCheckpointRequest
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the first error encountered is returned, or nil if
+// there are no violations.
+func (m *InternalGetDimensionByCheckpointRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on
+// InternalGetDimensionByCheckpointRequest with the rules defined in the proto
+// definition for this message. If any rules are violated, the result is a
+// list of violation errors wrapped in
+// InternalGetDimensionByCheckpointRequestMultiError, or nil if none found.
+func (m *InternalGetDimensionByCheckpointRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *InternalGetDimensionByCheckpointRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Checkpoint
+
+	if len(errors) > 0 {
+		return InternalGetDimensionByCheckpointRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// InternalGetDimensionByCheckpointRequestMultiError is an error wrapping
+// multiple validation errors returned by
+// InternalGetDimensionByCheckpointRequest.ValidateAll() if the designated
+// constraints aren't met.
+type InternalGetDimensionByCheckpointRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m InternalGetDimensionByCheckpointRequestMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m InternalGetDimensionByCheckpointRequestMultiError) AllErrors() []error { return m }
+
+// InternalGetDimensionByCheckpointRequestValidationError is the validation
+// error returned by InternalGetDimensionByCheckpointRequest.Validate if the
+// designated constraints aren't met.
+type InternalGetDimensionByCheckpointRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e InternalGetDimensionByCheckpointRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e InternalGetDimensionByCheckpointRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e InternalGetDimensionByCheckpointRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e InternalGetDimensionByCheckpointRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e InternalGetDimensionByCheckpointRequestValidationError) ErrorName() string {
+	return "InternalGetDimensionByCheckpointRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e InternalGetDimensionByCheckpointRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sInternalGetDimensionByCheckpointRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = InternalGetDimensionByCheckpointRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = InternalGetDimensionByCheckpointRequestValidationError{}
+
+// Validate checks the field values on InternalGetDimensionByCheckpointResponse
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the first error encountered is returned, or nil if
+// there are no violations.
+func (m *InternalGetDimensionByCheckpointResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on
+// InternalGetDimensionByCheckpointResponse with the rules defined in the
+// proto definition for this message. If any rules are violated, the result is
+// a list of violation errors wrapped in
+// InternalGetDimensionByCheckpointResponseMultiError, or nil if none found.
+func (m *InternalGetDimensionByCheckpointResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *InternalGetDimensionByCheckpointResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Found
+
+	// no validation rules for DimensionKey
+
+	// no validation rules for RuleType
+
+	// no validation rules for IsResetPeriodically
+
+	// no validation rules for ResetPeriod
+
+	if m.Unit != nil {
+		// no validation rules for Unit
+	}
+
+	if len(errors) > 0 {
+		return InternalGetDimensionByCheckpointResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// InternalGetDimensionByCheckpointResponseMultiError is an error wrapping
+// multiple validation errors returned by
+// InternalGetDimensionByCheckpointResponse.ValidateAll() if the designated
+// constraints aren't met.
+type InternalGetDimensionByCheckpointResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m InternalGetDimensionByCheckpointResponseMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m InternalGetDimensionByCheckpointResponseMultiError) AllErrors() []error { return m }
+
+// InternalGetDimensionByCheckpointResponseValidationError is the validation
+// error returned by InternalGetDimensionByCheckpointResponse.Validate if the
+// designated constraints aren't met.
+type InternalGetDimensionByCheckpointResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e InternalGetDimensionByCheckpointResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e InternalGetDimensionByCheckpointResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e InternalGetDimensionByCheckpointResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e InternalGetDimensionByCheckpointResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e InternalGetDimensionByCheckpointResponseValidationError) ErrorName() string {
+	return "InternalGetDimensionByCheckpointResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e InternalGetDimensionByCheckpointResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sInternalGetDimensionByCheckpointResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = InternalGetDimensionByCheckpointResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = InternalGetDimensionByCheckpointResponseValidationError{}

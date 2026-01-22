@@ -22,6 +22,18 @@ service SubscriptionInternalService {
   rpc InternalGetSubscriptionStats(InternalGetSubscriptionStatsRequest) returns (InternalGetSubscriptionStatsResponse);
   // InternalGetSubscriptionStatsByProductCode 通过产品code获取订阅状态
   rpc InternalGetSubscriptionStatsByProductCode(InternalGetSubscriptionStatsByProductCodeRequest) returns (InternalGetSubscriptionStatsByProductCodeResponse);
+
+
+  // InternalCheckAndUseQuota 检查并使用配额
+  // 检查点 → 维度 → 检查配额 → 使用成功则 +1
+  rpc InternalCheckAndUseQuota(InternalCheckAndUseQuotaRequest) returns (InternalCheckAndUseQuotaResponse);
+
+  // InternalReleaseQuota 释放配额
+  // 删除资源时调用，quota_used -1
+  rpc InternalReleaseQuota(InternalReleaseQuotaRequest) returns (InternalReleaseQuotaResponse);
+
+  // InternalGetQuotaUsage 查询配额使用情况
+  rpc InternalGetQuotaUsage(InternalGetQuotaUsageRequest) returns (InternalGetQuotaUsageResponse);
 }
 
 // 订阅状态枚举
@@ -68,6 +80,21 @@ enum InternalOrderStatus {
   INTERNAL_ORDER_STATUS_CANCELLED = 3;   // 已取消
   INTERNAL_ORDER_STATUS_REFUNDED = 4;    // 已退款
   INTERNAL_ORDER_STATUS_FAILED = 5;      // 支付失败
+}
+// 配额错误码
+enum InternalQuotaErrorCode {
+  // 未知错误
+  INTERNAL_QUOTA_ERROR_UNKNOWN = 0;
+  // 配额不足
+  INTERNAL_QUOTA_ERROR_EXCEEDED = 1;
+  // 订阅不存在
+  INTERNAL_QUOTA_ERROR_SUBSCRIPTION_NOT_FOUND = 2;
+  // 维度不存在
+  INTERNAL_QUOTA_ERROR_DIMENSION_NOT_FOUND = 3;
+  // 检查点未配置
+  INTERNAL_QUOTA_ERROR_CHECKPOINT_NOT_FOUND = 4;
+  // 订阅已过期
+  INTERNAL_QUOTA_ERROR_SUBSCRIPTION_EXPIRED = 5;
 }
 
 // 订阅信息
@@ -237,4 +264,103 @@ message InternalGetSubscriptionStatsByProductCodeRequest {
 message InternalGetSubscriptionStatsByProductCodeResponse {
   int32 active_count = 1 [json_name = "activeCount"];                         // 已订阅数量
   int32 trial_count = 2 [json_name = "trialCount"];                           // 试用中数量
+}
+
+
+
+
+// InternalCheckAndUseQuotaRequest 检查并使用配额请求
+message InternalCheckAndUseQuotaRequest {
+  // 租户编码（必填）
+  string tenant_code = 1 [json_name = "tenantCode"];
+  // 产品编码（必填）
+  string product_code = 2 [json_name = "productCode"];
+  // 维度键（必填），如 "goods_count"
+  string dimension_key = 3 [json_name = "dimensionKey"];
+  // 使用数量，默认为 1
+  int32 amount = 4 [json_name = "amount"];
+}
+
+// InternalCheckAndUseQuotaResponse 检查并使用配额响应
+message InternalCheckAndUseQuotaResponse {
+  // 是否成功
+  bool success = 1 [json_name = "success"];
+  // 维度键
+  string dimension_key = 2 [json_name = "dimensionKey"];
+  // 配额上限
+  int32 quota_limit = 3 [json_name = "quotaLimit"];
+  // 操作前已用量
+  int32 quota_used_before = 4 [json_name = "quotaUsedBefore"];
+  // 操作后已用量
+  int32 quota_used_after = 5 [json_name = "quotaUsedAfter"];
+  // 剩余配额
+  int32 quota_remaining = 6 [json_name = "quotaRemaining"];
+  // 是否无限制
+  bool is_unlimited = 7 [json_name = "isUnlimited"];
+  // 错误信息（失败时）
+  string error_message = 8 [json_name = "errorMessage"];
+  // 错误码
+  InternalQuotaErrorCode error_code = 9 [json_name = "errorCode"];
+}
+
+// InternalReleaseQuotaRequest 释放配额请求
+message InternalReleaseQuotaRequest {
+  // 租户编码（必填）
+  string tenant_code = 1 [json_name = "tenantCode"];
+  // 产品编码（必填）
+  string product_code = 2 [json_name = "productCode"];
+  // 维度键（必填），如 "goods_count"
+  string dimension_key = 3 [json_name = "dimensionKey"];
+  // 释放数量，默认为 1
+  int32 amount = 4 [json_name = "amount"];
+}
+
+// InternalReleaseQuotaResponse 释放配额响应
+message InternalReleaseQuotaResponse {
+  // 是否成功
+  bool success = 1 [json_name = "success"];
+  // 维度键
+  string dimension_key = 2 [json_name = "dimensionKey"];
+  // 释放前已用量
+  int32 quota_used_before = 3 [json_name = "quotaUsedBefore"];
+  // 释放后已用量
+  int32 quota_used_after = 4 [json_name = "quotaUsedAfter"];
+  // 错误信息
+  string error_message = 5 [json_name = "errorMessage"];
+}
+
+// InternalGetQuotaUsageRequest 查询配额使用情况请求
+message InternalGetQuotaUsageRequest {
+  // 租户编码（必填）
+  string tenant_code = 1 [json_name = "tenantCode"];
+  // 产品编码（必填）
+  string product_code = 2 [json_name = "productCode"];
+  // 维度键（可选，不填则返回所有维度）
+  optional string dimension_key = 3 [json_name = "dimensionKey"];
+}
+
+// InternalGetQuotaUsageResponse 查询配额使用情况响应
+message InternalGetQuotaUsageResponse {
+  // 订阅编码
+  string subscription_code = 1 [json_name = "subscriptionCode"];
+  // 配额使用列表
+  repeated InternalQuotaUsageItem usages = 2 [json_name = "usages"];
+}
+
+// InternalQuotaUsageItem 配额使用项
+message InternalQuotaUsageItem {
+  // 维度键
+  string dimension_key = 1 [json_name = "dimensionKey"];
+  // 配额上限
+  int32 quota_limit = 2 [json_name = "quotaLimit"];
+  // 已使用量
+  int32 quota_used = 3 [json_name = "quotaUsed"];
+  // 剩余量
+  int32 quota_remaining = 4 [json_name = "quotaRemaining"];
+  // 是否无限制
+  bool is_unlimited = 5 [json_name = "isUnlimited"];
+  // 使用百分比
+  double usage_percentage = 6 [json_name = "usagePercentage"];
+  // 单位
+  optional string unit = 7 [json_name = "unit"];
 }

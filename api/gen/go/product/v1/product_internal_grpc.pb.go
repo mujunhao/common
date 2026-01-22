@@ -19,11 +19,12 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	ProductInternalService_InternalGetPlan_FullMethodName            = "/api.product.v1.ProductInternalService/InternalGetPlan"
-	ProductInternalService_InternalMerchantGetPlan_FullMethodName    = "/api.product.v1.ProductInternalService/InternalMerchantGetPlan"
-	ProductInternalService_InternalListPricingRules_FullMethodName   = "/api.product.v1.ProductInternalService/InternalListPricingRules"
-	ProductInternalService_InternalGetProduct_FullMethodName         = "/api.product.v1.ProductInternalService/InternalGetProduct"
-	ProductInternalService_InternalMerchantGetProduct_FullMethodName = "/api.product.v1.ProductInternalService/InternalMerchantGetProduct"
+	ProductInternalService_InternalGetPlan_FullMethodName                  = "/api.product.v1.ProductInternalService/InternalGetPlan"
+	ProductInternalService_InternalMerchantGetPlan_FullMethodName          = "/api.product.v1.ProductInternalService/InternalMerchantGetPlan"
+	ProductInternalService_InternalListPricingRules_FullMethodName         = "/api.product.v1.ProductInternalService/InternalListPricingRules"
+	ProductInternalService_InternalGetProduct_FullMethodName               = "/api.product.v1.ProductInternalService/InternalGetProduct"
+	ProductInternalService_InternalMerchantGetProduct_FullMethodName       = "/api.product.v1.ProductInternalService/InternalMerchantGetProduct"
+	ProductInternalService_InternalGetDimensionByCheckpoint_FullMethodName = "/api.product.v1.ProductInternalService/InternalGetDimensionByCheckpoint"
 )
 
 // ProductInternalServiceClient is the client API for ProductInternalService service.
@@ -40,6 +41,8 @@ type ProductInternalServiceClient interface {
 	InternalGetProduct(ctx context.Context, in *InternalGetProductRequest, opts ...grpc.CallOption) (*InternalGetProductResponse, error)
 	// 商户获取产品详情
 	InternalMerchantGetProduct(ctx context.Context, in *InternalMerchantGetProductRequest, opts ...grpc.CallOption) (*InternalMerchantGetProductResponse, error)
+	// 通过检查点获取维度键（配额系统使用）
+	InternalGetDimensionByCheckpoint(ctx context.Context, in *InternalGetDimensionByCheckpointRequest, opts ...grpc.CallOption) (*InternalGetDimensionByCheckpointResponse, error)
 }
 
 type productInternalServiceClient struct {
@@ -100,6 +103,16 @@ func (c *productInternalServiceClient) InternalMerchantGetProduct(ctx context.Co
 	return out, nil
 }
 
+func (c *productInternalServiceClient) InternalGetDimensionByCheckpoint(ctx context.Context, in *InternalGetDimensionByCheckpointRequest, opts ...grpc.CallOption) (*InternalGetDimensionByCheckpointResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(InternalGetDimensionByCheckpointResponse)
+	err := c.cc.Invoke(ctx, ProductInternalService_InternalGetDimensionByCheckpoint_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ProductInternalServiceServer is the server API for ProductInternalService service.
 // All implementations must embed UnimplementedProductInternalServiceServer
 // for forward compatibility.
@@ -114,6 +127,8 @@ type ProductInternalServiceServer interface {
 	InternalGetProduct(context.Context, *InternalGetProductRequest) (*InternalGetProductResponse, error)
 	// 商户获取产品详情
 	InternalMerchantGetProduct(context.Context, *InternalMerchantGetProductRequest) (*InternalMerchantGetProductResponse, error)
+	// 通过检查点获取维度键（配额系统使用）
+	InternalGetDimensionByCheckpoint(context.Context, *InternalGetDimensionByCheckpointRequest) (*InternalGetDimensionByCheckpointResponse, error)
 	mustEmbedUnimplementedProductInternalServiceServer()
 }
 
@@ -138,6 +153,9 @@ func (UnimplementedProductInternalServiceServer) InternalGetProduct(context.Cont
 }
 func (UnimplementedProductInternalServiceServer) InternalMerchantGetProduct(context.Context, *InternalMerchantGetProductRequest) (*InternalMerchantGetProductResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method InternalMerchantGetProduct not implemented")
+}
+func (UnimplementedProductInternalServiceServer) InternalGetDimensionByCheckpoint(context.Context, *InternalGetDimensionByCheckpointRequest) (*InternalGetDimensionByCheckpointResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method InternalGetDimensionByCheckpoint not implemented")
 }
 func (UnimplementedProductInternalServiceServer) mustEmbedUnimplementedProductInternalServiceServer() {
 }
@@ -251,6 +269,24 @@ func _ProductInternalService_InternalMerchantGetProduct_Handler(srv interface{},
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ProductInternalService_InternalGetDimensionByCheckpoint_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InternalGetDimensionByCheckpointRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductInternalServiceServer).InternalGetDimensionByCheckpoint(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ProductInternalService_InternalGetDimensionByCheckpoint_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductInternalServiceServer).InternalGetDimensionByCheckpoint(ctx, req.(*InternalGetDimensionByCheckpointRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ProductInternalService_ServiceDesc is the grpc.ServiceDesc for ProductInternalService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -277,6 +313,10 @@ var ProductInternalService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "InternalMerchantGetProduct",
 			Handler:    _ProductInternalService_InternalMerchantGetProduct_Handler,
+		},
+		{
+			MethodName: "InternalGetDimensionByCheckpoint",
+			Handler:    _ProductInternalService_InternalGetDimensionByCheckpoint_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

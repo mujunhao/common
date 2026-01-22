@@ -2639,3 +2639,829 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = InternalGetSubscriptionStatsByProductCodeResponseValidationError{}
+
+// Validate checks the field values on InternalCheckAndUseQuotaRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *InternalCheckAndUseQuotaRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on InternalCheckAndUseQuotaRequest with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// InternalCheckAndUseQuotaRequestMultiError, or nil if none found.
+func (m *InternalCheckAndUseQuotaRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *InternalCheckAndUseQuotaRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for TenantCode
+
+	// no validation rules for ProductCode
+
+	// no validation rules for DimensionKey
+
+	// no validation rules for Amount
+
+	if len(errors) > 0 {
+		return InternalCheckAndUseQuotaRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// InternalCheckAndUseQuotaRequestMultiError is an error wrapping multiple
+// validation errors returned by InternalCheckAndUseQuotaRequest.ValidateAll()
+// if the designated constraints aren't met.
+type InternalCheckAndUseQuotaRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m InternalCheckAndUseQuotaRequestMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m InternalCheckAndUseQuotaRequestMultiError) AllErrors() []error { return m }
+
+// InternalCheckAndUseQuotaRequestValidationError is the validation error
+// returned by InternalCheckAndUseQuotaRequest.Validate if the designated
+// constraints aren't met.
+type InternalCheckAndUseQuotaRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e InternalCheckAndUseQuotaRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e InternalCheckAndUseQuotaRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e InternalCheckAndUseQuotaRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e InternalCheckAndUseQuotaRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e InternalCheckAndUseQuotaRequestValidationError) ErrorName() string {
+	return "InternalCheckAndUseQuotaRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e InternalCheckAndUseQuotaRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sInternalCheckAndUseQuotaRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = InternalCheckAndUseQuotaRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = InternalCheckAndUseQuotaRequestValidationError{}
+
+// Validate checks the field values on InternalCheckAndUseQuotaResponse with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the first error encountered is returned, or nil if there are
+// no violations.
+func (m *InternalCheckAndUseQuotaResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on InternalCheckAndUseQuotaResponse with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// InternalCheckAndUseQuotaResponseMultiError, or nil if none found.
+func (m *InternalCheckAndUseQuotaResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *InternalCheckAndUseQuotaResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Success
+
+	// no validation rules for DimensionKey
+
+	// no validation rules for QuotaLimit
+
+	// no validation rules for QuotaUsedBefore
+
+	// no validation rules for QuotaUsedAfter
+
+	// no validation rules for QuotaRemaining
+
+	// no validation rules for IsUnlimited
+
+	// no validation rules for ErrorMessage
+
+	// no validation rules for ErrorCode
+
+	if len(errors) > 0 {
+		return InternalCheckAndUseQuotaResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// InternalCheckAndUseQuotaResponseMultiError is an error wrapping multiple
+// validation errors returned by
+// InternalCheckAndUseQuotaResponse.ValidateAll() if the designated
+// constraints aren't met.
+type InternalCheckAndUseQuotaResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m InternalCheckAndUseQuotaResponseMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m InternalCheckAndUseQuotaResponseMultiError) AllErrors() []error { return m }
+
+// InternalCheckAndUseQuotaResponseValidationError is the validation error
+// returned by InternalCheckAndUseQuotaResponse.Validate if the designated
+// constraints aren't met.
+type InternalCheckAndUseQuotaResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e InternalCheckAndUseQuotaResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e InternalCheckAndUseQuotaResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e InternalCheckAndUseQuotaResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e InternalCheckAndUseQuotaResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e InternalCheckAndUseQuotaResponseValidationError) ErrorName() string {
+	return "InternalCheckAndUseQuotaResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e InternalCheckAndUseQuotaResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sInternalCheckAndUseQuotaResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = InternalCheckAndUseQuotaResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = InternalCheckAndUseQuotaResponseValidationError{}
+
+// Validate checks the field values on InternalReleaseQuotaRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *InternalReleaseQuotaRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on InternalReleaseQuotaRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// InternalReleaseQuotaRequestMultiError, or nil if none found.
+func (m *InternalReleaseQuotaRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *InternalReleaseQuotaRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for TenantCode
+
+	// no validation rules for ProductCode
+
+	// no validation rules for DimensionKey
+
+	// no validation rules for Amount
+
+	if len(errors) > 0 {
+		return InternalReleaseQuotaRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// InternalReleaseQuotaRequestMultiError is an error wrapping multiple
+// validation errors returned by InternalReleaseQuotaRequest.ValidateAll() if
+// the designated constraints aren't met.
+type InternalReleaseQuotaRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m InternalReleaseQuotaRequestMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m InternalReleaseQuotaRequestMultiError) AllErrors() []error { return m }
+
+// InternalReleaseQuotaRequestValidationError is the validation error returned
+// by InternalReleaseQuotaRequest.Validate if the designated constraints
+// aren't met.
+type InternalReleaseQuotaRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e InternalReleaseQuotaRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e InternalReleaseQuotaRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e InternalReleaseQuotaRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e InternalReleaseQuotaRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e InternalReleaseQuotaRequestValidationError) ErrorName() string {
+	return "InternalReleaseQuotaRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e InternalReleaseQuotaRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sInternalReleaseQuotaRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = InternalReleaseQuotaRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = InternalReleaseQuotaRequestValidationError{}
+
+// Validate checks the field values on InternalReleaseQuotaResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *InternalReleaseQuotaResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on InternalReleaseQuotaResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// InternalReleaseQuotaResponseMultiError, or nil if none found.
+func (m *InternalReleaseQuotaResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *InternalReleaseQuotaResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Success
+
+	// no validation rules for DimensionKey
+
+	// no validation rules for QuotaUsedBefore
+
+	// no validation rules for QuotaUsedAfter
+
+	// no validation rules for ErrorMessage
+
+	if len(errors) > 0 {
+		return InternalReleaseQuotaResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// InternalReleaseQuotaResponseMultiError is an error wrapping multiple
+// validation errors returned by InternalReleaseQuotaResponse.ValidateAll() if
+// the designated constraints aren't met.
+type InternalReleaseQuotaResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m InternalReleaseQuotaResponseMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m InternalReleaseQuotaResponseMultiError) AllErrors() []error { return m }
+
+// InternalReleaseQuotaResponseValidationError is the validation error returned
+// by InternalReleaseQuotaResponse.Validate if the designated constraints
+// aren't met.
+type InternalReleaseQuotaResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e InternalReleaseQuotaResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e InternalReleaseQuotaResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e InternalReleaseQuotaResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e InternalReleaseQuotaResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e InternalReleaseQuotaResponseValidationError) ErrorName() string {
+	return "InternalReleaseQuotaResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e InternalReleaseQuotaResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sInternalReleaseQuotaResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = InternalReleaseQuotaResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = InternalReleaseQuotaResponseValidationError{}
+
+// Validate checks the field values on InternalGetQuotaUsageRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *InternalGetQuotaUsageRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on InternalGetQuotaUsageRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// InternalGetQuotaUsageRequestMultiError, or nil if none found.
+func (m *InternalGetQuotaUsageRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *InternalGetQuotaUsageRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for TenantCode
+
+	// no validation rules for ProductCode
+
+	if m.DimensionKey != nil {
+		// no validation rules for DimensionKey
+	}
+
+	if len(errors) > 0 {
+		return InternalGetQuotaUsageRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// InternalGetQuotaUsageRequestMultiError is an error wrapping multiple
+// validation errors returned by InternalGetQuotaUsageRequest.ValidateAll() if
+// the designated constraints aren't met.
+type InternalGetQuotaUsageRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m InternalGetQuotaUsageRequestMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m InternalGetQuotaUsageRequestMultiError) AllErrors() []error { return m }
+
+// InternalGetQuotaUsageRequestValidationError is the validation error returned
+// by InternalGetQuotaUsageRequest.Validate if the designated constraints
+// aren't met.
+type InternalGetQuotaUsageRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e InternalGetQuotaUsageRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e InternalGetQuotaUsageRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e InternalGetQuotaUsageRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e InternalGetQuotaUsageRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e InternalGetQuotaUsageRequestValidationError) ErrorName() string {
+	return "InternalGetQuotaUsageRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e InternalGetQuotaUsageRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sInternalGetQuotaUsageRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = InternalGetQuotaUsageRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = InternalGetQuotaUsageRequestValidationError{}
+
+// Validate checks the field values on InternalGetQuotaUsageResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *InternalGetQuotaUsageResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on InternalGetQuotaUsageResponse with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// InternalGetQuotaUsageResponseMultiError, or nil if none found.
+func (m *InternalGetQuotaUsageResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *InternalGetQuotaUsageResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for SubscriptionCode
+
+	for idx, item := range m.GetUsages() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, InternalGetQuotaUsageResponseValidationError{
+						field:  fmt.Sprintf("Usages[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, InternalGetQuotaUsageResponseValidationError{
+						field:  fmt.Sprintf("Usages[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return InternalGetQuotaUsageResponseValidationError{
+					field:  fmt.Sprintf("Usages[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return InternalGetQuotaUsageResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// InternalGetQuotaUsageResponseMultiError is an error wrapping multiple
+// validation errors returned by InternalGetQuotaUsageResponse.ValidateAll()
+// if the designated constraints aren't met.
+type InternalGetQuotaUsageResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m InternalGetQuotaUsageResponseMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m InternalGetQuotaUsageResponseMultiError) AllErrors() []error { return m }
+
+// InternalGetQuotaUsageResponseValidationError is the validation error
+// returned by InternalGetQuotaUsageResponse.Validate if the designated
+// constraints aren't met.
+type InternalGetQuotaUsageResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e InternalGetQuotaUsageResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e InternalGetQuotaUsageResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e InternalGetQuotaUsageResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e InternalGetQuotaUsageResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e InternalGetQuotaUsageResponseValidationError) ErrorName() string {
+	return "InternalGetQuotaUsageResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e InternalGetQuotaUsageResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sInternalGetQuotaUsageResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = InternalGetQuotaUsageResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = InternalGetQuotaUsageResponseValidationError{}
+
+// Validate checks the field values on InternalQuotaUsageItem with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *InternalQuotaUsageItem) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on InternalQuotaUsageItem with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// InternalQuotaUsageItemMultiError, or nil if none found.
+func (m *InternalQuotaUsageItem) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *InternalQuotaUsageItem) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for DimensionKey
+
+	// no validation rules for QuotaLimit
+
+	// no validation rules for QuotaUsed
+
+	// no validation rules for QuotaRemaining
+
+	// no validation rules for IsUnlimited
+
+	// no validation rules for UsagePercentage
+
+	if m.Unit != nil {
+		// no validation rules for Unit
+	}
+
+	if len(errors) > 0 {
+		return InternalQuotaUsageItemMultiError(errors)
+	}
+
+	return nil
+}
+
+// InternalQuotaUsageItemMultiError is an error wrapping multiple validation
+// errors returned by InternalQuotaUsageItem.ValidateAll() if the designated
+// constraints aren't met.
+type InternalQuotaUsageItemMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m InternalQuotaUsageItemMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m InternalQuotaUsageItemMultiError) AllErrors() []error { return m }
+
+// InternalQuotaUsageItemValidationError is the validation error returned by
+// InternalQuotaUsageItem.Validate if the designated constraints aren't met.
+type InternalQuotaUsageItemValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e InternalQuotaUsageItemValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e InternalQuotaUsageItemValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e InternalQuotaUsageItemValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e InternalQuotaUsageItemValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e InternalQuotaUsageItemValidationError) ErrorName() string {
+	return "InternalQuotaUsageItemValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e InternalQuotaUsageItemValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sInternalQuotaUsageItem.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = InternalQuotaUsageItemValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = InternalQuotaUsageItemValidationError{}

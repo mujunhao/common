@@ -3,6 +3,7 @@ package subscribe
 import (
 	"context"
 	"fmt"
+
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/registry"
 	v1 "github.com/heyinLab/common/api/gen/go/subscribe/v1"
@@ -85,6 +86,12 @@ func (c *Client) Close() error {
 
 func (c *Client) SubscribeClient() *SubscribeClient {
 	return c.subscribeClient
+}
+
+// NewQuotaClientWithProduct 创建绑定产品的配额客户端
+// productCode: 产品编码，如 "points-mall"
+func (c *Client) NewQuotaClientWithProduct(productCode string) *QuotaClient {
+	return NewQuotaClient(c.conn, productCode, c.config, c.logger)
 }
 
 type SubscribeClient struct {
