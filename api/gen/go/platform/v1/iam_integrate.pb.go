@@ -1381,6 +1381,177 @@ func (x *CListAnnouncementsResponse) GetItems() []*CAnnouncement {
 	return nil
 }
 
+type PushAnnouncementsReadRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// 推送内容
+	Items         []*PushAnnouncementsRead `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PushAnnouncementsReadRequest) Reset() {
+	*x = PushAnnouncementsReadRequest{}
+	mi := &file_platform_v1_iam_integrate_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PushAnnouncementsReadRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PushAnnouncementsReadRequest) ProtoMessage() {}
+
+func (x *PushAnnouncementsReadRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_platform_v1_iam_integrate_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PushAnnouncementsReadRequest.ProtoReflect.Descriptor instead.
+func (*PushAnnouncementsReadRequest) Descriptor() ([]byte, []int) {
+	return file_platform_v1_iam_integrate_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *PushAnnouncementsReadRequest) GetItems() []*PushAnnouncementsRead {
+	if x != nil {
+		return x.Items
+	}
+	return nil
+}
+
+type PushAnnouncementsRead struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// 公告编码
+	Code string `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
+	// 阅读数
+	ReadCount int64 `protobuf:"varint,2,opt,name=read_count,json=readCount,proto3" json:"read_count,omitempty"`
+	// 阅读用户数
+	ReadUserCount int64 `protobuf:"varint,3,opt,name=read_user_count,json=readUserCount,proto3" json:"read_user_count,omitempty"`
+	// 确认数
+	ConfirmCount int64 `protobuf:"varint,4,opt,name=confirm_count,json=confirmCount,proto3" json:"confirm_count,omitempty"`
+	// 阅读率
+	ReadRate string `protobuf:"bytes,5,opt,name=read_rate,json=readRate,proto3" json:"read_rate,omitempty"`
+	// 确认率
+	ConfirmRate   string `protobuf:"bytes,6,opt,name=confirm_rate,json=confirmRate,proto3" json:"confirm_rate,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PushAnnouncementsRead) Reset() {
+	*x = PushAnnouncementsRead{}
+	mi := &file_platform_v1_iam_integrate_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PushAnnouncementsRead) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PushAnnouncementsRead) ProtoMessage() {}
+
+func (x *PushAnnouncementsRead) ProtoReflect() protoreflect.Message {
+	mi := &file_platform_v1_iam_integrate_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PushAnnouncementsRead.ProtoReflect.Descriptor instead.
+func (*PushAnnouncementsRead) Descriptor() ([]byte, []int) {
+	return file_platform_v1_iam_integrate_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *PushAnnouncementsRead) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
+func (x *PushAnnouncementsRead) GetReadCount() int64 {
+	if x != nil {
+		return x.ReadCount
+	}
+	return 0
+}
+
+func (x *PushAnnouncementsRead) GetReadUserCount() int64 {
+	if x != nil {
+		return x.ReadUserCount
+	}
+	return 0
+}
+
+func (x *PushAnnouncementsRead) GetConfirmCount() int64 {
+	if x != nil {
+		return x.ConfirmCount
+	}
+	return 0
+}
+
+func (x *PushAnnouncementsRead) GetReadRate() string {
+	if x != nil {
+		return x.ReadRate
+	}
+	return ""
+}
+
+func (x *PushAnnouncementsRead) GetConfirmRate() string {
+	if x != nil {
+		return x.ConfirmRate
+	}
+	return ""
+}
+
+type PushAnnouncementsReadResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PushAnnouncementsReadResponse) Reset() {
+	*x = PushAnnouncementsReadResponse{}
+	mi := &file_platform_v1_iam_integrate_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PushAnnouncementsReadResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PushAnnouncementsReadResponse) ProtoMessage() {}
+
+func (x *PushAnnouncementsReadResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_platform_v1_iam_integrate_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PushAnnouncementsReadResponse.ProtoReflect.Descriptor instead.
+func (*PushAnnouncementsReadResponse) Descriptor() ([]byte, []int) {
+	return file_platform_v1_iam_integrate_proto_rawDescGZIP(), []int{12}
+}
+
 var File_platform_v1_iam_integrate_proto protoreflect.FileDescriptor
 
 const file_platform_v1_iam_integrate_proto_rawDesc = "" +
@@ -1573,7 +1744,18 @@ const file_platform_v1_iam_integrate_proto_rawDesc = "" +
 	"\x06_title\"k\n" +
 	"\x1aCListAnnouncementsResponse\x12\x14\n" +
 	"\x05total\x18\x01 \x01(\x03R\x05total\x127\n" +
-	"\x05items\x18\x02 \x03(\v2!.common.platform.v1.CAnnouncementR\x05items*\\\n" +
+	"\x05items\x18\x02 \x03(\v2!.common.platform.v1.CAnnouncementR\x05items\"_\n" +
+	"\x1cPushAnnouncementsReadRequest\x12?\n" +
+	"\x05items\x18\x01 \x03(\v2).common.platform.v1.PushAnnouncementsReadR\x05items\"\xd7\x01\n" +
+	"\x15PushAnnouncementsRead\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\tR\x04code\x12\x1d\n" +
+	"\n" +
+	"read_count\x18\x02 \x01(\x03R\treadCount\x12&\n" +
+	"\x0fread_user_count\x18\x03 \x01(\x03R\rreadUserCount\x12#\n" +
+	"\rconfirm_count\x18\x04 \x01(\x03R\fconfirmCount\x12\x1b\n" +
+	"\tread_rate\x18\x05 \x01(\tR\breadRate\x12!\n" +
+	"\fconfirm_rate\x18\x06 \x01(\tR\vconfirmRate\"\x1f\n" +
+	"\x1dPushAnnouncementsReadResponse*\\\n" +
 	"\tCPriority\x12\x10\n" +
 	"\fPRIORITY_LOW\x10\x00\x12\x15\n" +
 	"\x11PRIORITY_ORDINARY\x10\x01\x12\x11\n" +
@@ -1595,11 +1777,12 @@ const file_platform_v1_iam_integrate_proto_rawDesc = "" +
 	"\x1bANNOUNCEMENT_STATUS_PENDING\x10\x01\x12 \n" +
 	"\x1cANNOUNCEMENT_STATUS_RELEASED\x10\x02\x12\x1f\n" +
 	"\x1bANNOUNCEMENT_STATUS_EXPIRED\x10\x03\x12!\n" +
-	"\x1dANNOUNCEMENT_STATUS_WITHDRAWN\x10\x042\xa1\x03\n" +
+	"\x1dANNOUNCEMENT_STATUS_WITHDRAWN\x10\x042\x9f\x04\n" +
 	"\x12PlatformIamService\x12\x85\x01\n" +
 	"\x18GetTenantPermissionsTree\x123.common.platform.v1.GetTenantPermissionsTreeRequest\x1a4.common.platform.v1.GetTenantPermissionsTreeResponse\x12\x8e\x01\n" +
 	"\x1bGetPermissionCodesByProduct\x126.common.platform.v1.GetPermissionCodesByProductRequest\x1a7.common.platform.v1.GetPermissionCodesByProductResponse\x12r\n" +
-	"\x11ListAnnouncements\x12-.common.platform.v1.CListAnnouncementsRequest\x1a..common.platform.v1.CListAnnouncementsResponseB\xd3\x01\n" +
+	"\x11ListAnnouncements\x12-.common.platform.v1.CListAnnouncementsRequest\x1a..common.platform.v1.CListAnnouncementsResponse\x12|\n" +
+	"\x15PushAnnouncementsRead\x120.common.platform.v1.PushAnnouncementsReadRequest\x1a1.common.platform.v1.PushAnnouncementsReadResponseB\xd3\x01\n" +
 	"\x16com.common.platform.v1B\x11IamIntegrateProtoP\x01Z<github.com/heyinLab/common/api/gen/go/platform/v1;platformv1\xa2\x02\x03CPX\xaa\x02\x12Common.Platform.V1\xca\x02\x12Common\\Platform\\V1\xe2\x02\x1eCommon\\Platform\\V1\\GPBMetadata\xea\x02\x14Common::Platform::V1b\x06proto3"
 
 var (
@@ -1615,7 +1798,7 @@ func file_platform_v1_iam_integrate_proto_rawDescGZIP() []byte {
 }
 
 var file_platform_v1_iam_integrate_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
-var file_platform_v1_iam_integrate_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_platform_v1_iam_integrate_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
 var file_platform_v1_iam_integrate_proto_goTypes = []any{
 	(CPriority)(0),                              // 0: common.platform.v1.CPriority
 	(CAnnouncementType)(0),                      // 1: common.platform.v1.CAnnouncementType
@@ -1631,43 +1814,49 @@ var file_platform_v1_iam_integrate_proto_goTypes = []any{
 	(*GetPermissionCodesByProductResponse)(nil), // 11: common.platform.v1.GetPermissionCodesByProductResponse
 	(*CListAnnouncementsRequest)(nil),           // 12: common.platform.v1.CListAnnouncementsRequest
 	(*CListAnnouncementsResponse)(nil),          // 13: common.platform.v1.CListAnnouncementsResponse
-	(*timestamppb.Timestamp)(nil),               // 14: google.protobuf.Timestamp
-	(*structpb.Struct)(nil),                     // 15: google.protobuf.Struct
+	(*PushAnnouncementsReadRequest)(nil),        // 14: common.platform.v1.PushAnnouncementsReadRequest
+	(*PushAnnouncementsRead)(nil),               // 15: common.platform.v1.PushAnnouncementsRead
+	(*PushAnnouncementsReadResponse)(nil),       // 16: common.platform.v1.PushAnnouncementsReadResponse
+	(*timestamppb.Timestamp)(nil),               // 17: google.protobuf.Timestamp
+	(*structpb.Struct)(nil),                     // 18: google.protobuf.Struct
 }
 var file_platform_v1_iam_integrate_proto_depIdxs = []int32{
 	5,  // 0: common.platform.v1.Permission.children:type_name -> common.platform.v1.Permission
 	4,  // 1: common.platform.v1.Permission.meta:type_name -> common.platform.v1.RouteMeta
-	14, // 2: common.platform.v1.Permission.create_time:type_name -> google.protobuf.Timestamp
-	14, // 3: common.platform.v1.Permission.update_time:type_name -> google.protobuf.Timestamp
+	17, // 2: common.platform.v1.Permission.create_time:type_name -> google.protobuf.Timestamp
+	17, // 3: common.platform.v1.Permission.update_time:type_name -> google.protobuf.Timestamp
 	4,  // 4: common.platform.v1.TenantPermissionTreeNode.meta:type_name -> common.platform.v1.RouteMeta
 	6,  // 5: common.platform.v1.TenantPermissionTreeNode.children:type_name -> common.platform.v1.TenantPermissionTreeNode
 	6,  // 6: common.platform.v1.GetTenantPermissionsTreeResponse.tree:type_name -> common.platform.v1.TenantPermissionTreeNode
-	15, // 7: common.platform.v1.CAnnouncement.title:type_name -> google.protobuf.Struct
+	18, // 7: common.platform.v1.CAnnouncement.title:type_name -> google.protobuf.Struct
 	0,  // 8: common.platform.v1.CAnnouncement.priority:type_name -> common.platform.v1.CPriority
 	1,  // 9: common.platform.v1.CAnnouncement.type:type_name -> common.platform.v1.CAnnouncementType
-	15, // 10: common.platform.v1.CAnnouncement.summary:type_name -> google.protobuf.Struct
-	15, // 11: common.platform.v1.CAnnouncement.content:type_name -> google.protobuf.Struct
+	18, // 10: common.platform.v1.CAnnouncement.summary:type_name -> google.protobuf.Struct
+	18, // 11: common.platform.v1.CAnnouncement.content:type_name -> google.protobuf.Struct
 	2,  // 12: common.platform.v1.CAnnouncement.scope:type_name -> common.platform.v1.CAnnouncementScope
-	14, // 13: common.platform.v1.CAnnouncement.release_time:type_name -> google.protobuf.Timestamp
-	14, // 14: common.platform.v1.CAnnouncement.expire_time:type_name -> google.protobuf.Timestamp
-	14, // 15: common.platform.v1.CAnnouncement.create_time:type_name -> google.protobuf.Timestamp
-	14, // 16: common.platform.v1.CAnnouncement.update_time:type_name -> google.protobuf.Timestamp
+	17, // 13: common.platform.v1.CAnnouncement.release_time:type_name -> google.protobuf.Timestamp
+	17, // 14: common.platform.v1.CAnnouncement.expire_time:type_name -> google.protobuf.Timestamp
+	17, // 15: common.platform.v1.CAnnouncement.create_time:type_name -> google.protobuf.Timestamp
+	17, // 16: common.platform.v1.CAnnouncement.update_time:type_name -> google.protobuf.Timestamp
 	3,  // 17: common.platform.v1.CAnnouncement.status:type_name -> common.platform.v1.CAnnouncementStatus
 	0,  // 18: common.platform.v1.CListAnnouncementsRequest.priority:type_name -> common.platform.v1.CPriority
 	1,  // 19: common.platform.v1.CListAnnouncementsRequest.type:type_name -> common.platform.v1.CAnnouncementType
 	3,  // 20: common.platform.v1.CListAnnouncementsRequest.status:type_name -> common.platform.v1.CAnnouncementStatus
 	9,  // 21: common.platform.v1.CListAnnouncementsResponse.items:type_name -> common.platform.v1.CAnnouncement
-	7,  // 22: common.platform.v1.PlatformIamService.GetTenantPermissionsTree:input_type -> common.platform.v1.GetTenantPermissionsTreeRequest
-	10, // 23: common.platform.v1.PlatformIamService.GetPermissionCodesByProduct:input_type -> common.platform.v1.GetPermissionCodesByProductRequest
-	12, // 24: common.platform.v1.PlatformIamService.ListAnnouncements:input_type -> common.platform.v1.CListAnnouncementsRequest
-	8,  // 25: common.platform.v1.PlatformIamService.GetTenantPermissionsTree:output_type -> common.platform.v1.GetTenantPermissionsTreeResponse
-	11, // 26: common.platform.v1.PlatformIamService.GetPermissionCodesByProduct:output_type -> common.platform.v1.GetPermissionCodesByProductResponse
-	13, // 27: common.platform.v1.PlatformIamService.ListAnnouncements:output_type -> common.platform.v1.CListAnnouncementsResponse
-	25, // [25:28] is the sub-list for method output_type
-	22, // [22:25] is the sub-list for method input_type
-	22, // [22:22] is the sub-list for extension type_name
-	22, // [22:22] is the sub-list for extension extendee
-	0,  // [0:22] is the sub-list for field type_name
+	15, // 22: common.platform.v1.PushAnnouncementsReadRequest.items:type_name -> common.platform.v1.PushAnnouncementsRead
+	7,  // 23: common.platform.v1.PlatformIamService.GetTenantPermissionsTree:input_type -> common.platform.v1.GetTenantPermissionsTreeRequest
+	10, // 24: common.platform.v1.PlatformIamService.GetPermissionCodesByProduct:input_type -> common.platform.v1.GetPermissionCodesByProductRequest
+	12, // 25: common.platform.v1.PlatformIamService.ListAnnouncements:input_type -> common.platform.v1.CListAnnouncementsRequest
+	14, // 26: common.platform.v1.PlatformIamService.PushAnnouncementsRead:input_type -> common.platform.v1.PushAnnouncementsReadRequest
+	8,  // 27: common.platform.v1.PlatformIamService.GetTenantPermissionsTree:output_type -> common.platform.v1.GetTenantPermissionsTreeResponse
+	11, // 28: common.platform.v1.PlatformIamService.GetPermissionCodesByProduct:output_type -> common.platform.v1.GetPermissionCodesByProductResponse
+	13, // 29: common.platform.v1.PlatformIamService.ListAnnouncements:output_type -> common.platform.v1.CListAnnouncementsResponse
+	16, // 30: common.platform.v1.PlatformIamService.PushAnnouncementsRead:output_type -> common.platform.v1.PushAnnouncementsReadResponse
+	27, // [27:31] is the sub-list for method output_type
+	23, // [23:27] is the sub-list for method input_type
+	23, // [23:23] is the sub-list for extension type_name
+	23, // [23:23] is the sub-list for extension extendee
+	0,  // [0:23] is the sub-list for field type_name
 }
 
 func init() { file_platform_v1_iam_integrate_proto_init() }
@@ -1688,7 +1877,7 @@ func file_platform_v1_iam_integrate_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_platform_v1_iam_integrate_proto_rawDesc), len(file_platform_v1_iam_integrate_proto_rawDesc)),
 			NumEnums:      4,
-			NumMessages:   10,
+			NumMessages:   13,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

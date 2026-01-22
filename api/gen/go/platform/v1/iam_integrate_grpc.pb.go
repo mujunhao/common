@@ -22,6 +22,7 @@ const (
 	PlatformIamService_GetTenantPermissionsTree_FullMethodName    = "/common.platform.v1.PlatformIamService/GetTenantPermissionsTree"
 	PlatformIamService_GetPermissionCodesByProduct_FullMethodName = "/common.platform.v1.PlatformIamService/GetPermissionCodesByProduct"
 	PlatformIamService_ListAnnouncements_FullMethodName           = "/common.platform.v1.PlatformIamService/ListAnnouncements"
+	PlatformIamService_PushAnnouncementsRead_FullMethodName       = "/common.platform.v1.PlatformIamService/PushAnnouncementsRead"
 )
 
 // PlatformIamServiceClient is the client API for PlatformIamService service.
@@ -36,6 +37,8 @@ type PlatformIamServiceClient interface {
 	GetPermissionCodesByProduct(ctx context.Context, in *GetPermissionCodesByProductRequest, opts ...grpc.CallOption) (*GetPermissionCodesByProductResponse, error)
 	// 获取公告列表
 	ListAnnouncements(ctx context.Context, in *CListAnnouncementsRequest, opts ...grpc.CallOption) (*CListAnnouncementsResponse, error)
+	// Push阅读情况
+	PushAnnouncementsRead(ctx context.Context, in *PushAnnouncementsReadRequest, opts ...grpc.CallOption) (*PushAnnouncementsReadResponse, error)
 }
 
 type platformIamServiceClient struct {
@@ -76,6 +79,16 @@ func (c *platformIamServiceClient) ListAnnouncements(ctx context.Context, in *CL
 	return out, nil
 }
 
+func (c *platformIamServiceClient) PushAnnouncementsRead(ctx context.Context, in *PushAnnouncementsReadRequest, opts ...grpc.CallOption) (*PushAnnouncementsReadResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PushAnnouncementsReadResponse)
+	err := c.cc.Invoke(ctx, PlatformIamService_PushAnnouncementsRead_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PlatformIamServiceServer is the server API for PlatformIamService service.
 // All implementations must embed UnimplementedPlatformIamServiceServer
 // for forward compatibility.
@@ -88,6 +101,8 @@ type PlatformIamServiceServer interface {
 	GetPermissionCodesByProduct(context.Context, *GetPermissionCodesByProductRequest) (*GetPermissionCodesByProductResponse, error)
 	// 获取公告列表
 	ListAnnouncements(context.Context, *CListAnnouncementsRequest) (*CListAnnouncementsResponse, error)
+	// Push阅读情况
+	PushAnnouncementsRead(context.Context, *PushAnnouncementsReadRequest) (*PushAnnouncementsReadResponse, error)
 	mustEmbedUnimplementedPlatformIamServiceServer()
 }
 
@@ -106,6 +121,9 @@ func (UnimplementedPlatformIamServiceServer) GetPermissionCodesByProduct(context
 }
 func (UnimplementedPlatformIamServiceServer) ListAnnouncements(context.Context, *CListAnnouncementsRequest) (*CListAnnouncementsResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ListAnnouncements not implemented")
+}
+func (UnimplementedPlatformIamServiceServer) PushAnnouncementsRead(context.Context, *PushAnnouncementsReadRequest) (*PushAnnouncementsReadResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method PushAnnouncementsRead not implemented")
 }
 func (UnimplementedPlatformIamServiceServer) mustEmbedUnimplementedPlatformIamServiceServer() {}
 func (UnimplementedPlatformIamServiceServer) testEmbeddedByValue()                            {}
@@ -182,6 +200,24 @@ func _PlatformIamService_ListAnnouncements_Handler(srv interface{}, ctx context.
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PlatformIamService_PushAnnouncementsRead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PushAnnouncementsReadRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PlatformIamServiceServer).PushAnnouncementsRead(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PlatformIamService_PushAnnouncementsRead_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PlatformIamServiceServer).PushAnnouncementsRead(ctx, req.(*PushAnnouncementsReadRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PlatformIamService_ServiceDesc is the grpc.ServiceDesc for PlatformIamService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -200,6 +236,10 @@ var PlatformIamService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListAnnouncements",
 			Handler:    _PlatformIamService_ListAnnouncements_Handler,
+		},
+		{
+			MethodName: "PushAnnouncementsRead",
+			Handler:    _PlatformIamService_PushAnnouncementsRead_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

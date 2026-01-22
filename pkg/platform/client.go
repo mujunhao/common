@@ -327,6 +327,18 @@ func (c *IAMClient) ListAnnouncements(ctx context.Context, opt *AnnouncementOpti
 	return rsp.Items, nil
 }
 
+func (c *IAMClient) PushAnnouncementsRead(ctx context.Context, items []*v1.PushAnnouncementsRead) error {
+	if len(items) < 1 {
+		return nil
+	}
+	_, err := c.client.PushAnnouncementsRead(ctx, &v1.PushAnnouncementsReadRequest{Items: items})
+	if err != nil {
+		c.logger.WithContext(ctx).Errorf("获取更新公告阅读失败: opt=%v, error=%v", items, err)
+		return err
+	}
+	return nil
+}
+
 // ========== 辅助函数 ==========
 
 // getStringValue 获取指针字符串的值
