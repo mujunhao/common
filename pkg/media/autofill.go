@@ -539,7 +539,6 @@ func mapMapAndCollect(srcField, dstField reflect.Value, fi fieldInfo, collector 
 
 	for _, key := range srcField.MapKeys() {
 		srcElem := srcField.MapIndex(key)
-
 		// 如果目标value是指针类型，需要创建新实例
 		if fi.dstElem.Kind() == reflect.Ptr {
 			newElem := reflect.New(fi.dstElem.Elem())
@@ -577,6 +576,17 @@ func mapInterfaceToStruct(srcVal, dstVal reflect.Value, collector *idCollector) 
 		srcVal = srcVal.Elem()
 		if !srcVal.IsValid() {
 			return
+		}
+
+		// 如果String 类型 直接尝试解析
+		if srcVal.Kind() == reflect.String {
+			text := srcVal.String()
+			dstVal.SetString(text)
+			// 使用辅助函数提取所有 data-href ID（支持两种属性顺序）
+			ids := extractDataHrefIDs(text)
+			for _, id := range ids {
+				collector.add(id)
+			}
 		}
 	}
 
