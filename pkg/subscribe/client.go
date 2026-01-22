@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/go-kratos/kratos/v2/errors"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/registry"
 	v1 "github.com/heyinLab/common/api/gen/go/subscribe/v1"
@@ -14,12 +13,19 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
+// Client 订阅服务连接管理
 type Client struct {
 	config          *Config
 	conn            *grpc.ClientConn
 	logger          *log.Helper
 	subscribeClient *SubscribeClient
-	grpcClient      v1.SubscriptionInternalServiceClient
+}
+
+// SubscribeClient 订阅服务业务客户端
+type SubscribeClient struct {
+	client v1.SubscriptionInternalServiceClient
+	logger *log.Helper
+	config *Config
 }
 
 // NewClient 创建订阅服务客户端
@@ -42,10 +48,10 @@ func NewClient(config *Config) (*Client, error) {
 	}
 
 	return &Client{
-		config:     config,
-		conn:       conn,
-		logger:     logger,
-		grpcClient: v1.NewSubscriptionInternalServiceClient(conn),
+		config:          config,
+		conn:            conn,
+		logger:          logger,
+		subscribeClient: newSubscribeClient(conn, logger, config),
 	}, nil
 }
 
@@ -74,14 +80,13 @@ func NewClientWithDiscovery(config *Config, discovery registry.Discovery) (*Clie
 	logger.Infof("订阅服务客户端连接成功: endpoint=%s", config.Endpoint)
 
 	return &Client{
-		config:     config,
-		conn:       conn,
-		logger:     logger,
-		grpcClient: v1.NewSubscriptionInternalServiceClient(conn),
+		config:          config,
+		conn:            conn,
+		logger:          logger,
+		subscribeClient: newSubscribeClient(conn, logger, config),
 	}, nil
 }
 
-// Close 关闭客户端连接
 func (c *Client) Close() error {
 	if c.conn != nil {
 		return c.conn.Close()
@@ -90,12 +95,6 @@ func (c *Client) Close() error {
 }
 func (c *Client) SubscribeClient() *SubscribeClient {
 	return c.subscribeClient
-}
-
-type SubscribeClient struct {
-	client v1.SubscriptionInternalServiceClient
-	logger *log.Helper
-	config *Config
 }
 
 func newSubscribeClient(conn *grpc.ClientConn, logger *log.Helper, config *Config) *SubscribeClient {
@@ -238,6 +237,7 @@ func (c *SubscribeClient) InternalGetSubscriptionStats(ctx context.Context, tena
 
 	return resp, nil
 }
+
 func (c *SubscribeClient) InternalGetSubscriptionStatsByProductCode(ctx context.Context, productCode string) (
 	*v1.InternalGetSubscriptionStatsByProductCodeResponse, error) {
 	ctx, cancel := context.WithTimeout(ctx, c.config.Timeout)
@@ -253,37 +253,33 @@ func (c *SubscribeClient) InternalGetSubscriptionStatsByProductCode(ctx context.
 	return resp, nil
 }
 
-// QuotaResult 配额操作结果
+// QuotaResult 配额操作
 type QuotaResult struct {
-	Success         bool    // 是否成功
-	DimensionKey    string  // 维度键
-	QuotaLimit      int32   // 配额上限
-	QuotaUsed       int32   // 当前已使用量
-	QuotaUsedBefore int32   // 操作前已使用量
-	QuotaUsedAfter  int32   // 操作后已使用量
-	QuotaRemaining  int32   // 剩余配额
-	IsUnlimited     bool    // 是否无限制
-	UsagePercentage float64 // 使用百分比
-	Unit            *string // 单位
+	Success         bool                      // 操作是否成功
+	DimensionKey    string                    // 维度标识
+	QuotaLimit      int32                     // 配额上限
+	QuotaUsed       int32                     // 当前已使用量
+	QuotaUsedBefore int32                     // 操作前已使用量
+	QuotaRemaining  int32                     // 剩余配
+	IsUnlimited     bool                      // 是否无限制
+	UsagePercentage float64                   // 使用百分比
+	ErrorMessage    string                    // 错误信息
+	ErrorCode       v1.InternalQuotaErrorCode // 错误码
 }
 
 // Use 使用配额
-func (c *Client) Use(ctx context.Context, tenantCode, productCode, dimensionKey string, amount int32) (*QuotaResult, error) {
-	if amount <= 0 {
-		amount = 1
-	}
-
+func (c *SubscribeClient) Use(ctx context.Context, tenantCode, productCode, dimensionKey string, amount int32) (*QuotaResult, error) {
 	ctx, cancel := context.WithTimeout(ctx, c.config.Timeout)
 	defer cancel()
 
-	resp, err := c.grpcClient.InternalCheckAndUseQuota(ctx, &v1.InternalCheckAndUseQuotaRequest{
+	resp, err := c.client.InternalCheckAndUseQuota(ctx, &v1.InternalCheckAndUseQuotaRequest{
 		TenantCode:   tenantCode,
 		ProductCode:  productCode,
 		DimensionKey: dimensionKey,
 		Amount:       amount,
 	})
 	if err != nil {
-		c.logger.WithContext(ctx).Errorf("使用配额失败: tenant=%s, product=%s, dimension=%s, err=%v",
+		c.logger.WithContext(ctx).Errorf("配额使用失败: tenant=%s, product=%s, dimension=%s, err=%v",
 			tenantCode, productCode, dimensionKey, err)
 		return nil, err
 	}
@@ -292,42 +288,40 @@ func (c *Client) Use(ctx context.Context, tenantCode, productCode, dimensionKey 
 		Success:         resp.Success,
 		DimensionKey:    resp.DimensionKey,
 		QuotaLimit:      resp.QuotaLimit,
+		QuotaUsed:       resp.QuotaUsedAfter,
 		QuotaUsedBefore: resp.QuotaUsedBefore,
-		QuotaUsedAfter:  resp.QuotaUsedAfter,
 		QuotaRemaining:  resp.QuotaRemaining,
 		IsUnlimited:     resp.IsUnlimited,
+		ErrorMessage:    resp.ErrorMessage,
+		ErrorCode:       resp.ErrorCode,
 	}, nil
 }
 
-// MustUse 使用配额，失败时直接返回错误
-func (c *Client) MustUse(ctx context.Context, tenantCode, productCode, dimensionKey string, amount int32) error {
+// MustUse 使用配额
+func (c *SubscribeClient) MustUse(ctx context.Context, tenantCode, productCode, dimensionKey string, amount int32) error {
 	result, err := c.Use(ctx, tenantCode, productCode, dimensionKey, amount)
 	if err != nil {
 		return err
 	}
 	if !result.Success {
-		return errors.New(429, "QUOTA_EXCEEDED", "配额不足: "+dimensionKey)
+		return fmt.Errorf("配额不足: %s", result.ErrorMessage)
 	}
 	return nil
 }
 
-// Release 释放配额（-N）
-func (c *Client) Release(ctx context.Context, tenantCode, productCode, dimensionKey string, amount int32) (*QuotaResult, error) {
-	if amount <= 0 {
-		amount = 1
-	}
-
+// Release 释放配额
+func (c *SubscribeClient) Release(ctx context.Context, tenantCode, productCode, dimensionKey string, amount int32) (*QuotaResult, error) {
 	ctx, cancel := context.WithTimeout(ctx, c.config.Timeout)
 	defer cancel()
 
-	resp, err := c.grpcClient.InternalReleaseQuota(ctx, &v1.InternalReleaseQuotaRequest{
+	resp, err := c.client.InternalReleaseQuota(ctx, &v1.InternalReleaseQuotaRequest{
 		TenantCode:   tenantCode,
 		ProductCode:  productCode,
 		DimensionKey: dimensionKey,
 		Amount:       amount,
 	})
 	if err != nil {
-		c.logger.WithContext(ctx).Errorf("释放配额失败: tenant=%s, product=%s, dimension=%s, err=%v",
+		c.logger.WithContext(ctx).Errorf("配额释放失败: tenant=%s, product=%s, dimension=%s, err=%v",
 			tenantCode, productCode, dimensionKey, err)
 		return nil, err
 	}
@@ -335,30 +329,31 @@ func (c *Client) Release(ctx context.Context, tenantCode, productCode, dimension
 	return &QuotaResult{
 		Success:         resp.Success,
 		DimensionKey:    resp.DimensionKey,
+		QuotaUsed:       resp.QuotaUsedAfter,
 		QuotaUsedBefore: resp.QuotaUsedBefore,
-		QuotaUsedAfter:  resp.QuotaUsedAfter,
+		ErrorMessage:    resp.ErrorMessage,
 	}, nil
 }
 
 // GetUsage 查询配额使用情况
-func (c *Client) GetUsage(ctx context.Context, tenantCode, productCode string, dimensionKey *string) ([]*QuotaResult, error) {
+func (c *SubscribeClient) GetUsage(ctx context.Context, tenantCode, productCode string, dimensionKey *string) ([]*QuotaResult, error) {
 	ctx, cancel := context.WithTimeout(ctx, c.config.Timeout)
 	defer cancel()
 
-	resp, err := c.grpcClient.InternalGetQuotaUsage(ctx, &v1.InternalGetQuotaUsageRequest{
+	resp, err := c.client.InternalGetQuotaUsage(ctx, &v1.InternalGetQuotaUsageRequest{
 		TenantCode:   tenantCode,
 		ProductCode:  productCode,
 		DimensionKey: dimensionKey,
 	})
 	if err != nil {
-		c.logger.WithContext(ctx).Errorf("查询配额失败: tenant=%s, product=%s, err=%v",
+		c.logger.WithContext(ctx).Errorf("查询配额使用情况失败: tenant=%s, product=%s, err=%v",
 			tenantCode, productCode, err)
 		return nil, err
 	}
 
-	usages := make([]*QuotaResult, 0, len(resp.Usages))
+	results := make([]*QuotaResult, 0, len(resp.Usages))
 	for _, u := range resp.Usages {
-		usages = append(usages, &QuotaResult{
+		results = append(results, &QuotaResult{
 			Success:         true,
 			DimensionKey:    u.DimensionKey,
 			QuotaLimit:      u.QuotaLimit,
@@ -366,9 +361,7 @@ func (c *Client) GetUsage(ctx context.Context, tenantCode, productCode string, d
 			QuotaRemaining:  u.QuotaRemaining,
 			IsUnlimited:     u.IsUnlimited,
 			UsagePercentage: u.UsagePercentage,
-			Unit:            u.Unit,
 		})
 	}
-
-	return usages, nil
+	return results, nil
 }
