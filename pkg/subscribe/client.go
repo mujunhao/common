@@ -14,16 +14,17 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
+// Client 订阅服务客户端
+// 统一封装订阅管理和配额管理功能
 type Client struct {
-	productCode string // 产品编码，初始化时绑定
-	config      *Config
-	conn        *grpc.ClientConn
-	logger      *log.Helper
-	grpcClient  v1.SubscriptionInternalServiceClient
+	config     *Config
+	conn       *grpc.ClientConn
+	logger     *log.Helper
+	grpcClient v1.SubscriptionInternalServiceClient
 }
 
 // NewClient 创建订阅服务客户端
-func NewClient(config *Config, productCode string) (*Client, error) {
+func NewClient(config *Config) (*Client, error) {
 	if config == nil {
 		config = DefaultConfig()
 	}
@@ -42,16 +43,15 @@ func NewClient(config *Config, productCode string) (*Client, error) {
 	}
 
 	return &Client{
-		productCode: productCode,
-		config:      config,
-		conn:        conn,
-		logger:      logger,
-		grpcClient:  v1.NewSubscriptionInternalServiceClient(conn),
+		config:     config,
+		conn:       conn,
+		logger:     logger,
+		grpcClient: v1.NewSubscriptionInternalServiceClient(conn),
 	}, nil
 }
 
 // NewClientWithDiscovery 使用服务发现创建订阅服务客户端
-func NewClientWithDiscovery(config *Config, discovery registry.Discovery, productCode string) (*Client, error) {
+func NewClientWithDiscovery(config *Config, discovery registry.Discovery) (*Client, error) {
 	if config == nil {
 		config = DefaultConfig()
 	}
@@ -72,14 +72,13 @@ func NewClientWithDiscovery(config *Config, discovery registry.Discovery, produc
 		return nil, fmt.Errorf("创建 gRPC 连接失败: %w", err)
 	}
 
-	logger.Infof("订阅服务客户端连接成功: endpoint=%s, product=%s", config.Endpoint, productCode)
+	logger.Infof("订阅服务客户端连接成功: endpoint=%s", config.Endpoint)
 
 	return &Client{
-		productCode: productCode,
-		config:      config,
-		conn:        conn,
-		logger:      logger,
-		grpcClient:  v1.NewSubscriptionInternalServiceClient(conn),
+		config:     config,
+		conn:       conn,
+		logger:     logger,
+		grpcClient: v1.NewSubscriptionInternalServiceClient(conn),
 	}, nil
 }
 
@@ -91,22 +90,21 @@ func (c *Client) Close() error {
 	return nil
 }
 
-// GetProductCode 获取绑定的产品编码
-func (c *Client) GetProductCode() string {
-	return c.productCode
-}
+// ============================================================================
+// 订阅管理方法
+// ============================================================================
 
 // GetTenantSubscriptions 获取商家指定产品订阅列表
-func (c *Client) GetTenantSubscriptions(ctx context.Context, tenantCode string) ([]*v1.InternalSubscriptionInfo, error) {
+func (c *Client) GetTenantSubscriptions(ctx context.Context, tenantCode, productCode string) ([]*v1.InternalSubscriptionInfo, error) {
 	ctx, cancel := context.WithTimeout(ctx, c.config.Timeout)
 	defer cancel()
 
 	resp, err := c.grpcClient.InternalListSubscriptions(ctx, &v1.InternalListSubscriptionsRequest{
 		TenantCode:  &tenantCode,
-		ProductCode: &c.productCode,
+		ProductCode: &productCode,
 	})
 	if err != nil {
-		c.logger.WithContext(ctx).Errorf("获取订阅列表失败: tenant=%s, product=%s, err=%v", tenantCode, c.productCode, err)
+		c.logger.WithContext(ctx).Errorf("获取订阅列表失败: tenant=%s, product=%s, err=%v", tenantCode, productCode, err)
 		return nil, err
 	}
 
@@ -122,9 +120,9 @@ type CreateSubscriptionOptions struct {
 }
 
 // CreateSubscription 创建订阅
-func (c *Client) CreateSubscription(ctx context.Context, planCode string, order *v1.InternalSubscriptionOrderInfo, opts *CreateSubscriptionOptions) (*v1.InternalSubscriptionInfo, error) {
+func (c *Client) CreateSubscription(ctx context.Context, productCode, planCode string, order *v1.InternalSubscriptionOrderInfo, opts *CreateSubscriptionOptions) (*v1.InternalSubscriptionInfo, error) {
 	req := &v1.InternalCreateSubscriptionRequest{
-		ProductCode:      c.productCode,
+		ProductCode:      productCode,
 		PlanCode:         planCode,
 		AutomaticRenewal: false,
 		IsTrial:          false,
@@ -142,25 +140,25 @@ func (c *Client) CreateSubscription(ctx context.Context, planCode string, order 
 
 	resp, err := c.grpcClient.InternalCreateSubscription(ctx, req)
 	if err != nil {
-		c.logger.WithContext(ctx).Errorf("创建订阅失败: product=%s, plan=%s, err=%v", c.productCode, planCode, err)
+		c.logger.WithContext(ctx).Errorf("创建订阅失败: product=%s, plan=%s, err=%v", productCode, planCode, err)
 		return nil, err
 	}
 	return resp.Subscription, nil
 }
 
 // ReNewSubscription 续订订阅
-func (c *Client) ReNewSubscription(ctx context.Context, planCode string, reNewTime *durationpb.Duration, order *v1.InternalSubscriptionOrderInfo) (*v1.InternalSubscriptionInfo, error) {
+func (c *Client) ReNewSubscription(ctx context.Context, productCode, planCode string, reNewTime *durationpb.Duration, order *v1.InternalSubscriptionOrderInfo) (*v1.InternalSubscriptionInfo, error) {
 	ctx, cancel := context.WithTimeout(ctx, c.config.Timeout)
 	defer cancel()
 
 	resp, err := c.grpcClient.InternalReNewSubscription(ctx, &v1.InternalReNewSubscriptionRequest{
-		ProductCode: c.productCode,
+		ProductCode: productCode,
 		PlanCode:    planCode,
 		ReNewTime:   reNewTime,
 		Order:       order,
 	})
 	if err != nil {
-		c.logger.WithContext(ctx).Errorf("续订订阅失败: product=%s, plan=%s, err=%v", c.productCode, planCode, err)
+		c.logger.WithContext(ctx).Errorf("续订订阅失败: product=%s, plan=%s, err=%v", productCode, planCode, err)
 		return nil, err
 	}
 	return resp.Subscription, nil
@@ -173,9 +171,9 @@ type UpgradeSubscriptionOptions struct {
 }
 
 // UpgradeSubscription 升级订阅
-func (c *Client) UpgradeSubscription(ctx context.Context, planCode string, order *v1.InternalSubscriptionOrderInfo, opts *UpgradeSubscriptionOptions) (*v1.InternalSubscriptionInfo, error) {
+func (c *Client) UpgradeSubscription(ctx context.Context, productCode, planCode string, order *v1.InternalSubscriptionOrderInfo, opts *UpgradeSubscriptionOptions) (*v1.InternalSubscriptionInfo, error) {
 	req := &v1.InternalUpgradeSubscriptionRequest{
-		ProductCode: c.productCode,
+		ProductCode: productCode,
 		PlanCode:    planCode,
 		Order:       order,
 	}
@@ -189,7 +187,7 @@ func (c *Client) UpgradeSubscription(ctx context.Context, planCode string, order
 
 	resp, err := c.grpcClient.InternalUpgradeSubscription(ctx, req)
 	if err != nil {
-		c.logger.WithContext(ctx).Errorf("升级订阅失败: product=%s, plan=%s, err=%v", c.productCode, planCode, err)
+		c.logger.WithContext(ctx).Errorf("升级订阅失败: product=%s, plan=%s, err=%v", productCode, planCode, err)
 		return nil, err
 	}
 	return resp.Subscription, nil
@@ -211,15 +209,15 @@ func (c *Client) GetSubscriptionStats(ctx context.Context, tenantCode string) (*
 }
 
 // GetSubscriptionStatsByProduct 获取产品订阅统计
-func (c *Client) GetSubscriptionStatsByProduct(ctx context.Context) (*v1.InternalGetSubscriptionStatsByProductCodeResponse, error) {
+func (c *Client) GetSubscriptionStatsByProduct(ctx context.Context, productCode string) (*v1.InternalGetSubscriptionStatsByProductCodeResponse, error) {
 	ctx, cancel := context.WithTimeout(ctx, c.config.Timeout)
 	defer cancel()
 
 	resp, err := c.grpcClient.InternalGetSubscriptionStatsByProductCode(ctx, &v1.InternalGetSubscriptionStatsByProductCodeRequest{
-		ProductCode: c.productCode,
+		ProductCode: productCode,
 	})
 	if err != nil {
-		c.logger.WithContext(ctx).Errorf("获取产品订阅状态失败: product=%s, err=%v", c.productCode, err)
+		c.logger.WithContext(ctx).Errorf("获取产品订阅状态失败: product=%s, err=%v", productCode, err)
 		return nil, err
 	}
 	return resp, nil
@@ -236,9 +234,8 @@ type UseResult struct {
 	IsUnlimited     bool
 }
 
-// Use 使用配额（+N）
-
-func (c *Client) Use(ctx context.Context, tenantCode, dimensionKey string, amount int32) (*UseResult, error) {
+// Use 使用配额
+func (c *Client) Use(ctx context.Context, tenantCode, productCode, dimensionKey string, amount int32) (*UseResult, error) {
 	if amount <= 0 {
 		amount = 1
 	}
@@ -248,13 +245,13 @@ func (c *Client) Use(ctx context.Context, tenantCode, dimensionKey string, amoun
 
 	resp, err := c.grpcClient.InternalCheckAndUseQuota(ctx, &v1.InternalCheckAndUseQuotaRequest{
 		TenantCode:   tenantCode,
-		ProductCode:  c.productCode,
+		ProductCode:  productCode,
 		DimensionKey: dimensionKey,
 		Amount:       amount,
 	})
 	if err != nil {
 		c.logger.WithContext(ctx).Errorf("使用配额失败: tenant=%s, product=%s, dimension=%s, err=%v",
-			tenantCode, c.productCode, dimensionKey, err)
+			tenantCode, productCode, dimensionKey, err)
 		return nil, err
 	}
 
@@ -270,8 +267,8 @@ func (c *Client) Use(ctx context.Context, tenantCode, dimensionKey string, amoun
 }
 
 // MustUse 使用配额，失败时直接返回错误
-func (c *Client) MustUse(ctx context.Context, tenantCode, dimensionKey string, amount int32) error {
-	result, err := c.Use(ctx, tenantCode, dimensionKey, amount)
+func (c *Client) MustUse(ctx context.Context, tenantCode, productCode, dimensionKey string, amount int32) error {
+	result, err := c.Use(ctx, tenantCode, productCode, dimensionKey, amount)
 	if err != nil {
 		return err
 	}
@@ -290,7 +287,7 @@ type ReleaseResult struct {
 }
 
 // Release 释放配额（-N）
-func (c *Client) Release(ctx context.Context, tenantCode, dimensionKey string, amount int32) (*ReleaseResult, error) {
+func (c *Client) Release(ctx context.Context, tenantCode, productCode, dimensionKey string, amount int32) (*ReleaseResult, error) {
 	if amount <= 0 {
 		amount = 1
 	}
@@ -300,13 +297,13 @@ func (c *Client) Release(ctx context.Context, tenantCode, dimensionKey string, a
 
 	resp, err := c.grpcClient.InternalReleaseQuota(ctx, &v1.InternalReleaseQuotaRequest{
 		TenantCode:   tenantCode,
-		ProductCode:  c.productCode,
+		ProductCode:  productCode,
 		DimensionKey: dimensionKey,
 		Amount:       amount,
 	})
 	if err != nil {
 		c.logger.WithContext(ctx).Errorf("释放配额失败: tenant=%s, product=%s, dimension=%s, err=%v",
-			tenantCode, c.productCode, dimensionKey, err)
+			tenantCode, productCode, dimensionKey, err)
 		return nil, err
 	}
 
@@ -330,19 +327,18 @@ type QuotaUsage struct {
 }
 
 // GetUsage 查询配额使用情况
-// tenantCode: 租户编码
-func (c *Client) GetUsage(ctx context.Context, tenantCode string, dimensionKey *string) ([]*QuotaUsage, error) {
+func (c *Client) GetUsage(ctx context.Context, tenantCode, productCode string, dimensionKey *string) ([]*QuotaUsage, error) {
 	ctx, cancel := context.WithTimeout(ctx, c.config.Timeout)
 	defer cancel()
 
 	resp, err := c.grpcClient.InternalGetQuotaUsage(ctx, &v1.InternalGetQuotaUsageRequest{
 		TenantCode:   tenantCode,
-		ProductCode:  c.productCode,
+		ProductCode:  productCode,
 		DimensionKey: dimensionKey,
 	})
 	if err != nil {
 		c.logger.WithContext(ctx).Errorf("查询配额失败: tenant=%s, product=%s, err=%v",
-			tenantCode, c.productCode, err)
+			tenantCode, productCode, err)
 		return nil, err
 	}
 
