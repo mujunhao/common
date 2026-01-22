@@ -14,8 +14,6 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-// Client 订阅服务客户端
-// 统一封装订阅管理和配额管理功能
 type Client struct {
 	config     *Config
 	conn       *grpc.ClientConn
@@ -89,10 +87,6 @@ func (c *Client) Close() error {
 	}
 	return nil
 }
-
-// ============================================================================
-// 订阅管理方法
-// ============================================================================
 
 // GetTenantSubscriptions 获取商家指定产品订阅列表
 func (c *Client) GetTenantSubscriptions(ctx context.Context, tenantCode, productCode string) ([]*v1.InternalSubscriptionInfo, error) {
