@@ -3,6 +3,7 @@ package product
 import (
 	"context"
 	"fmt"
+
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/registry"
 	v1 "github.com/heyinLab/common/api/gen/go/product/v1"

@@ -25,6 +25,9 @@ const (
 	SubscriptionInternalService_InternalUpgradeSubscription_FullMethodName               = "/api.subscription.v1.SubscriptionInternalService/InternalUpgradeSubscription"
 	SubscriptionInternalService_InternalGetSubscriptionStats_FullMethodName              = "/api.subscription.v1.SubscriptionInternalService/InternalGetSubscriptionStats"
 	SubscriptionInternalService_InternalGetSubscriptionStatsByProductCode_FullMethodName = "/api.subscription.v1.SubscriptionInternalService/InternalGetSubscriptionStatsByProductCode"
+	SubscriptionInternalService_InternalCheckAndUseQuota_FullMethodName                  = "/api.subscription.v1.SubscriptionInternalService/InternalCheckAndUseQuota"
+	SubscriptionInternalService_InternalReleaseQuota_FullMethodName                      = "/api.subscription.v1.SubscriptionInternalService/InternalReleaseQuota"
+	SubscriptionInternalService_InternalGetQuotaUsage_FullMethodName                     = "/api.subscription.v1.SubscriptionInternalService/InternalGetQuotaUsage"
 )
 
 // SubscriptionInternalServiceClient is the client API for SubscriptionInternalService service.
@@ -45,6 +48,14 @@ type SubscriptionInternalServiceClient interface {
 	InternalGetSubscriptionStats(ctx context.Context, in *InternalGetSubscriptionStatsRequest, opts ...grpc.CallOption) (*InternalGetSubscriptionStatsResponse, error)
 	// InternalGetSubscriptionStatsByProductCode 通过产品code获取订阅状态
 	InternalGetSubscriptionStatsByProductCode(ctx context.Context, in *InternalGetSubscriptionStatsByProductCodeRequest, opts ...grpc.CallOption) (*InternalGetSubscriptionStatsByProductCodeResponse, error)
+	// InternalCheckAndUseQuota 检查并使用配额
+	// 检查点 → 维度 → 检查配额 → 使用成功则 +1
+	InternalCheckAndUseQuota(ctx context.Context, in *InternalCheckAndUseQuotaRequest, opts ...grpc.CallOption) (*InternalCheckAndUseQuotaResponse, error)
+	// InternalReleaseQuota 释放配额
+	// 删除资源时调用，quota_used -1
+	InternalReleaseQuota(ctx context.Context, in *InternalReleaseQuotaRequest, opts ...grpc.CallOption) (*InternalReleaseQuotaResponse, error)
+	// InternalGetQuotaUsage 查询配额使用情况
+	InternalGetQuotaUsage(ctx context.Context, in *InternalGetQuotaUsageRequest, opts ...grpc.CallOption) (*InternalGetQuotaUsageResponse, error)
 }
 
 type subscriptionInternalServiceClient struct {
@@ -115,6 +126,36 @@ func (c *subscriptionInternalServiceClient) InternalGetSubscriptionStatsByProduc
 	return out, nil
 }
 
+func (c *subscriptionInternalServiceClient) InternalCheckAndUseQuota(ctx context.Context, in *InternalCheckAndUseQuotaRequest, opts ...grpc.CallOption) (*InternalCheckAndUseQuotaResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(InternalCheckAndUseQuotaResponse)
+	err := c.cc.Invoke(ctx, SubscriptionInternalService_InternalCheckAndUseQuota_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *subscriptionInternalServiceClient) InternalReleaseQuota(ctx context.Context, in *InternalReleaseQuotaRequest, opts ...grpc.CallOption) (*InternalReleaseQuotaResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(InternalReleaseQuotaResponse)
+	err := c.cc.Invoke(ctx, SubscriptionInternalService_InternalReleaseQuota_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *subscriptionInternalServiceClient) InternalGetQuotaUsage(ctx context.Context, in *InternalGetQuotaUsageRequest, opts ...grpc.CallOption) (*InternalGetQuotaUsageResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(InternalGetQuotaUsageResponse)
+	err := c.cc.Invoke(ctx, SubscriptionInternalService_InternalGetQuotaUsage_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SubscriptionInternalServiceServer is the server API for SubscriptionInternalService service.
 // All implementations must embed UnimplementedSubscriptionInternalServiceServer
 // for forward compatibility.
@@ -133,6 +174,14 @@ type SubscriptionInternalServiceServer interface {
 	InternalGetSubscriptionStats(context.Context, *InternalGetSubscriptionStatsRequest) (*InternalGetSubscriptionStatsResponse, error)
 	// InternalGetSubscriptionStatsByProductCode 通过产品code获取订阅状态
 	InternalGetSubscriptionStatsByProductCode(context.Context, *InternalGetSubscriptionStatsByProductCodeRequest) (*InternalGetSubscriptionStatsByProductCodeResponse, error)
+	// InternalCheckAndUseQuota 检查并使用配额
+	// 检查点 → 维度 → 检查配额 → 使用成功则 +1
+	InternalCheckAndUseQuota(context.Context, *InternalCheckAndUseQuotaRequest) (*InternalCheckAndUseQuotaResponse, error)
+	// InternalReleaseQuota 释放配额
+	// 删除资源时调用，quota_used -1
+	InternalReleaseQuota(context.Context, *InternalReleaseQuotaRequest) (*InternalReleaseQuotaResponse, error)
+	// InternalGetQuotaUsage 查询配额使用情况
+	InternalGetQuotaUsage(context.Context, *InternalGetQuotaUsageRequest) (*InternalGetQuotaUsageResponse, error)
 	mustEmbedUnimplementedSubscriptionInternalServiceServer()
 }
 
@@ -160,6 +209,15 @@ func (UnimplementedSubscriptionInternalServiceServer) InternalGetSubscriptionSta
 }
 func (UnimplementedSubscriptionInternalServiceServer) InternalGetSubscriptionStatsByProductCode(context.Context, *InternalGetSubscriptionStatsByProductCodeRequest) (*InternalGetSubscriptionStatsByProductCodeResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method InternalGetSubscriptionStatsByProductCode not implemented")
+}
+func (UnimplementedSubscriptionInternalServiceServer) InternalCheckAndUseQuota(context.Context, *InternalCheckAndUseQuotaRequest) (*InternalCheckAndUseQuotaResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method InternalCheckAndUseQuota not implemented")
+}
+func (UnimplementedSubscriptionInternalServiceServer) InternalReleaseQuota(context.Context, *InternalReleaseQuotaRequest) (*InternalReleaseQuotaResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method InternalReleaseQuota not implemented")
+}
+func (UnimplementedSubscriptionInternalServiceServer) InternalGetQuotaUsage(context.Context, *InternalGetQuotaUsageRequest) (*InternalGetQuotaUsageResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method InternalGetQuotaUsage not implemented")
 }
 func (UnimplementedSubscriptionInternalServiceServer) mustEmbedUnimplementedSubscriptionInternalServiceServer() {
 }
@@ -291,6 +349,60 @@ func _SubscriptionInternalService_InternalGetSubscriptionStatsByProductCode_Hand
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SubscriptionInternalService_InternalCheckAndUseQuota_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InternalCheckAndUseQuotaRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SubscriptionInternalServiceServer).InternalCheckAndUseQuota(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SubscriptionInternalService_InternalCheckAndUseQuota_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SubscriptionInternalServiceServer).InternalCheckAndUseQuota(ctx, req.(*InternalCheckAndUseQuotaRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SubscriptionInternalService_InternalReleaseQuota_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InternalReleaseQuotaRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SubscriptionInternalServiceServer).InternalReleaseQuota(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SubscriptionInternalService_InternalReleaseQuota_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SubscriptionInternalServiceServer).InternalReleaseQuota(ctx, req.(*InternalReleaseQuotaRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SubscriptionInternalService_InternalGetQuotaUsage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InternalGetQuotaUsageRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SubscriptionInternalServiceServer).InternalGetQuotaUsage(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SubscriptionInternalService_InternalGetQuotaUsage_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SubscriptionInternalServiceServer).InternalGetQuotaUsage(ctx, req.(*InternalGetQuotaUsageRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // SubscriptionInternalService_ServiceDesc is the grpc.ServiceDesc for SubscriptionInternalService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -321,6 +433,18 @@ var SubscriptionInternalService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "InternalGetSubscriptionStatsByProductCode",
 			Handler:    _SubscriptionInternalService_InternalGetSubscriptionStatsByProductCode_Handler,
+		},
+		{
+			MethodName: "InternalCheckAndUseQuota",
+			Handler:    _SubscriptionInternalService_InternalCheckAndUseQuota_Handler,
+		},
+		{
+			MethodName: "InternalReleaseQuota",
+			Handler:    _SubscriptionInternalService_InternalReleaseQuota_Handler,
+		},
+		{
+			MethodName: "InternalGetQuotaUsage",
+			Handler:    _SubscriptionInternalService_InternalGetQuotaUsage_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

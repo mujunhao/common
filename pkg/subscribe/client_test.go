@@ -2,10 +2,11 @@ package subscribe
 
 import (
 	"context"
-	v1 "github.com/heyinLab/common/api/gen/go/subscribe/v1"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"testing"
 	"time"
+
+	v1 "github.com/heyinLab/common/api/gen/go/subscribe/v1"
+	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/go-kratos/kratos/contrib/registry/consul/v2"
 	consulapi "github.com/hashicorp/consul/api"

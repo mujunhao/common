@@ -390,3 +390,87 @@ func TestDataHrefRegex(t *testing.T) {
 	t.Logf("Original HTML: %s", html[:80]+"...")
 	t.Logf("New HTML: %s", newHTML[:80]+"...")
 }
+
+
+// TestAutoFillWithoutImageURL 测试只处理 I18n 中的 RichText，不处理 Image 字段
+// 这是 GetProduct API 的场景：Image 保持原始 UUID，I18n 中的图片 URL 需要刷新
+func TestAutoFillWithoutImageURL(t *testing.T) {
+	// 模拟文件URL映射
+	resolver := &autoFillMockResolver{
+		data: map[string]*ResourceInfo{
+			"01KEVAE4NE69CFVG0XJ3K6R82Z": {URL: "https://cdn.example.com/new-image.jpg?sign=fresh123", Success: true},
+			"01KEXGF5VGAMAH4TVMAG28CRMM": {URL: "https://cdn.example.com/new-rich.jpg?sign=fresh456", Success: true},
+		},
+	}
+	filler := NewFiller(resolver)
+
+	// 源数据（模拟 ent.Product）
+	type EntProductForGet struct {
+		ID          uint32
+		ProductCode string
+		ProductName string
+		Image       string                 // 文件ID (UUID)
+		I18n        map[string]interface{} // 多语言内容
+	}
+
+	// 目标 DTO - Image 是普通 string，不会触发 URL 转换
+	type GetProductLangDTO struct {
+		Name        string   `json:"name"`
+		Description RichText `json:"description"`
+	}
+	type GetProductDTO struct {
+		ID          uint32                        `json:"id"`
+		ProductCode string                        `json:"product_code"`
+		ProductName string                        `json:"product_name"`
+		Image       string                        `json:"image"` // 普通 string，不触发 URL 转换
+		I18n        map[string]*GetProductLangDTO `json:"i18n"`
+	}
+
+	products := []*EntProductForGet{
+		{
+			ID:          46,
+			ProductCode: "test-code",
+			ProductName: "Test Product",
+			Image:       "01KEVAE4NE69CFVG0XJ3K6R82Z", // 这个 UUID 不应该被转换
+			I18n: map[string]interface{}{
+				"zh-CN": map[string]interface{}{
+					"name":        "测试产品",
+					"description": `<p>测试<img src="https://old-url.com/old.jpg" alt="" data-href="01KEXGF5VGAMAH4TVMAG28CRMM" style=""/></p>`,
+				},
+			},
+		},
+	}
+
+	// 执行 AutoFill
+	var result []*GetProductDTO
+	err := AutoFill(context.Background(), filler, products, &result)
+	if err != nil {
+		t.Fatalf("AutoFill error: %v", err)
+	}
+
+	if len(result) != 1 {
+		t.Fatalf("expected 1 result, got %d", len(result))
+	}
+
+	dto := result[0]
+
+	// 验证 Image 保持原始 UUID（关键！）
+	if dto.Image != "01KEVAE4NE69CFVG0XJ3K6R82Z" {
+		t.Errorf("Image should remain as UUID!\nexpected: 01KEVAE4NE69CFVG0XJ3K6R82Z\ngot: %s", dto.Image)
+	}
+
+	// 验证 I18n 中的 RichText URL 被替换
+	zhCN := dto.I18n["zh-CN"]
+	if zhCN == nil {
+		t.Fatal("zh-CN language is nil")
+	}
+
+	expectedDesc := `<p>测试<img src="https://cdn.example.com/new-rich.jpg?sign=fresh456" alt="" data-href="01KEXGF5VGAMAH4TVMAG28CRMM" style=""/></p>`
+	if string(zhCN.Description) != expectedDesc {
+		t.Errorf("Description URL not replaced!\nexpected: %s\ngot: %s", expectedDesc, zhCN.Description)
+	}
+
+	t.Log("TestAutoFillWithoutImageURL passed!")
+	t.Logf("Image (should be UUID): %s", dto.Image)
+	t.Logf("zh-CN.Description: %s", zhCN.Description)
+}

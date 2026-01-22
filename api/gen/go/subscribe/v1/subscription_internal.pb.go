@@ -307,6 +307,71 @@ func (InternalOrderStatus) EnumDescriptor() ([]byte, []int) {
 	return file_subscribe_v1_subscription_internal_proto_rawDescGZIP(), []int{4}
 }
 
+// 配额错误码
+type InternalQuotaErrorCode int32
+
+const (
+	// 未知错误
+	InternalQuotaErrorCode_INTERNAL_QUOTA_ERROR_UNKNOWN InternalQuotaErrorCode = 0
+	// 配额不足
+	InternalQuotaErrorCode_INTERNAL_QUOTA_ERROR_EXCEEDED InternalQuotaErrorCode = 1
+	// 订阅不存在
+	InternalQuotaErrorCode_INTERNAL_QUOTA_ERROR_SUBSCRIPTION_NOT_FOUND InternalQuotaErrorCode = 2
+	// 维度不存在
+	InternalQuotaErrorCode_INTERNAL_QUOTA_ERROR_DIMENSION_NOT_FOUND InternalQuotaErrorCode = 3
+	// 检查点未配置
+	InternalQuotaErrorCode_INTERNAL_QUOTA_ERROR_CHECKPOINT_NOT_FOUND InternalQuotaErrorCode = 4
+	// 订阅已过期
+	InternalQuotaErrorCode_INTERNAL_QUOTA_ERROR_SUBSCRIPTION_EXPIRED InternalQuotaErrorCode = 5
+)
+
+// Enum value maps for InternalQuotaErrorCode.
+var (
+	InternalQuotaErrorCode_name = map[int32]string{
+		0: "INTERNAL_QUOTA_ERROR_UNKNOWN",
+		1: "INTERNAL_QUOTA_ERROR_EXCEEDED",
+		2: "INTERNAL_QUOTA_ERROR_SUBSCRIPTION_NOT_FOUND",
+		3: "INTERNAL_QUOTA_ERROR_DIMENSION_NOT_FOUND",
+		4: "INTERNAL_QUOTA_ERROR_CHECKPOINT_NOT_FOUND",
+		5: "INTERNAL_QUOTA_ERROR_SUBSCRIPTION_EXPIRED",
+	}
+	InternalQuotaErrorCode_value = map[string]int32{
+		"INTERNAL_QUOTA_ERROR_UNKNOWN":                0,
+		"INTERNAL_QUOTA_ERROR_EXCEEDED":               1,
+		"INTERNAL_QUOTA_ERROR_SUBSCRIPTION_NOT_FOUND": 2,
+		"INTERNAL_QUOTA_ERROR_DIMENSION_NOT_FOUND":    3,
+		"INTERNAL_QUOTA_ERROR_CHECKPOINT_NOT_FOUND":   4,
+		"INTERNAL_QUOTA_ERROR_SUBSCRIPTION_EXPIRED":   5,
+	}
+)
+
+func (x InternalQuotaErrorCode) Enum() *InternalQuotaErrorCode {
+	p := new(InternalQuotaErrorCode)
+	*p = x
+	return p
+}
+
+func (x InternalQuotaErrorCode) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (InternalQuotaErrorCode) Descriptor() protoreflect.EnumDescriptor {
+	return file_subscribe_v1_subscription_internal_proto_enumTypes[5].Descriptor()
+}
+
+func (InternalQuotaErrorCode) Type() protoreflect.EnumType {
+	return &file_subscribe_v1_subscription_internal_proto_enumTypes[5]
+}
+
+func (x InternalQuotaErrorCode) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use InternalQuotaErrorCode.Descriptor instead.
+func (InternalQuotaErrorCode) EnumDescriptor() ([]byte, []int) {
+	return file_subscribe_v1_subscription_internal_proto_rawDescGZIP(), []int{5}
+}
+
 // 订阅信息
 type InternalSubscriptionInfo struct {
 	state            protoimpl.MessageState     `protogen:"open.v1"`
@@ -1620,6 +1685,571 @@ func (x *InternalGetSubscriptionStatsByProductCodeResponse) GetTrialCount() int3
 	return 0
 }
 
+// InternalCheckAndUseQuotaRequest 检查并使用配额请求
+type InternalCheckAndUseQuotaRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// 租户编码（必填）
+	TenantCode string `protobuf:"bytes,1,opt,name=tenant_code,json=tenantCode,proto3" json:"tenant_code,omitempty"`
+	// 产品编码（必填）
+	ProductCode string `protobuf:"bytes,2,opt,name=product_code,json=productCode,proto3" json:"product_code,omitempty"`
+	// 维度键（必填），如 "goods_count"
+	DimensionKey string `protobuf:"bytes,3,opt,name=dimension_key,json=dimensionKey,proto3" json:"dimension_key,omitempty"`
+	// 使用数量，默认为 1
+	Amount        int32 `protobuf:"varint,4,opt,name=amount,proto3" json:"amount,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *InternalCheckAndUseQuotaRequest) Reset() {
+	*x = InternalCheckAndUseQuotaRequest{}
+	mi := &file_subscribe_v1_subscription_internal_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *InternalCheckAndUseQuotaRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*InternalCheckAndUseQuotaRequest) ProtoMessage() {}
+
+func (x *InternalCheckAndUseQuotaRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_subscribe_v1_subscription_internal_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use InternalCheckAndUseQuotaRequest.ProtoReflect.Descriptor instead.
+func (*InternalCheckAndUseQuotaRequest) Descriptor() ([]byte, []int) {
+	return file_subscribe_v1_subscription_internal_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *InternalCheckAndUseQuotaRequest) GetTenantCode() string {
+	if x != nil {
+		return x.TenantCode
+	}
+	return ""
+}
+
+func (x *InternalCheckAndUseQuotaRequest) GetProductCode() string {
+	if x != nil {
+		return x.ProductCode
+	}
+	return ""
+}
+
+func (x *InternalCheckAndUseQuotaRequest) GetDimensionKey() string {
+	if x != nil {
+		return x.DimensionKey
+	}
+	return ""
+}
+
+func (x *InternalCheckAndUseQuotaRequest) GetAmount() int32 {
+	if x != nil {
+		return x.Amount
+	}
+	return 0
+}
+
+// InternalCheckAndUseQuotaResponse 检查并使用配额响应
+type InternalCheckAndUseQuotaResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// 是否成功
+	Success bool `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	// 维度键
+	DimensionKey string `protobuf:"bytes,2,opt,name=dimension_key,json=dimensionKey,proto3" json:"dimension_key,omitempty"`
+	// 配额上限
+	QuotaLimit int32 `protobuf:"varint,3,opt,name=quota_limit,json=quotaLimit,proto3" json:"quota_limit,omitempty"`
+	// 操作前已用量
+	QuotaUsedBefore int32 `protobuf:"varint,4,opt,name=quota_used_before,json=quotaUsedBefore,proto3" json:"quota_used_before,omitempty"`
+	// 操作后已用量
+	QuotaUsedAfter int32 `protobuf:"varint,5,opt,name=quota_used_after,json=quotaUsedAfter,proto3" json:"quota_used_after,omitempty"`
+	// 剩余配额
+	QuotaRemaining int32 `protobuf:"varint,6,opt,name=quota_remaining,json=quotaRemaining,proto3" json:"quota_remaining,omitempty"`
+	// 是否无限制
+	IsUnlimited bool `protobuf:"varint,7,opt,name=is_unlimited,json=isUnlimited,proto3" json:"is_unlimited,omitempty"`
+	// 错误信息（失败时）
+	ErrorMessage string `protobuf:"bytes,8,opt,name=error_message,json=errorMessage,proto3" json:"error_message,omitempty"`
+	// 错误码
+	ErrorCode     InternalQuotaErrorCode `protobuf:"varint,9,opt,name=error_code,json=errorCode,proto3,enum=api.subscription.v1.InternalQuotaErrorCode" json:"error_code,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *InternalCheckAndUseQuotaResponse) Reset() {
+	*x = InternalCheckAndUseQuotaResponse{}
+	mi := &file_subscribe_v1_subscription_internal_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *InternalCheckAndUseQuotaResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*InternalCheckAndUseQuotaResponse) ProtoMessage() {}
+
+func (x *InternalCheckAndUseQuotaResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_subscribe_v1_subscription_internal_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use InternalCheckAndUseQuotaResponse.ProtoReflect.Descriptor instead.
+func (*InternalCheckAndUseQuotaResponse) Descriptor() ([]byte, []int) {
+	return file_subscribe_v1_subscription_internal_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *InternalCheckAndUseQuotaResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *InternalCheckAndUseQuotaResponse) GetDimensionKey() string {
+	if x != nil {
+		return x.DimensionKey
+	}
+	return ""
+}
+
+func (x *InternalCheckAndUseQuotaResponse) GetQuotaLimit() int32 {
+	if x != nil {
+		return x.QuotaLimit
+	}
+	return 0
+}
+
+func (x *InternalCheckAndUseQuotaResponse) GetQuotaUsedBefore() int32 {
+	if x != nil {
+		return x.QuotaUsedBefore
+	}
+	return 0
+}
+
+func (x *InternalCheckAndUseQuotaResponse) GetQuotaUsedAfter() int32 {
+	if x != nil {
+		return x.QuotaUsedAfter
+	}
+	return 0
+}
+
+func (x *InternalCheckAndUseQuotaResponse) GetQuotaRemaining() int32 {
+	if x != nil {
+		return x.QuotaRemaining
+	}
+	return 0
+}
+
+func (x *InternalCheckAndUseQuotaResponse) GetIsUnlimited() bool {
+	if x != nil {
+		return x.IsUnlimited
+	}
+	return false
+}
+
+func (x *InternalCheckAndUseQuotaResponse) GetErrorMessage() string {
+	if x != nil {
+		return x.ErrorMessage
+	}
+	return ""
+}
+
+func (x *InternalCheckAndUseQuotaResponse) GetErrorCode() InternalQuotaErrorCode {
+	if x != nil {
+		return x.ErrorCode
+	}
+	return InternalQuotaErrorCode_INTERNAL_QUOTA_ERROR_UNKNOWN
+}
+
+// InternalReleaseQuotaRequest 释放配额请求
+type InternalReleaseQuotaRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// 租户编码（必填）
+	TenantCode string `protobuf:"bytes,1,opt,name=tenant_code,json=tenantCode,proto3" json:"tenant_code,omitempty"`
+	// 产品编码（必填）
+	ProductCode string `protobuf:"bytes,2,opt,name=product_code,json=productCode,proto3" json:"product_code,omitempty"`
+	// 维度键（必填），如 "goods_count"
+	DimensionKey string `protobuf:"bytes,3,opt,name=dimension_key,json=dimensionKey,proto3" json:"dimension_key,omitempty"`
+	// 释放数量，默认为 1
+	Amount        int32 `protobuf:"varint,4,opt,name=amount,proto3" json:"amount,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *InternalReleaseQuotaRequest) Reset() {
+	*x = InternalReleaseQuotaRequest{}
+	mi := &file_subscribe_v1_subscription_internal_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *InternalReleaseQuotaRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*InternalReleaseQuotaRequest) ProtoMessage() {}
+
+func (x *InternalReleaseQuotaRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_subscribe_v1_subscription_internal_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use InternalReleaseQuotaRequest.ProtoReflect.Descriptor instead.
+func (*InternalReleaseQuotaRequest) Descriptor() ([]byte, []int) {
+	return file_subscribe_v1_subscription_internal_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *InternalReleaseQuotaRequest) GetTenantCode() string {
+	if x != nil {
+		return x.TenantCode
+	}
+	return ""
+}
+
+func (x *InternalReleaseQuotaRequest) GetProductCode() string {
+	if x != nil {
+		return x.ProductCode
+	}
+	return ""
+}
+
+func (x *InternalReleaseQuotaRequest) GetDimensionKey() string {
+	if x != nil {
+		return x.DimensionKey
+	}
+	return ""
+}
+
+func (x *InternalReleaseQuotaRequest) GetAmount() int32 {
+	if x != nil {
+		return x.Amount
+	}
+	return 0
+}
+
+// InternalReleaseQuotaResponse 释放配额响应
+type InternalReleaseQuotaResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// 是否成功
+	Success bool `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	// 维度键
+	DimensionKey string `protobuf:"bytes,2,opt,name=dimension_key,json=dimensionKey,proto3" json:"dimension_key,omitempty"`
+	// 释放前已用量
+	QuotaUsedBefore int32 `protobuf:"varint,3,opt,name=quota_used_before,json=quotaUsedBefore,proto3" json:"quota_used_before,omitempty"`
+	// 释放后已用量
+	QuotaUsedAfter int32 `protobuf:"varint,4,opt,name=quota_used_after,json=quotaUsedAfter,proto3" json:"quota_used_after,omitempty"`
+	// 错误信息
+	ErrorMessage  string `protobuf:"bytes,5,opt,name=error_message,json=errorMessage,proto3" json:"error_message,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *InternalReleaseQuotaResponse) Reset() {
+	*x = InternalReleaseQuotaResponse{}
+	mi := &file_subscribe_v1_subscription_internal_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *InternalReleaseQuotaResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*InternalReleaseQuotaResponse) ProtoMessage() {}
+
+func (x *InternalReleaseQuotaResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_subscribe_v1_subscription_internal_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use InternalReleaseQuotaResponse.ProtoReflect.Descriptor instead.
+func (*InternalReleaseQuotaResponse) Descriptor() ([]byte, []int) {
+	return file_subscribe_v1_subscription_internal_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *InternalReleaseQuotaResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *InternalReleaseQuotaResponse) GetDimensionKey() string {
+	if x != nil {
+		return x.DimensionKey
+	}
+	return ""
+}
+
+func (x *InternalReleaseQuotaResponse) GetQuotaUsedBefore() int32 {
+	if x != nil {
+		return x.QuotaUsedBefore
+	}
+	return 0
+}
+
+func (x *InternalReleaseQuotaResponse) GetQuotaUsedAfter() int32 {
+	if x != nil {
+		return x.QuotaUsedAfter
+	}
+	return 0
+}
+
+func (x *InternalReleaseQuotaResponse) GetErrorMessage() string {
+	if x != nil {
+		return x.ErrorMessage
+	}
+	return ""
+}
+
+// InternalGetQuotaUsageRequest 查询配额使用情况请求
+type InternalGetQuotaUsageRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// 租户编码（必填）
+	TenantCode string `protobuf:"bytes,1,opt,name=tenant_code,json=tenantCode,proto3" json:"tenant_code,omitempty"`
+	// 产品编码（必填）
+	ProductCode string `protobuf:"bytes,2,opt,name=product_code,json=productCode,proto3" json:"product_code,omitempty"`
+	// 维度键（可选，不填则返回所有维度）
+	DimensionKey  *string `protobuf:"bytes,3,opt,name=dimension_key,json=dimensionKey,proto3,oneof" json:"dimension_key,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *InternalGetQuotaUsageRequest) Reset() {
+	*x = InternalGetQuotaUsageRequest{}
+	mi := &file_subscribe_v1_subscription_internal_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *InternalGetQuotaUsageRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*InternalGetQuotaUsageRequest) ProtoMessage() {}
+
+func (x *InternalGetQuotaUsageRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_subscribe_v1_subscription_internal_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use InternalGetQuotaUsageRequest.ProtoReflect.Descriptor instead.
+func (*InternalGetQuotaUsageRequest) Descriptor() ([]byte, []int) {
+	return file_subscribe_v1_subscription_internal_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *InternalGetQuotaUsageRequest) GetTenantCode() string {
+	if x != nil {
+		return x.TenantCode
+	}
+	return ""
+}
+
+func (x *InternalGetQuotaUsageRequest) GetProductCode() string {
+	if x != nil {
+		return x.ProductCode
+	}
+	return ""
+}
+
+func (x *InternalGetQuotaUsageRequest) GetDimensionKey() string {
+	if x != nil && x.DimensionKey != nil {
+		return *x.DimensionKey
+	}
+	return ""
+}
+
+// InternalGetQuotaUsageResponse 查询配额使用情况响应
+type InternalGetQuotaUsageResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// 订阅编码
+	SubscriptionCode string `protobuf:"bytes,1,opt,name=subscription_code,json=subscriptionCode,proto3" json:"subscription_code,omitempty"`
+	// 配额使用列表
+	Usages        []*InternalQuotaUsageItem `protobuf:"bytes,2,rep,name=usages,proto3" json:"usages,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *InternalGetQuotaUsageResponse) Reset() {
+	*x = InternalGetQuotaUsageResponse{}
+	mi := &file_subscribe_v1_subscription_internal_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *InternalGetQuotaUsageResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*InternalGetQuotaUsageResponse) ProtoMessage() {}
+
+func (x *InternalGetQuotaUsageResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_subscribe_v1_subscription_internal_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use InternalGetQuotaUsageResponse.ProtoReflect.Descriptor instead.
+func (*InternalGetQuotaUsageResponse) Descriptor() ([]byte, []int) {
+	return file_subscribe_v1_subscription_internal_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *InternalGetQuotaUsageResponse) GetSubscriptionCode() string {
+	if x != nil {
+		return x.SubscriptionCode
+	}
+	return ""
+}
+
+func (x *InternalGetQuotaUsageResponse) GetUsages() []*InternalQuotaUsageItem {
+	if x != nil {
+		return x.Usages
+	}
+	return nil
+}
+
+// InternalQuotaUsageItem 配额使用项
+type InternalQuotaUsageItem struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// 维度键
+	DimensionKey string `protobuf:"bytes,1,opt,name=dimension_key,json=dimensionKey,proto3" json:"dimension_key,omitempty"`
+	// 配额上限
+	QuotaLimit int32 `protobuf:"varint,2,opt,name=quota_limit,json=quotaLimit,proto3" json:"quota_limit,omitempty"`
+	// 已使用量
+	QuotaUsed int32 `protobuf:"varint,3,opt,name=quota_used,json=quotaUsed,proto3" json:"quota_used,omitempty"`
+	// 剩余量
+	QuotaRemaining int32 `protobuf:"varint,4,opt,name=quota_remaining,json=quotaRemaining,proto3" json:"quota_remaining,omitempty"`
+	// 是否无限制
+	IsUnlimited bool `protobuf:"varint,5,opt,name=is_unlimited,json=isUnlimited,proto3" json:"is_unlimited,omitempty"`
+	// 使用百分比
+	UsagePercentage float64 `protobuf:"fixed64,6,opt,name=usage_percentage,json=usagePercentage,proto3" json:"usage_percentage,omitempty"`
+	// 单位
+	Unit          *string `protobuf:"bytes,7,opt,name=unit,proto3,oneof" json:"unit,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *InternalQuotaUsageItem) Reset() {
+	*x = InternalQuotaUsageItem{}
+	mi := &file_subscribe_v1_subscription_internal_proto_msgTypes[21]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *InternalQuotaUsageItem) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*InternalQuotaUsageItem) ProtoMessage() {}
+
+func (x *InternalQuotaUsageItem) ProtoReflect() protoreflect.Message {
+	mi := &file_subscribe_v1_subscription_internal_proto_msgTypes[21]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use InternalQuotaUsageItem.ProtoReflect.Descriptor instead.
+func (*InternalQuotaUsageItem) Descriptor() ([]byte, []int) {
+	return file_subscribe_v1_subscription_internal_proto_rawDescGZIP(), []int{21}
+}
+
+func (x *InternalQuotaUsageItem) GetDimensionKey() string {
+	if x != nil {
+		return x.DimensionKey
+	}
+	return ""
+}
+
+func (x *InternalQuotaUsageItem) GetQuotaLimit() int32 {
+	if x != nil {
+		return x.QuotaLimit
+	}
+	return 0
+}
+
+func (x *InternalQuotaUsageItem) GetQuotaUsed() int32 {
+	if x != nil {
+		return x.QuotaUsed
+	}
+	return 0
+}
+
+func (x *InternalQuotaUsageItem) GetQuotaRemaining() int32 {
+	if x != nil {
+		return x.QuotaRemaining
+	}
+	return 0
+}
+
+func (x *InternalQuotaUsageItem) GetIsUnlimited() bool {
+	if x != nil {
+		return x.IsUnlimited
+	}
+	return false
+}
+
+func (x *InternalQuotaUsageItem) GetUsagePercentage() float64 {
+	if x != nil {
+		return x.UsagePercentage
+	}
+	return 0
+}
+
+func (x *InternalQuotaUsageItem) GetUnit() string {
+	if x != nil && x.Unit != nil {
+		return *x.Unit
+	}
+	return ""
+}
+
 var File_subscribe_v1_subscription_internal_proto protoreflect.FileDescriptor
 
 const file_subscribe_v1_subscription_internal_proto_rawDesc = "" +
@@ -1792,7 +2422,57 @@ const file_subscribe_v1_subscription_internal_proto_rawDesc = "" +
 	"1InternalGetSubscriptionStatsByProductCodeResponse\x12!\n" +
 	"\factive_count\x18\x01 \x01(\x05R\vactiveCount\x12\x1f\n" +
 	"\vtrial_count\x18\x02 \x01(\x05R\n" +
-	"trialCount*\x9d\x02\n" +
+	"trialCount\"\xa2\x01\n" +
+	"\x1fInternalCheckAndUseQuotaRequest\x12\x1f\n" +
+	"\vtenant_code\x18\x01 \x01(\tR\n" +
+	"tenantCode\x12!\n" +
+	"\fproduct_code\x18\x02 \x01(\tR\vproductCode\x12#\n" +
+	"\rdimension_key\x18\x03 \x01(\tR\fdimensionKey\x12\x16\n" +
+	"\x06amount\x18\x04 \x01(\x05R\x06amount\"\x95\x03\n" +
+	" InternalCheckAndUseQuotaResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12#\n" +
+	"\rdimension_key\x18\x02 \x01(\tR\fdimensionKey\x12\x1f\n" +
+	"\vquota_limit\x18\x03 \x01(\x05R\n" +
+	"quotaLimit\x12*\n" +
+	"\x11quota_used_before\x18\x04 \x01(\x05R\x0fquotaUsedBefore\x12(\n" +
+	"\x10quota_used_after\x18\x05 \x01(\x05R\x0equotaUsedAfter\x12'\n" +
+	"\x0fquota_remaining\x18\x06 \x01(\x05R\x0equotaRemaining\x12!\n" +
+	"\fis_unlimited\x18\a \x01(\bR\visUnlimited\x12#\n" +
+	"\rerror_message\x18\b \x01(\tR\ferrorMessage\x12J\n" +
+	"\n" +
+	"error_code\x18\t \x01(\x0e2+.api.subscription.v1.InternalQuotaErrorCodeR\terrorCode\"\x9e\x01\n" +
+	"\x1bInternalReleaseQuotaRequest\x12\x1f\n" +
+	"\vtenant_code\x18\x01 \x01(\tR\n" +
+	"tenantCode\x12!\n" +
+	"\fproduct_code\x18\x02 \x01(\tR\vproductCode\x12#\n" +
+	"\rdimension_key\x18\x03 \x01(\tR\fdimensionKey\x12\x16\n" +
+	"\x06amount\x18\x04 \x01(\x05R\x06amount\"\xd8\x01\n" +
+	"\x1cInternalReleaseQuotaResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12#\n" +
+	"\rdimension_key\x18\x02 \x01(\tR\fdimensionKey\x12*\n" +
+	"\x11quota_used_before\x18\x03 \x01(\x05R\x0fquotaUsedBefore\x12(\n" +
+	"\x10quota_used_after\x18\x04 \x01(\x05R\x0equotaUsedAfter\x12#\n" +
+	"\rerror_message\x18\x05 \x01(\tR\ferrorMessage\"\x9e\x01\n" +
+	"\x1cInternalGetQuotaUsageRequest\x12\x1f\n" +
+	"\vtenant_code\x18\x01 \x01(\tR\n" +
+	"tenantCode\x12!\n" +
+	"\fproduct_code\x18\x02 \x01(\tR\vproductCode\x12(\n" +
+	"\rdimension_key\x18\x03 \x01(\tH\x00R\fdimensionKey\x88\x01\x01B\x10\n" +
+	"\x0e_dimension_key\"\x91\x01\n" +
+	"\x1dInternalGetQuotaUsageResponse\x12+\n" +
+	"\x11subscription_code\x18\x01 \x01(\tR\x10subscriptionCode\x12C\n" +
+	"\x06usages\x18\x02 \x03(\v2+.api.subscription.v1.InternalQuotaUsageItemR\x06usages\"\x96\x02\n" +
+	"\x16InternalQuotaUsageItem\x12#\n" +
+	"\rdimension_key\x18\x01 \x01(\tR\fdimensionKey\x12\x1f\n" +
+	"\vquota_limit\x18\x02 \x01(\x05R\n" +
+	"quotaLimit\x12\x1d\n" +
+	"\n" +
+	"quota_used\x18\x03 \x01(\x05R\tquotaUsed\x12'\n" +
+	"\x0fquota_remaining\x18\x04 \x01(\x05R\x0equotaRemaining\x12!\n" +
+	"\fis_unlimited\x18\x05 \x01(\bR\visUnlimited\x12)\n" +
+	"\x10usage_percentage\x18\x06 \x01(\x01R\x0fusagePercentage\x12\x17\n" +
+	"\x04unit\x18\a \x01(\tH\x00R\x04unit\x88\x01\x01B\a\n" +
+	"\x05_unit*\x9d\x02\n" +
 	"\x1aInternalSubscriptionStatus\x12,\n" +
 	"(INTERNAL_SUBSCRIPTION_STATUS_UNSPECIFIED\x10\x00\x12'\n" +
 	"#INTERNAL_SUBSCRIPTION_STATUS_ACTIVE\x10\x01\x12&\n" +
@@ -1823,14 +2503,25 @@ const file_subscribe_v1_subscription_internal_proto_rawDesc = "" +
 	"\x1aINTERNAL_ORDER_STATUS_PAID\x10\x02\x12#\n" +
 	"\x1fINTERNAL_ORDER_STATUS_CANCELLED\x10\x03\x12\"\n" +
 	"\x1eINTERNAL_ORDER_STATUS_REFUNDED\x10\x04\x12 \n" +
-	"\x1cINTERNAL_ORDER_STATUS_FAILED\x10\x052\xad\a\n" +
+	"\x1cINTERNAL_ORDER_STATUS_FAILED\x10\x05*\x9a\x02\n" +
+	"\x16InternalQuotaErrorCode\x12 \n" +
+	"\x1cINTERNAL_QUOTA_ERROR_UNKNOWN\x10\x00\x12!\n" +
+	"\x1dINTERNAL_QUOTA_ERROR_EXCEEDED\x10\x01\x12/\n" +
+	"+INTERNAL_QUOTA_ERROR_SUBSCRIPTION_NOT_FOUND\x10\x02\x12,\n" +
+	"(INTERNAL_QUOTA_ERROR_DIMENSION_NOT_FOUND\x10\x03\x12-\n" +
+	")INTERNAL_QUOTA_ERROR_CHECKPOINT_NOT_FOUND\x10\x04\x12-\n" +
+	")INTERNAL_QUOTA_ERROR_SUBSCRIPTION_EXPIRED\x10\x052\xb4\n" +
+	"\n" +
 	"\x1bSubscriptionInternalService\x12\x8a\x01\n" +
 	"\x19InternalListSubscriptions\x125.api.subscription.v1.InternalListSubscriptionsRequest\x1a6.api.subscription.v1.InternalListSubscriptionsResponse\x12\x8d\x01\n" +
 	"\x1aInternalCreateSubscription\x126.api.subscription.v1.InternalCreateSubscriptionRequest\x1a7.api.subscription.v1.InternalCreateSubscriptionResponse\x12\x8a\x01\n" +
 	"\x19InternalReNewSubscription\x125.api.subscription.v1.InternalReNewSubscriptionRequest\x1a6.api.subscription.v1.InternalReNewSubscriptionResponse\x12\x90\x01\n" +
 	"\x1bInternalUpgradeSubscription\x127.api.subscription.v1.InternalUpgradeSubscriptionRequest\x1a8.api.subscription.v1.InternalUpgradeSubscriptionResponse\x12\x93\x01\n" +
 	"\x1cInternalGetSubscriptionStats\x128.api.subscription.v1.InternalGetSubscriptionStatsRequest\x1a9.api.subscription.v1.InternalGetSubscriptionStatsResponse\x12\xba\x01\n" +
-	")InternalGetSubscriptionStatsByProductCode\x12E.api.subscription.v1.InternalGetSubscriptionStatsByProductCodeRequest\x1aF.api.subscription.v1.InternalGetSubscriptionStatsByProductCodeResponseB\xe5\x01\n" +
+	")InternalGetSubscriptionStatsByProductCode\x12E.api.subscription.v1.InternalGetSubscriptionStatsByProductCodeRequest\x1aF.api.subscription.v1.InternalGetSubscriptionStatsByProductCodeResponse\x12\x87\x01\n" +
+	"\x18InternalCheckAndUseQuota\x124.api.subscription.v1.InternalCheckAndUseQuotaRequest\x1a5.api.subscription.v1.InternalCheckAndUseQuotaResponse\x12{\n" +
+	"\x14InternalReleaseQuota\x120.api.subscription.v1.InternalReleaseQuotaRequest\x1a1.api.subscription.v1.InternalReleaseQuotaResponse\x12~\n" +
+	"\x15InternalGetQuotaUsage\x121.api.subscription.v1.InternalGetQuotaUsageRequest\x1a2.api.subscription.v1.InternalGetQuotaUsageResponseB\xe5\x01\n" +
 	"\x17com.api.subscription.v1B\x19SubscriptionInternalProtoP\x01ZAgithub.com/heyinLab/common/api/gen/go/subscribe/v1;subscriptionv1\xa2\x02\x03ASX\xaa\x02\x13Api.Subscription.V1\xca\x02\x13Api\\Subscription\\V1\xe2\x02\x1fApi\\Subscription\\V1\\GPBMetadata\xea\x02\x15Api::Subscription::V1b\x06proto3"
 
 var (
@@ -1845,85 +2536,101 @@ func file_subscribe_v1_subscription_internal_proto_rawDescGZIP() []byte {
 	return file_subscribe_v1_subscription_internal_proto_rawDescData
 }
 
-var file_subscribe_v1_subscription_internal_proto_enumTypes = make([]protoimpl.EnumInfo, 5)
-var file_subscribe_v1_subscription_internal_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
+var file_subscribe_v1_subscription_internal_proto_enumTypes = make([]protoimpl.EnumInfo, 6)
+var file_subscribe_v1_subscription_internal_proto_msgTypes = make([]protoimpl.MessageInfo, 22)
 var file_subscribe_v1_subscription_internal_proto_goTypes = []any{
 	(InternalSubscriptionStatus)(0),                           // 0: api.subscription.v1.InternalSubscriptionStatus
 	(InternalQuotaType)(0),                                    // 1: api.subscription.v1.InternalQuotaType
 	(InternalOrderType)(0),                                    // 2: api.subscription.v1.InternalOrderType
 	(InternalBillingCycle)(0),                                 // 3: api.subscription.v1.InternalBillingCycle
 	(InternalOrderStatus)(0),                                  // 4: api.subscription.v1.InternalOrderStatus
-	(*InternalSubscriptionInfo)(nil),                          // 5: api.subscription.v1.InternalSubscriptionInfo
-	(*InternalQuotaUsageInfo)(nil),                            // 6: api.subscription.v1.InternalQuotaUsageInfo
-	(*InternalSubscriptionOrderInfo)(nil),                     // 7: api.subscription.v1.InternalSubscriptionOrderInfo
-	(*InternalListSubscriptionsRequest)(nil),                  // 8: api.subscription.v1.InternalListSubscriptionsRequest
-	(*InternalListSubscriptionsResponse)(nil),                 // 9: api.subscription.v1.InternalListSubscriptionsResponse
-	(*InternalCreateSubscriptionRequest)(nil),                 // 10: api.subscription.v1.InternalCreateSubscriptionRequest
-	(*InternalCreateSubscriptionResponse)(nil),                // 11: api.subscription.v1.InternalCreateSubscriptionResponse
-	(*InternalReNewSubscriptionRequest)(nil),                  // 12: api.subscription.v1.InternalReNewSubscriptionRequest
-	(*InternalReNewSubscriptionResponse)(nil),                 // 13: api.subscription.v1.InternalReNewSubscriptionResponse
-	(*InternalUpgradeSubscriptionRequest)(nil),                // 14: api.subscription.v1.InternalUpgradeSubscriptionRequest
-	(*InternalUpgradeSubscriptionResponse)(nil),               // 15: api.subscription.v1.InternalUpgradeSubscriptionResponse
-	(*InternalGetSubscriptionStatsRequest)(nil),               // 16: api.subscription.v1.InternalGetSubscriptionStatsRequest
-	(*InternalGetSubscriptionStatsResponse)(nil),              // 17: api.subscription.v1.InternalGetSubscriptionStatsResponse
-	(*InternalGetSubscriptionStatsByProductCodeRequest)(nil),  // 18: api.subscription.v1.InternalGetSubscriptionStatsByProductCodeRequest
-	(*InternalGetSubscriptionStatsByProductCodeResponse)(nil), // 19: api.subscription.v1.InternalGetSubscriptionStatsByProductCodeResponse
-	(*structpb.Struct)(nil),                                   // 20: google.protobuf.Struct
-	(*timestamppb.Timestamp)(nil),                             // 21: google.protobuf.Timestamp
-	(*durationpb.Duration)(nil),                               // 22: google.protobuf.Duration
+	(InternalQuotaErrorCode)(0),                               // 5: api.subscription.v1.InternalQuotaErrorCode
+	(*InternalSubscriptionInfo)(nil),                          // 6: api.subscription.v1.InternalSubscriptionInfo
+	(*InternalQuotaUsageInfo)(nil),                            // 7: api.subscription.v1.InternalQuotaUsageInfo
+	(*InternalSubscriptionOrderInfo)(nil),                     // 8: api.subscription.v1.InternalSubscriptionOrderInfo
+	(*InternalListSubscriptionsRequest)(nil),                  // 9: api.subscription.v1.InternalListSubscriptionsRequest
+	(*InternalListSubscriptionsResponse)(nil),                 // 10: api.subscription.v1.InternalListSubscriptionsResponse
+	(*InternalCreateSubscriptionRequest)(nil),                 // 11: api.subscription.v1.InternalCreateSubscriptionRequest
+	(*InternalCreateSubscriptionResponse)(nil),                // 12: api.subscription.v1.InternalCreateSubscriptionResponse
+	(*InternalReNewSubscriptionRequest)(nil),                  // 13: api.subscription.v1.InternalReNewSubscriptionRequest
+	(*InternalReNewSubscriptionResponse)(nil),                 // 14: api.subscription.v1.InternalReNewSubscriptionResponse
+	(*InternalUpgradeSubscriptionRequest)(nil),                // 15: api.subscription.v1.InternalUpgradeSubscriptionRequest
+	(*InternalUpgradeSubscriptionResponse)(nil),               // 16: api.subscription.v1.InternalUpgradeSubscriptionResponse
+	(*InternalGetSubscriptionStatsRequest)(nil),               // 17: api.subscription.v1.InternalGetSubscriptionStatsRequest
+	(*InternalGetSubscriptionStatsResponse)(nil),              // 18: api.subscription.v1.InternalGetSubscriptionStatsResponse
+	(*InternalGetSubscriptionStatsByProductCodeRequest)(nil),  // 19: api.subscription.v1.InternalGetSubscriptionStatsByProductCodeRequest
+	(*InternalGetSubscriptionStatsByProductCodeResponse)(nil), // 20: api.subscription.v1.InternalGetSubscriptionStatsByProductCodeResponse
+	(*InternalCheckAndUseQuotaRequest)(nil),                   // 21: api.subscription.v1.InternalCheckAndUseQuotaRequest
+	(*InternalCheckAndUseQuotaResponse)(nil),                  // 22: api.subscription.v1.InternalCheckAndUseQuotaResponse
+	(*InternalReleaseQuotaRequest)(nil),                       // 23: api.subscription.v1.InternalReleaseQuotaRequest
+	(*InternalReleaseQuotaResponse)(nil),                      // 24: api.subscription.v1.InternalReleaseQuotaResponse
+	(*InternalGetQuotaUsageRequest)(nil),                      // 25: api.subscription.v1.InternalGetQuotaUsageRequest
+	(*InternalGetQuotaUsageResponse)(nil),                     // 26: api.subscription.v1.InternalGetQuotaUsageResponse
+	(*InternalQuotaUsageItem)(nil),                            // 27: api.subscription.v1.InternalQuotaUsageItem
+	(*structpb.Struct)(nil),                                   // 28: google.protobuf.Struct
+	(*timestamppb.Timestamp)(nil),                             // 29: google.protobuf.Timestamp
+	(*durationpb.Duration)(nil),                               // 30: google.protobuf.Duration
 }
 var file_subscribe_v1_subscription_internal_proto_depIdxs = []int32{
-	20, // 0: api.subscription.v1.InternalSubscriptionInfo.product_i18n:type_name -> google.protobuf.Struct
-	20, // 1: api.subscription.v1.InternalSubscriptionInfo.plan_i18n:type_name -> google.protobuf.Struct
+	28, // 0: api.subscription.v1.InternalSubscriptionInfo.product_i18n:type_name -> google.protobuf.Struct
+	28, // 1: api.subscription.v1.InternalSubscriptionInfo.plan_i18n:type_name -> google.protobuf.Struct
 	0,  // 2: api.subscription.v1.InternalSubscriptionInfo.status:type_name -> api.subscription.v1.InternalSubscriptionStatus
-	21, // 3: api.subscription.v1.InternalSubscriptionInfo.start_date:type_name -> google.protobuf.Timestamp
-	21, // 4: api.subscription.v1.InternalSubscriptionInfo.end_date:type_name -> google.protobuf.Timestamp
-	21, // 5: api.subscription.v1.InternalSubscriptionInfo.trial_end_date:type_name -> google.protobuf.Timestamp
-	20, // 6: api.subscription.v1.InternalSubscriptionInfo.quota_snapshot:type_name -> google.protobuf.Struct
-	6,  // 7: api.subscription.v1.InternalSubscriptionInfo.quota_usages:type_name -> api.subscription.v1.InternalQuotaUsageInfo
-	21, // 8: api.subscription.v1.InternalSubscriptionInfo.create_time:type_name -> google.protobuf.Timestamp
-	21, // 9: api.subscription.v1.InternalSubscriptionInfo.update_time:type_name -> google.protobuf.Timestamp
-	20, // 10: api.subscription.v1.InternalQuotaUsageInfo.dimension_i18n:type_name -> google.protobuf.Struct
+	29, // 3: api.subscription.v1.InternalSubscriptionInfo.start_date:type_name -> google.protobuf.Timestamp
+	29, // 4: api.subscription.v1.InternalSubscriptionInfo.end_date:type_name -> google.protobuf.Timestamp
+	29, // 5: api.subscription.v1.InternalSubscriptionInfo.trial_end_date:type_name -> google.protobuf.Timestamp
+	28, // 6: api.subscription.v1.InternalSubscriptionInfo.quota_snapshot:type_name -> google.protobuf.Struct
+	7,  // 7: api.subscription.v1.InternalSubscriptionInfo.quota_usages:type_name -> api.subscription.v1.InternalQuotaUsageInfo
+	29, // 8: api.subscription.v1.InternalSubscriptionInfo.create_time:type_name -> google.protobuf.Timestamp
+	29, // 9: api.subscription.v1.InternalSubscriptionInfo.update_time:type_name -> google.protobuf.Timestamp
+	28, // 10: api.subscription.v1.InternalQuotaUsageInfo.dimension_i18n:type_name -> google.protobuf.Struct
 	1,  // 11: api.subscription.v1.InternalQuotaUsageInfo.quota_type:type_name -> api.subscription.v1.InternalQuotaType
 	2,  // 12: api.subscription.v1.InternalSubscriptionOrderInfo.order_type:type_name -> api.subscription.v1.InternalOrderType
 	3,  // 13: api.subscription.v1.InternalSubscriptionOrderInfo.billing_cycle:type_name -> api.subscription.v1.InternalBillingCycle
 	4,  // 14: api.subscription.v1.InternalSubscriptionOrderInfo.status:type_name -> api.subscription.v1.InternalOrderStatus
-	21, // 15: api.subscription.v1.InternalSubscriptionOrderInfo.paid_at:type_name -> google.protobuf.Timestamp
-	21, // 16: api.subscription.v1.InternalSubscriptionOrderInfo.cancelled_at:type_name -> google.protobuf.Timestamp
-	21, // 17: api.subscription.v1.InternalSubscriptionOrderInfo.refunded_at:type_name -> google.protobuf.Timestamp
-	21, // 18: api.subscription.v1.InternalSubscriptionOrderInfo.service_start_date:type_name -> google.protobuf.Timestamp
-	21, // 19: api.subscription.v1.InternalSubscriptionOrderInfo.service_end_date:type_name -> google.protobuf.Timestamp
-	20, // 20: api.subscription.v1.InternalSubscriptionOrderInfo.invoice_info:type_name -> google.protobuf.Struct
+	29, // 15: api.subscription.v1.InternalSubscriptionOrderInfo.paid_at:type_name -> google.protobuf.Timestamp
+	29, // 16: api.subscription.v1.InternalSubscriptionOrderInfo.cancelled_at:type_name -> google.protobuf.Timestamp
+	29, // 17: api.subscription.v1.InternalSubscriptionOrderInfo.refunded_at:type_name -> google.protobuf.Timestamp
+	29, // 18: api.subscription.v1.InternalSubscriptionOrderInfo.service_start_date:type_name -> google.protobuf.Timestamp
+	29, // 19: api.subscription.v1.InternalSubscriptionOrderInfo.service_end_date:type_name -> google.protobuf.Timestamp
+	28, // 20: api.subscription.v1.InternalSubscriptionOrderInfo.invoice_info:type_name -> google.protobuf.Struct
 	0,  // 21: api.subscription.v1.InternalListSubscriptionsRequest.status:type_name -> api.subscription.v1.InternalSubscriptionStatus
-	5,  // 22: api.subscription.v1.InternalListSubscriptionsResponse.subscriptions:type_name -> api.subscription.v1.InternalSubscriptionInfo
-	21, // 23: api.subscription.v1.InternalCreateSubscriptionRequest.start_date:type_name -> google.protobuf.Timestamp
-	21, // 24: api.subscription.v1.InternalCreateSubscriptionRequest.end_date:type_name -> google.protobuf.Timestamp
-	7,  // 25: api.subscription.v1.InternalCreateSubscriptionRequest.order:type_name -> api.subscription.v1.InternalSubscriptionOrderInfo
-	5,  // 26: api.subscription.v1.InternalCreateSubscriptionResponse.subscription:type_name -> api.subscription.v1.InternalSubscriptionInfo
-	22, // 27: api.subscription.v1.InternalReNewSubscriptionRequest.re_new_time:type_name -> google.protobuf.Duration
-	7,  // 28: api.subscription.v1.InternalReNewSubscriptionRequest.order:type_name -> api.subscription.v1.InternalSubscriptionOrderInfo
-	5,  // 29: api.subscription.v1.InternalReNewSubscriptionResponse.subscription:type_name -> api.subscription.v1.InternalSubscriptionInfo
-	21, // 30: api.subscription.v1.InternalUpgradeSubscriptionRequest.start_date:type_name -> google.protobuf.Timestamp
-	21, // 31: api.subscription.v1.InternalUpgradeSubscriptionRequest.end_date:type_name -> google.protobuf.Timestamp
-	7,  // 32: api.subscription.v1.InternalUpgradeSubscriptionRequest.order:type_name -> api.subscription.v1.InternalSubscriptionOrderInfo
-	5,  // 33: api.subscription.v1.InternalUpgradeSubscriptionResponse.subscription:type_name -> api.subscription.v1.InternalSubscriptionInfo
-	8,  // 34: api.subscription.v1.SubscriptionInternalService.InternalListSubscriptions:input_type -> api.subscription.v1.InternalListSubscriptionsRequest
-	10, // 35: api.subscription.v1.SubscriptionInternalService.InternalCreateSubscription:input_type -> api.subscription.v1.InternalCreateSubscriptionRequest
-	12, // 36: api.subscription.v1.SubscriptionInternalService.InternalReNewSubscription:input_type -> api.subscription.v1.InternalReNewSubscriptionRequest
-	14, // 37: api.subscription.v1.SubscriptionInternalService.InternalUpgradeSubscription:input_type -> api.subscription.v1.InternalUpgradeSubscriptionRequest
-	16, // 38: api.subscription.v1.SubscriptionInternalService.InternalGetSubscriptionStats:input_type -> api.subscription.v1.InternalGetSubscriptionStatsRequest
-	18, // 39: api.subscription.v1.SubscriptionInternalService.InternalGetSubscriptionStatsByProductCode:input_type -> api.subscription.v1.InternalGetSubscriptionStatsByProductCodeRequest
-	9,  // 40: api.subscription.v1.SubscriptionInternalService.InternalListSubscriptions:output_type -> api.subscription.v1.InternalListSubscriptionsResponse
-	11, // 41: api.subscription.v1.SubscriptionInternalService.InternalCreateSubscription:output_type -> api.subscription.v1.InternalCreateSubscriptionResponse
-	13, // 42: api.subscription.v1.SubscriptionInternalService.InternalReNewSubscription:output_type -> api.subscription.v1.InternalReNewSubscriptionResponse
-	15, // 43: api.subscription.v1.SubscriptionInternalService.InternalUpgradeSubscription:output_type -> api.subscription.v1.InternalUpgradeSubscriptionResponse
-	17, // 44: api.subscription.v1.SubscriptionInternalService.InternalGetSubscriptionStats:output_type -> api.subscription.v1.InternalGetSubscriptionStatsResponse
-	19, // 45: api.subscription.v1.SubscriptionInternalService.InternalGetSubscriptionStatsByProductCode:output_type -> api.subscription.v1.InternalGetSubscriptionStatsByProductCodeResponse
-	40, // [40:46] is the sub-list for method output_type
-	34, // [34:40] is the sub-list for method input_type
-	34, // [34:34] is the sub-list for extension type_name
-	34, // [34:34] is the sub-list for extension extendee
-	0,  // [0:34] is the sub-list for field type_name
+	6,  // 22: api.subscription.v1.InternalListSubscriptionsResponse.subscriptions:type_name -> api.subscription.v1.InternalSubscriptionInfo
+	29, // 23: api.subscription.v1.InternalCreateSubscriptionRequest.start_date:type_name -> google.protobuf.Timestamp
+	29, // 24: api.subscription.v1.InternalCreateSubscriptionRequest.end_date:type_name -> google.protobuf.Timestamp
+	8,  // 25: api.subscription.v1.InternalCreateSubscriptionRequest.order:type_name -> api.subscription.v1.InternalSubscriptionOrderInfo
+	6,  // 26: api.subscription.v1.InternalCreateSubscriptionResponse.subscription:type_name -> api.subscription.v1.InternalSubscriptionInfo
+	30, // 27: api.subscription.v1.InternalReNewSubscriptionRequest.re_new_time:type_name -> google.protobuf.Duration
+	8,  // 28: api.subscription.v1.InternalReNewSubscriptionRequest.order:type_name -> api.subscription.v1.InternalSubscriptionOrderInfo
+	6,  // 29: api.subscription.v1.InternalReNewSubscriptionResponse.subscription:type_name -> api.subscription.v1.InternalSubscriptionInfo
+	29, // 30: api.subscription.v1.InternalUpgradeSubscriptionRequest.start_date:type_name -> google.protobuf.Timestamp
+	29, // 31: api.subscription.v1.InternalUpgradeSubscriptionRequest.end_date:type_name -> google.protobuf.Timestamp
+	8,  // 32: api.subscription.v1.InternalUpgradeSubscriptionRequest.order:type_name -> api.subscription.v1.InternalSubscriptionOrderInfo
+	6,  // 33: api.subscription.v1.InternalUpgradeSubscriptionResponse.subscription:type_name -> api.subscription.v1.InternalSubscriptionInfo
+	5,  // 34: api.subscription.v1.InternalCheckAndUseQuotaResponse.error_code:type_name -> api.subscription.v1.InternalQuotaErrorCode
+	27, // 35: api.subscription.v1.InternalGetQuotaUsageResponse.usages:type_name -> api.subscription.v1.InternalQuotaUsageItem
+	9,  // 36: api.subscription.v1.SubscriptionInternalService.InternalListSubscriptions:input_type -> api.subscription.v1.InternalListSubscriptionsRequest
+	11, // 37: api.subscription.v1.SubscriptionInternalService.InternalCreateSubscription:input_type -> api.subscription.v1.InternalCreateSubscriptionRequest
+	13, // 38: api.subscription.v1.SubscriptionInternalService.InternalReNewSubscription:input_type -> api.subscription.v1.InternalReNewSubscriptionRequest
+	15, // 39: api.subscription.v1.SubscriptionInternalService.InternalUpgradeSubscription:input_type -> api.subscription.v1.InternalUpgradeSubscriptionRequest
+	17, // 40: api.subscription.v1.SubscriptionInternalService.InternalGetSubscriptionStats:input_type -> api.subscription.v1.InternalGetSubscriptionStatsRequest
+	19, // 41: api.subscription.v1.SubscriptionInternalService.InternalGetSubscriptionStatsByProductCode:input_type -> api.subscription.v1.InternalGetSubscriptionStatsByProductCodeRequest
+	21, // 42: api.subscription.v1.SubscriptionInternalService.InternalCheckAndUseQuota:input_type -> api.subscription.v1.InternalCheckAndUseQuotaRequest
+	23, // 43: api.subscription.v1.SubscriptionInternalService.InternalReleaseQuota:input_type -> api.subscription.v1.InternalReleaseQuotaRequest
+	25, // 44: api.subscription.v1.SubscriptionInternalService.InternalGetQuotaUsage:input_type -> api.subscription.v1.InternalGetQuotaUsageRequest
+	10, // 45: api.subscription.v1.SubscriptionInternalService.InternalListSubscriptions:output_type -> api.subscription.v1.InternalListSubscriptionsResponse
+	12, // 46: api.subscription.v1.SubscriptionInternalService.InternalCreateSubscription:output_type -> api.subscription.v1.InternalCreateSubscriptionResponse
+	14, // 47: api.subscription.v1.SubscriptionInternalService.InternalReNewSubscription:output_type -> api.subscription.v1.InternalReNewSubscriptionResponse
+	16, // 48: api.subscription.v1.SubscriptionInternalService.InternalUpgradeSubscription:output_type -> api.subscription.v1.InternalUpgradeSubscriptionResponse
+	18, // 49: api.subscription.v1.SubscriptionInternalService.InternalGetSubscriptionStats:output_type -> api.subscription.v1.InternalGetSubscriptionStatsResponse
+	20, // 50: api.subscription.v1.SubscriptionInternalService.InternalGetSubscriptionStatsByProductCode:output_type -> api.subscription.v1.InternalGetSubscriptionStatsByProductCodeResponse
+	22, // 51: api.subscription.v1.SubscriptionInternalService.InternalCheckAndUseQuota:output_type -> api.subscription.v1.InternalCheckAndUseQuotaResponse
+	24, // 52: api.subscription.v1.SubscriptionInternalService.InternalReleaseQuota:output_type -> api.subscription.v1.InternalReleaseQuotaResponse
+	26, // 53: api.subscription.v1.SubscriptionInternalService.InternalGetQuotaUsage:output_type -> api.subscription.v1.InternalGetQuotaUsageResponse
+	45, // [45:54] is the sub-list for method output_type
+	36, // [36:45] is the sub-list for method input_type
+	36, // [36:36] is the sub-list for extension type_name
+	36, // [36:36] is the sub-list for extension extendee
+	0,  // [0:36] is the sub-list for field type_name
 }
 
 func init() { file_subscribe_v1_subscription_internal_proto_init() }
@@ -1937,13 +2644,15 @@ func file_subscribe_v1_subscription_internal_proto_init() {
 	file_subscribe_v1_subscription_internal_proto_msgTypes[3].OneofWrappers = []any{}
 	file_subscribe_v1_subscription_internal_proto_msgTypes[5].OneofWrappers = []any{}
 	file_subscribe_v1_subscription_internal_proto_msgTypes[9].OneofWrappers = []any{}
+	file_subscribe_v1_subscription_internal_proto_msgTypes[19].OneofWrappers = []any{}
+	file_subscribe_v1_subscription_internal_proto_msgTypes[21].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_subscribe_v1_subscription_internal_proto_rawDesc), len(file_subscribe_v1_subscription_internal_proto_rawDesc)),
-			NumEnums:      5,
-			NumMessages:   15,
+			NumEnums:      6,
+			NumMessages:   22,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

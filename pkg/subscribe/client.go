@@ -3,6 +3,7 @@ package subscribe
 import (
 	"context"
 	"fmt"
+
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/registry"
 	v1 "github.com/heyinLab/common/api/gen/go/subscribe/v1"
@@ -12,6 +13,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
+// Client 订阅服务连接管理
 type Client struct {
 	config          *Config
 	conn            *grpc.ClientConn
@@ -19,6 +21,14 @@ type Client struct {
 	subscribeClient *SubscribeClient
 }
 
+// SubscribeClient 订阅服务业务客户端
+type SubscribeClient struct {
+	client v1.SubscriptionInternalServiceClient
+	logger *log.Helper
+	config *Config
+}
+
+// NewClient 创建订阅服务客户端
 func NewClient(config *Config) (*Client, error) {
 	if config == nil {
 		config = DefaultConfig()
@@ -26,6 +36,7 @@ func NewClient(config *Config) (*Client, error) {
 	if err := config.Validate(); err != nil {
 		return nil, err
 	}
+
 	logger := log.NewHelper(log.With(
 		log.GetLogger(),
 		"module", "subscribe-client",
@@ -35,6 +46,7 @@ func NewClient(config *Config) (*Client, error) {
 	if err != nil {
 		return nil, fmt.Errorf("创建 gRPC 连接失败: %w", err)
 	}
+
 	return &Client{
 		config:          config,
 		conn:            conn,
@@ -43,15 +55,14 @@ func NewClient(config *Config) (*Client, error) {
 	}, nil
 }
 
+// NewClientWithDiscovery 使用服务发现创建订阅服务客户端
 func NewClientWithDiscovery(config *Config, discovery registry.Discovery) (*Client, error) {
 	if config == nil {
 		config = DefaultConfig()
 	}
-
 	if discovery == nil {
 		return nil, fmt.Errorf("服务发现实例不能为空")
 	}
-
 	if err := config.Validate(); err != nil {
 		return nil, err
 	}
@@ -66,7 +77,7 @@ func NewClientWithDiscovery(config *Config, discovery registry.Discovery) (*Clie
 		return nil, fmt.Errorf("创建 gRPC 连接失败: %w", err)
 	}
 
-	logger.Infof("平台服务客户端连接成功 (服务发现): endpoint=%s, timeout=%v", config.Endpoint, config.Timeout)
+	logger.Infof("订阅服务客户端连接成功: endpoint=%s", config.Endpoint)
 
 	return &Client{
 		config:          config,
@@ -82,15 +93,8 @@ func (c *Client) Close() error {
 	}
 	return nil
 }
-
 func (c *Client) SubscribeClient() *SubscribeClient {
 	return c.subscribeClient
-}
-
-type SubscribeClient struct {
-	client v1.SubscriptionInternalServiceClient
-	logger *log.Helper
-	config *Config
 }
 
 func newSubscribeClient(conn *grpc.ClientConn, logger *log.Helper, config *Config) *SubscribeClient {
@@ -247,4 +251,117 @@ func (c *SubscribeClient) InternalGetSubscriptionStatsByProductCode(ctx context.
 	}
 
 	return resp, nil
+}
+
+// QuotaResult 配额操作
+type QuotaResult struct {
+	Success         bool                      // 操作是否成功
+	DimensionKey    string                    // 维度标识
+	QuotaLimit      int32                     // 配额上限
+	QuotaUsed       int32                     // 当前已使用量
+	QuotaUsedBefore int32                     // 操作前已使用量
+	QuotaRemaining  int32                     // 剩余配
+	IsUnlimited     bool                      // 是否无限制
+	UsagePercentage float64                   // 使用百分比
+	ErrorMessage    string                    // 错误信息
+	ErrorCode       v1.InternalQuotaErrorCode // 错误码
+}
+
+// Use 使用配额
+func (c *SubscribeClient) Use(ctx context.Context, tenantCode, productCode, dimensionKey string, amount int32) (*QuotaResult, error) {
+	ctx, cancel := context.WithTimeout(ctx, c.config.Timeout)
+	defer cancel()
+
+	resp, err := c.client.InternalCheckAndUseQuota(ctx, &v1.InternalCheckAndUseQuotaRequest{
+		TenantCode:   tenantCode,
+		ProductCode:  productCode,
+		DimensionKey: dimensionKey,
+		Amount:       amount,
+	})
+	if err != nil {
+		c.logger.WithContext(ctx).Errorf("配额使用失败: tenant=%s, product=%s, dimension=%s, err=%v",
+			tenantCode, productCode, dimensionKey, err)
+		return nil, err
+	}
+
+	return &QuotaResult{
+		Success:         resp.Success,
+		DimensionKey:    resp.DimensionKey,
+		QuotaLimit:      resp.QuotaLimit,
+		QuotaUsed:       resp.QuotaUsedAfter,
+		QuotaUsedBefore: resp.QuotaUsedBefore,
+		QuotaRemaining:  resp.QuotaRemaining,
+		IsUnlimited:     resp.IsUnlimited,
+		ErrorMessage:    resp.ErrorMessage,
+		ErrorCode:       resp.ErrorCode,
+	}, nil
+}
+
+// MustUse 使用配额
+func (c *SubscribeClient) MustUse(ctx context.Context, tenantCode, productCode, dimensionKey string, amount int32) error {
+	result, err := c.Use(ctx, tenantCode, productCode, dimensionKey, amount)
+	if err != nil {
+		return err
+	}
+	if !result.Success {
+		return fmt.Errorf("配额不足: %s", result.ErrorMessage)
+	}
+	return nil
+}
+
+// Release 释放配额
+func (c *SubscribeClient) Release(ctx context.Context, tenantCode, productCode, dimensionKey string, amount int32) (*QuotaResult, error) {
+	ctx, cancel := context.WithTimeout(ctx, c.config.Timeout)
+	defer cancel()
+
+	resp, err := c.client.InternalReleaseQuota(ctx, &v1.InternalReleaseQuotaRequest{
+		TenantCode:   tenantCode,
+		ProductCode:  productCode,
+		DimensionKey: dimensionKey,
+		Amount:       amount,
+	})
+	if err != nil {
+		c.logger.WithContext(ctx).Errorf("配额释放失败: tenant=%s, product=%s, dimension=%s, err=%v",
+			tenantCode, productCode, dimensionKey, err)
+		return nil, err
+	}
+
+	return &QuotaResult{
+		Success:         resp.Success,
+		DimensionKey:    resp.DimensionKey,
+		QuotaUsed:       resp.QuotaUsedAfter,
+		QuotaUsedBefore: resp.QuotaUsedBefore,
+		ErrorMessage:    resp.ErrorMessage,
+	}, nil
+}
+
+// GetUsage 查询配额使用情况
+func (c *SubscribeClient) GetUsage(ctx context.Context, tenantCode, productCode string, dimensionKey *string) ([]*QuotaResult, error) {
+	ctx, cancel := context.WithTimeout(ctx, c.config.Timeout)
+	defer cancel()
+
+	resp, err := c.client.InternalGetQuotaUsage(ctx, &v1.InternalGetQuotaUsageRequest{
+		TenantCode:   tenantCode,
+		ProductCode:  productCode,
+		DimensionKey: dimensionKey,
+	})
+	if err != nil {
+		c.logger.WithContext(ctx).Errorf("查询配额使用情况失败: tenant=%s, product=%s, err=%v",
+			tenantCode, productCode, err)
+		return nil, err
+	}
+
+	results := make([]*QuotaResult, 0, len(resp.Usages))
+	for _, u := range resp.Usages {
+		results = append(results, &QuotaResult{
+			Success:         true,
+			DimensionKey:    u.DimensionKey,
+			QuotaLimit:      u.QuotaLimit,
+			QuotaUsed:       u.QuotaUsed,
+			QuotaRemaining:  u.QuotaRemaining,
+			IsUnlimited:     u.IsUnlimited,
+			UsagePercentage: u.UsagePercentage,
+		})
+	}
+	return results, nil
 }
