@@ -226,6 +226,29 @@ message CListAnnouncementsResponse {
   repeated CAnnouncement items = 2[json_name="items"];
 }
 
+message PushAnnouncementsReadRequest{
+  // 推送内容
+  repeated PushAnnouncementsRead items = 1[json_name="items"];
+}
+
+message PushAnnouncementsRead {
+  // 公告编码
+  string code =1[json_name="code"];
+  // 阅读数
+  int64 read_count = 2[json_name="readCount"];
+  // 阅读用户数
+  int64 read_user_count = 3[json_name="readUserCount"];
+  // 确认数
+  int64 confirm_count = 4[json_name="confirmCount"];
+  // 阅读率
+  string read_rate = 5[json_name="readRate"];
+  // 确认率
+  string confirm_rate = 6[json_name="confirmRate"];
+}
+
+message PushAnnouncementsReadResponse {
+}
+
 // 内部IAM服务（仅 gRPC，不暴露 HTTP）
 service PlatformIamService {
   // 获取完整租户权限树（树结构，包含 children，用于前端菜单渲染和权限分配）
@@ -234,4 +257,6 @@ service PlatformIamService {
   rpc GetPermissionCodesByProduct (GetPermissionCodesByProductRequest) returns (GetPermissionCodesByProductResponse);
   // 获取公告列表
   rpc ListAnnouncements(CListAnnouncementsRequest) returns (CListAnnouncementsResponse);
+  // Push阅读情况
+  rpc PushAnnouncementsRead(PushAnnouncementsReadRequest) returns (PushAnnouncementsReadResponse);
 }

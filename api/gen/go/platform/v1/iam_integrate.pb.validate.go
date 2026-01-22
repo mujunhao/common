@@ -1775,3 +1775,357 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = CListAnnouncementsResponseValidationError{}
+
+// Validate checks the field values on PushAnnouncementsReadRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *PushAnnouncementsReadRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on PushAnnouncementsReadRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// PushAnnouncementsReadRequestMultiError, or nil if none found.
+func (m *PushAnnouncementsReadRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *PushAnnouncementsReadRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetItems() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, PushAnnouncementsReadRequestValidationError{
+						field:  fmt.Sprintf("Items[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, PushAnnouncementsReadRequestValidationError{
+						field:  fmt.Sprintf("Items[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return PushAnnouncementsReadRequestValidationError{
+					field:  fmt.Sprintf("Items[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return PushAnnouncementsReadRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// PushAnnouncementsReadRequestMultiError is an error wrapping multiple
+// validation errors returned by PushAnnouncementsReadRequest.ValidateAll() if
+// the designated constraints aren't met.
+type PushAnnouncementsReadRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m PushAnnouncementsReadRequestMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m PushAnnouncementsReadRequestMultiError) AllErrors() []error { return m }
+
+// PushAnnouncementsReadRequestValidationError is the validation error returned
+// by PushAnnouncementsReadRequest.Validate if the designated constraints
+// aren't met.
+type PushAnnouncementsReadRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e PushAnnouncementsReadRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e PushAnnouncementsReadRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e PushAnnouncementsReadRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e PushAnnouncementsReadRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e PushAnnouncementsReadRequestValidationError) ErrorName() string {
+	return "PushAnnouncementsReadRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e PushAnnouncementsReadRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sPushAnnouncementsReadRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = PushAnnouncementsReadRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = PushAnnouncementsReadRequestValidationError{}
+
+// Validate checks the field values on PushAnnouncementsRead with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *PushAnnouncementsRead) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on PushAnnouncementsRead with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// PushAnnouncementsReadMultiError, or nil if none found.
+func (m *PushAnnouncementsRead) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *PushAnnouncementsRead) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Code
+
+	// no validation rules for ReadCount
+
+	// no validation rules for ReadUserCount
+
+	// no validation rules for ConfirmCount
+
+	// no validation rules for ReadRate
+
+	// no validation rules for ConfirmRate
+
+	if len(errors) > 0 {
+		return PushAnnouncementsReadMultiError(errors)
+	}
+
+	return nil
+}
+
+// PushAnnouncementsReadMultiError is an error wrapping multiple validation
+// errors returned by PushAnnouncementsRead.ValidateAll() if the designated
+// constraints aren't met.
+type PushAnnouncementsReadMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m PushAnnouncementsReadMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m PushAnnouncementsReadMultiError) AllErrors() []error { return m }
+
+// PushAnnouncementsReadValidationError is the validation error returned by
+// PushAnnouncementsRead.Validate if the designated constraints aren't met.
+type PushAnnouncementsReadValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e PushAnnouncementsReadValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e PushAnnouncementsReadValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e PushAnnouncementsReadValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e PushAnnouncementsReadValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e PushAnnouncementsReadValidationError) ErrorName() string {
+	return "PushAnnouncementsReadValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e PushAnnouncementsReadValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sPushAnnouncementsRead.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = PushAnnouncementsReadValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = PushAnnouncementsReadValidationError{}
+
+// Validate checks the field values on PushAnnouncementsReadResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *PushAnnouncementsReadResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on PushAnnouncementsReadResponse with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// PushAnnouncementsReadResponseMultiError, or nil if none found.
+func (m *PushAnnouncementsReadResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *PushAnnouncementsReadResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return PushAnnouncementsReadResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// PushAnnouncementsReadResponseMultiError is an error wrapping multiple
+// validation errors returned by PushAnnouncementsReadResponse.ValidateAll()
+// if the designated constraints aren't met.
+type PushAnnouncementsReadResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m PushAnnouncementsReadResponseMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m PushAnnouncementsReadResponseMultiError) AllErrors() []error { return m }
+
+// PushAnnouncementsReadResponseValidationError is the validation error
+// returned by PushAnnouncementsReadResponse.Validate if the designated
+// constraints aren't met.
+type PushAnnouncementsReadResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e PushAnnouncementsReadResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e PushAnnouncementsReadResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e PushAnnouncementsReadResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e PushAnnouncementsReadResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e PushAnnouncementsReadResponseValidationError) ErrorName() string {
+	return "PushAnnouncementsReadResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e PushAnnouncementsReadResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sPushAnnouncementsReadResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = PushAnnouncementsReadResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = PushAnnouncementsReadResponseValidationError{}
