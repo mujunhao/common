@@ -23,6 +23,7 @@ const (
 	PlatformIamService_GetPermissionCodesByProduct_FullMethodName = "/common.platform.v1.PlatformIamService/GetPermissionCodesByProduct"
 	PlatformIamService_ListAnnouncements_FullMethodName           = "/common.platform.v1.PlatformIamService/ListAnnouncements"
 	PlatformIamService_PushAnnouncementsRead_FullMethodName       = "/common.platform.v1.PlatformIamService/PushAnnouncementsRead"
+	PlatformIamService_GetCodeComponentByProduct_FullMethodName   = "/common.platform.v1.PlatformIamService/GetCodeComponentByProduct"
 )
 
 // PlatformIamServiceClient is the client API for PlatformIamService service.
@@ -39,6 +40,8 @@ type PlatformIamServiceClient interface {
 	ListAnnouncements(ctx context.Context, in *CListAnnouncementsRequest, opts ...grpc.CallOption) (*CListAnnouncementsResponse, error)
 	// Push阅读情况
 	PushAnnouncementsRead(ctx context.Context, in *PushAnnouncementsReadRequest, opts ...grpc.CallOption) (*PushAnnouncementsReadResponse, error)
+	// 产品code获取组件权限
+	GetCodeComponentByProduct(ctx context.Context, in *GetCodeComponentByProductRequest, opts ...grpc.CallOption) (*GetCodeComponentByProductResponse, error)
 }
 
 type platformIamServiceClient struct {
@@ -89,6 +92,16 @@ func (c *platformIamServiceClient) PushAnnouncementsRead(ctx context.Context, in
 	return out, nil
 }
 
+func (c *platformIamServiceClient) GetCodeComponentByProduct(ctx context.Context, in *GetCodeComponentByProductRequest, opts ...grpc.CallOption) (*GetCodeComponentByProductResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetCodeComponentByProductResponse)
+	err := c.cc.Invoke(ctx, PlatformIamService_GetCodeComponentByProduct_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PlatformIamServiceServer is the server API for PlatformIamService service.
 // All implementations must embed UnimplementedPlatformIamServiceServer
 // for forward compatibility.
@@ -103,6 +116,8 @@ type PlatformIamServiceServer interface {
 	ListAnnouncements(context.Context, *CListAnnouncementsRequest) (*CListAnnouncementsResponse, error)
 	// Push阅读情况
 	PushAnnouncementsRead(context.Context, *PushAnnouncementsReadRequest) (*PushAnnouncementsReadResponse, error)
+	// 产品code获取组件权限
+	GetCodeComponentByProduct(context.Context, *GetCodeComponentByProductRequest) (*GetCodeComponentByProductResponse, error)
 	mustEmbedUnimplementedPlatformIamServiceServer()
 }
 
@@ -124,6 +139,9 @@ func (UnimplementedPlatformIamServiceServer) ListAnnouncements(context.Context, 
 }
 func (UnimplementedPlatformIamServiceServer) PushAnnouncementsRead(context.Context, *PushAnnouncementsReadRequest) (*PushAnnouncementsReadResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method PushAnnouncementsRead not implemented")
+}
+func (UnimplementedPlatformIamServiceServer) GetCodeComponentByProduct(context.Context, *GetCodeComponentByProductRequest) (*GetCodeComponentByProductResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetCodeComponentByProduct not implemented")
 }
 func (UnimplementedPlatformIamServiceServer) mustEmbedUnimplementedPlatformIamServiceServer() {}
 func (UnimplementedPlatformIamServiceServer) testEmbeddedByValue()                            {}
@@ -218,6 +236,24 @@ func _PlatformIamService_PushAnnouncementsRead_Handler(srv interface{}, ctx cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PlatformIamService_GetCodeComponentByProduct_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetCodeComponentByProductRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PlatformIamServiceServer).GetCodeComponentByProduct(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PlatformIamService_GetCodeComponentByProduct_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PlatformIamServiceServer).GetCodeComponentByProduct(ctx, req.(*GetCodeComponentByProductRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PlatformIamService_ServiceDesc is the grpc.ServiceDesc for PlatformIamService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -240,6 +276,10 @@ var PlatformIamService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "PushAnnouncementsRead",
 			Handler:    _PlatformIamService_PushAnnouncementsRead_Handler,
+		},
+		{
+			MethodName: "GetCodeComponentByProduct",
+			Handler:    _PlatformIamService_GetCodeComponentByProduct_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

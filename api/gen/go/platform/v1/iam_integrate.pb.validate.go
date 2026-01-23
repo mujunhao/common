@@ -2129,3 +2129,217 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = PushAnnouncementsReadResponseValidationError{}
+
+// Validate checks the field values on GetCodeComponentByProductRequest with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the first error encountered is returned, or nil if there are
+// no violations.
+func (m *GetCodeComponentByProductRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetCodeComponentByProductRequest with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the result is a list of violation errors wrapped in
+// GetCodeComponentByProductRequestMultiError, or nil if none found.
+func (m *GetCodeComponentByProductRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetCodeComponentByProductRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for ProductCode
+
+	if len(errors) > 0 {
+		return GetCodeComponentByProductRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetCodeComponentByProductRequestMultiError is an error wrapping multiple
+// validation errors returned by
+// GetCodeComponentByProductRequest.ValidateAll() if the designated
+// constraints aren't met.
+type GetCodeComponentByProductRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetCodeComponentByProductRequestMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetCodeComponentByProductRequestMultiError) AllErrors() []error { return m }
+
+// GetCodeComponentByProductRequestValidationError is the validation error
+// returned by GetCodeComponentByProductRequest.Validate if the designated
+// constraints aren't met.
+type GetCodeComponentByProductRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetCodeComponentByProductRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetCodeComponentByProductRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetCodeComponentByProductRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetCodeComponentByProductRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetCodeComponentByProductRequestValidationError) ErrorName() string {
+	return "GetCodeComponentByProductRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetCodeComponentByProductRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetCodeComponentByProductRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetCodeComponentByProductRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetCodeComponentByProductRequestValidationError{}
+
+// Validate checks the field values on GetCodeComponentByProductResponse with
+// the rules defined in the proto definition for this message. If any rules
+// are violated, the first error encountered is returned, or nil if there are
+// no violations.
+func (m *GetCodeComponentByProductResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetCodeComponentByProductResponse
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the result is a list of violation errors wrapped in
+// GetCodeComponentByProductResponseMultiError, or nil if none found.
+func (m *GetCodeComponentByProductResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetCodeComponentByProductResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Code
+
+	if len(errors) > 0 {
+		return GetCodeComponentByProductResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetCodeComponentByProductResponseMultiError is an error wrapping multiple
+// validation errors returned by
+// GetCodeComponentByProductResponse.ValidateAll() if the designated
+// constraints aren't met.
+type GetCodeComponentByProductResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetCodeComponentByProductResponseMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetCodeComponentByProductResponseMultiError) AllErrors() []error { return m }
+
+// GetCodeComponentByProductResponseValidationError is the validation error
+// returned by GetCodeComponentByProductResponse.Validate if the designated
+// constraints aren't met.
+type GetCodeComponentByProductResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetCodeComponentByProductResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetCodeComponentByProductResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetCodeComponentByProductResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetCodeComponentByProductResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetCodeComponentByProductResponseValidationError) ErrorName() string {
+	return "GetCodeComponentByProductResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetCodeComponentByProductResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetCodeComponentByProductResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetCodeComponentByProductResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetCodeComponentByProductResponseValidationError{}

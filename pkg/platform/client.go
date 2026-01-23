@@ -339,6 +339,15 @@ func (c *IAMClient) PushAnnouncementsRead(ctx context.Context, items []*v1.PushA
 	return nil
 }
 
+func (c *IAMClient) GetCodeComponentByProduct(ctx context.Context, ProductCode string) (string, error) {
+	rsp, err := c.client.GetCodeComponentByProduct(ctx, &v1.GetCodeComponentByProductRequest{ProductCode: ProductCode})
+	if err != nil {
+		c.logger.WithContext(ctx).Errorf("产品code获取组件权限失败: ProductCode=%s, error=%v", ProductCode, err)
+		return "", err
+	}
+	return rsp.Code, nil
+}
+
 // ========== 辅助函数 ==========
 
 // getStringValue 获取指针字符串的值
