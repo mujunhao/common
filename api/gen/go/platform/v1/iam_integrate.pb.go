@@ -1552,6 +1552,94 @@ func (*PushAnnouncementsReadResponse) Descriptor() ([]byte, []int) {
 	return file_platform_v1_iam_integrate_proto_rawDescGZIP(), []int{12}
 }
 
+type GetCodeComponentByProductRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ProductCode   string                 `protobuf:"bytes,1,opt,name=product_code,json=productCode,proto3" json:"product_code,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetCodeComponentByProductRequest) Reset() {
+	*x = GetCodeComponentByProductRequest{}
+	mi := &file_platform_v1_iam_integrate_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetCodeComponentByProductRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetCodeComponentByProductRequest) ProtoMessage() {}
+
+func (x *GetCodeComponentByProductRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_platform_v1_iam_integrate_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetCodeComponentByProductRequest.ProtoReflect.Descriptor instead.
+func (*GetCodeComponentByProductRequest) Descriptor() ([]byte, []int) {
+	return file_platform_v1_iam_integrate_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *GetCodeComponentByProductRequest) GetProductCode() string {
+	if x != nil {
+		return x.ProductCode
+	}
+	return ""
+}
+
+type GetCodeComponentByProductResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          string                 `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetCodeComponentByProductResponse) Reset() {
+	*x = GetCodeComponentByProductResponse{}
+	mi := &file_platform_v1_iam_integrate_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetCodeComponentByProductResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetCodeComponentByProductResponse) ProtoMessage() {}
+
+func (x *GetCodeComponentByProductResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_platform_v1_iam_integrate_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetCodeComponentByProductResponse.ProtoReflect.Descriptor instead.
+func (*GetCodeComponentByProductResponse) Descriptor() ([]byte, []int) {
+	return file_platform_v1_iam_integrate_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *GetCodeComponentByProductResponse) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
 var File_platform_v1_iam_integrate_proto protoreflect.FileDescriptor
 
 const file_platform_v1_iam_integrate_proto_rawDesc = "" +
@@ -1755,7 +1843,11 @@ const file_platform_v1_iam_integrate_proto_rawDesc = "" +
 	"\rconfirm_count\x18\x04 \x01(\x03R\fconfirmCount\x12\x1b\n" +
 	"\tread_rate\x18\x05 \x01(\tR\breadRate\x12!\n" +
 	"\fconfirm_rate\x18\x06 \x01(\tR\vconfirmRate\"\x1f\n" +
-	"\x1dPushAnnouncementsReadResponse*\\\n" +
+	"\x1dPushAnnouncementsReadResponse\"E\n" +
+	" GetCodeComponentByProductRequest\x12!\n" +
+	"\fproduct_code\x18\x01 \x01(\tR\vproductCode\"7\n" +
+	"!GetCodeComponentByProductResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\tR\x04code*\\\n" +
 	"\tCPriority\x12\x10\n" +
 	"\fPRIORITY_LOW\x10\x00\x12\x15\n" +
 	"\x11PRIORITY_ORDINARY\x10\x01\x12\x11\n" +
@@ -1777,12 +1869,13 @@ const file_platform_v1_iam_integrate_proto_rawDesc = "" +
 	"\x1bANNOUNCEMENT_STATUS_PENDING\x10\x01\x12 \n" +
 	"\x1cANNOUNCEMENT_STATUS_RELEASED\x10\x02\x12\x1f\n" +
 	"\x1bANNOUNCEMENT_STATUS_EXPIRED\x10\x03\x12!\n" +
-	"\x1dANNOUNCEMENT_STATUS_WITHDRAWN\x10\x042\x9f\x04\n" +
+	"\x1dANNOUNCEMENT_STATUS_WITHDRAWN\x10\x042\xaa\x05\n" +
 	"\x12PlatformIamService\x12\x85\x01\n" +
 	"\x18GetTenantPermissionsTree\x123.common.platform.v1.GetTenantPermissionsTreeRequest\x1a4.common.platform.v1.GetTenantPermissionsTreeResponse\x12\x8e\x01\n" +
 	"\x1bGetPermissionCodesByProduct\x126.common.platform.v1.GetPermissionCodesByProductRequest\x1a7.common.platform.v1.GetPermissionCodesByProductResponse\x12r\n" +
 	"\x11ListAnnouncements\x12-.common.platform.v1.CListAnnouncementsRequest\x1a..common.platform.v1.CListAnnouncementsResponse\x12|\n" +
-	"\x15PushAnnouncementsRead\x120.common.platform.v1.PushAnnouncementsReadRequest\x1a1.common.platform.v1.PushAnnouncementsReadResponseB\xd3\x01\n" +
+	"\x15PushAnnouncementsRead\x120.common.platform.v1.PushAnnouncementsReadRequest\x1a1.common.platform.v1.PushAnnouncementsReadResponse\x12\x88\x01\n" +
+	"\x19GetCodeComponentByProduct\x124.common.platform.v1.GetCodeComponentByProductRequest\x1a5.common.platform.v1.GetCodeComponentByProductResponseB\xd3\x01\n" +
 	"\x16com.common.platform.v1B\x11IamIntegrateProtoP\x01Z<github.com/heyinLab/common/api/gen/go/platform/v1;platformv1\xa2\x02\x03CPX\xaa\x02\x12Common.Platform.V1\xca\x02\x12Common\\Platform\\V1\xe2\x02\x1eCommon\\Platform\\V1\\GPBMetadata\xea\x02\x14Common::Platform::V1b\x06proto3"
 
 var (
@@ -1798,7 +1891,7 @@ func file_platform_v1_iam_integrate_proto_rawDescGZIP() []byte {
 }
 
 var file_platform_v1_iam_integrate_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
-var file_platform_v1_iam_integrate_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
+var file_platform_v1_iam_integrate_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
 var file_platform_v1_iam_integrate_proto_goTypes = []any{
 	(CPriority)(0),                              // 0: common.platform.v1.CPriority
 	(CAnnouncementType)(0),                      // 1: common.platform.v1.CAnnouncementType
@@ -1817,27 +1910,29 @@ var file_platform_v1_iam_integrate_proto_goTypes = []any{
 	(*PushAnnouncementsReadRequest)(nil),        // 14: common.platform.v1.PushAnnouncementsReadRequest
 	(*PushAnnouncementsRead)(nil),               // 15: common.platform.v1.PushAnnouncementsRead
 	(*PushAnnouncementsReadResponse)(nil),       // 16: common.platform.v1.PushAnnouncementsReadResponse
-	(*timestamppb.Timestamp)(nil),               // 17: google.protobuf.Timestamp
-	(*structpb.Struct)(nil),                     // 18: google.protobuf.Struct
+	(*GetCodeComponentByProductRequest)(nil),    // 17: common.platform.v1.GetCodeComponentByProductRequest
+	(*GetCodeComponentByProductResponse)(nil),   // 18: common.platform.v1.GetCodeComponentByProductResponse
+	(*timestamppb.Timestamp)(nil),               // 19: google.protobuf.Timestamp
+	(*structpb.Struct)(nil),                     // 20: google.protobuf.Struct
 }
 var file_platform_v1_iam_integrate_proto_depIdxs = []int32{
 	5,  // 0: common.platform.v1.Permission.children:type_name -> common.platform.v1.Permission
 	4,  // 1: common.platform.v1.Permission.meta:type_name -> common.platform.v1.RouteMeta
-	17, // 2: common.platform.v1.Permission.create_time:type_name -> google.protobuf.Timestamp
-	17, // 3: common.platform.v1.Permission.update_time:type_name -> google.protobuf.Timestamp
+	19, // 2: common.platform.v1.Permission.create_time:type_name -> google.protobuf.Timestamp
+	19, // 3: common.platform.v1.Permission.update_time:type_name -> google.protobuf.Timestamp
 	4,  // 4: common.platform.v1.TenantPermissionTreeNode.meta:type_name -> common.platform.v1.RouteMeta
 	6,  // 5: common.platform.v1.TenantPermissionTreeNode.children:type_name -> common.platform.v1.TenantPermissionTreeNode
 	6,  // 6: common.platform.v1.GetTenantPermissionsTreeResponse.tree:type_name -> common.platform.v1.TenantPermissionTreeNode
-	18, // 7: common.platform.v1.CAnnouncement.title:type_name -> google.protobuf.Struct
+	20, // 7: common.platform.v1.CAnnouncement.title:type_name -> google.protobuf.Struct
 	0,  // 8: common.platform.v1.CAnnouncement.priority:type_name -> common.platform.v1.CPriority
 	1,  // 9: common.platform.v1.CAnnouncement.type:type_name -> common.platform.v1.CAnnouncementType
-	18, // 10: common.platform.v1.CAnnouncement.summary:type_name -> google.protobuf.Struct
-	18, // 11: common.platform.v1.CAnnouncement.content:type_name -> google.protobuf.Struct
+	20, // 10: common.platform.v1.CAnnouncement.summary:type_name -> google.protobuf.Struct
+	20, // 11: common.platform.v1.CAnnouncement.content:type_name -> google.protobuf.Struct
 	2,  // 12: common.platform.v1.CAnnouncement.scope:type_name -> common.platform.v1.CAnnouncementScope
-	17, // 13: common.platform.v1.CAnnouncement.release_time:type_name -> google.protobuf.Timestamp
-	17, // 14: common.platform.v1.CAnnouncement.expire_time:type_name -> google.protobuf.Timestamp
-	17, // 15: common.platform.v1.CAnnouncement.create_time:type_name -> google.protobuf.Timestamp
-	17, // 16: common.platform.v1.CAnnouncement.update_time:type_name -> google.protobuf.Timestamp
+	19, // 13: common.platform.v1.CAnnouncement.release_time:type_name -> google.protobuf.Timestamp
+	19, // 14: common.platform.v1.CAnnouncement.expire_time:type_name -> google.protobuf.Timestamp
+	19, // 15: common.platform.v1.CAnnouncement.create_time:type_name -> google.protobuf.Timestamp
+	19, // 16: common.platform.v1.CAnnouncement.update_time:type_name -> google.protobuf.Timestamp
 	3,  // 17: common.platform.v1.CAnnouncement.status:type_name -> common.platform.v1.CAnnouncementStatus
 	0,  // 18: common.platform.v1.CListAnnouncementsRequest.priority:type_name -> common.platform.v1.CPriority
 	1,  // 19: common.platform.v1.CListAnnouncementsRequest.type:type_name -> common.platform.v1.CAnnouncementType
@@ -1848,12 +1943,14 @@ var file_platform_v1_iam_integrate_proto_depIdxs = []int32{
 	10, // 24: common.platform.v1.PlatformIamService.GetPermissionCodesByProduct:input_type -> common.platform.v1.GetPermissionCodesByProductRequest
 	12, // 25: common.platform.v1.PlatformIamService.ListAnnouncements:input_type -> common.platform.v1.CListAnnouncementsRequest
 	14, // 26: common.platform.v1.PlatformIamService.PushAnnouncementsRead:input_type -> common.platform.v1.PushAnnouncementsReadRequest
-	8,  // 27: common.platform.v1.PlatformIamService.GetTenantPermissionsTree:output_type -> common.platform.v1.GetTenantPermissionsTreeResponse
-	11, // 28: common.platform.v1.PlatformIamService.GetPermissionCodesByProduct:output_type -> common.platform.v1.GetPermissionCodesByProductResponse
-	13, // 29: common.platform.v1.PlatformIamService.ListAnnouncements:output_type -> common.platform.v1.CListAnnouncementsResponse
-	16, // 30: common.platform.v1.PlatformIamService.PushAnnouncementsRead:output_type -> common.platform.v1.PushAnnouncementsReadResponse
-	27, // [27:31] is the sub-list for method output_type
-	23, // [23:27] is the sub-list for method input_type
+	17, // 27: common.platform.v1.PlatformIamService.GetCodeComponentByProduct:input_type -> common.platform.v1.GetCodeComponentByProductRequest
+	8,  // 28: common.platform.v1.PlatformIamService.GetTenantPermissionsTree:output_type -> common.platform.v1.GetTenantPermissionsTreeResponse
+	11, // 29: common.platform.v1.PlatformIamService.GetPermissionCodesByProduct:output_type -> common.platform.v1.GetPermissionCodesByProductResponse
+	13, // 30: common.platform.v1.PlatformIamService.ListAnnouncements:output_type -> common.platform.v1.CListAnnouncementsResponse
+	16, // 31: common.platform.v1.PlatformIamService.PushAnnouncementsRead:output_type -> common.platform.v1.PushAnnouncementsReadResponse
+	18, // 32: common.platform.v1.PlatformIamService.GetCodeComponentByProduct:output_type -> common.platform.v1.GetCodeComponentByProductResponse
+	28, // [28:33] is the sub-list for method output_type
+	23, // [23:28] is the sub-list for method input_type
 	23, // [23:23] is the sub-list for extension type_name
 	23, // [23:23] is the sub-list for extension extendee
 	0,  // [0:23] is the sub-list for field type_name
@@ -1877,7 +1974,7 @@ func file_platform_v1_iam_integrate_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_platform_v1_iam_integrate_proto_rawDesc), len(file_platform_v1_iam_integrate_proto_rawDesc)),
 			NumEnums:      4,
-			NumMessages:   13,
+			NumMessages:   15,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

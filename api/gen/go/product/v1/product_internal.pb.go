@@ -1507,143 +1507,6 @@ func (x *InternalMerchantGetProductResponse) GetProduct() *InternalProductInfo {
 	return nil
 }
 
-// 通过检查点获取维度键请求
-type InternalGetDimensionByCheckpointRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// 检查点，如 "goods.create"
-	Checkpoint    string `protobuf:"bytes,1,opt,name=checkpoint,proto3" json:"checkpoint,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *InternalGetDimensionByCheckpointRequest) Reset() {
-	*x = InternalGetDimensionByCheckpointRequest{}
-	mi := &file_product_v1_product_internal_proto_msgTypes[14]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *InternalGetDimensionByCheckpointRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*InternalGetDimensionByCheckpointRequest) ProtoMessage() {}
-
-func (x *InternalGetDimensionByCheckpointRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_product_v1_product_internal_proto_msgTypes[14]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use InternalGetDimensionByCheckpointRequest.ProtoReflect.Descriptor instead.
-func (*InternalGetDimensionByCheckpointRequest) Descriptor() ([]byte, []int) {
-	return file_product_v1_product_internal_proto_rawDescGZIP(), []int{14}
-}
-
-func (x *InternalGetDimensionByCheckpointRequest) GetCheckpoint() string {
-	if x != nil {
-		return x.Checkpoint
-	}
-	return ""
-}
-
-// 通过检查点获取维度键响应
-type InternalGetDimensionByCheckpointResponse struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// 是否找到
-	Found bool `protobuf:"varint,1,opt,name=found,proto3" json:"found,omitempty"`
-	// 维度键（rule_key）
-	DimensionKey string `protobuf:"bytes,2,opt,name=dimension_key,json=dimensionKey,proto3" json:"dimension_key,omitempty"`
-	// 规则类型
-	RuleType InternalRuleType `protobuf:"varint,3,opt,name=rule_type,json=ruleType,proto3,enum=api.product.v1.InternalRuleType" json:"rule_type,omitempty"`
-	// 单位
-	Unit *string `protobuf:"bytes,4,opt,name=unit,proto3,oneof" json:"unit,omitempty"`
-	// 是否按周期重置
-	IsResetPeriodically bool `protobuf:"varint,5,opt,name=is_reset_periodically,json=isResetPeriodically,proto3" json:"is_reset_periodically,omitempty"`
-	// 重置周期
-	ResetPeriod   InternalResetPeriod `protobuf:"varint,6,opt,name=reset_period,json=resetPeriod,proto3,enum=api.product.v1.InternalResetPeriod" json:"reset_period,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *InternalGetDimensionByCheckpointResponse) Reset() {
-	*x = InternalGetDimensionByCheckpointResponse{}
-	mi := &file_product_v1_product_internal_proto_msgTypes[15]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *InternalGetDimensionByCheckpointResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*InternalGetDimensionByCheckpointResponse) ProtoMessage() {}
-
-func (x *InternalGetDimensionByCheckpointResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_product_v1_product_internal_proto_msgTypes[15]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use InternalGetDimensionByCheckpointResponse.ProtoReflect.Descriptor instead.
-func (*InternalGetDimensionByCheckpointResponse) Descriptor() ([]byte, []int) {
-	return file_product_v1_product_internal_proto_rawDescGZIP(), []int{15}
-}
-
-func (x *InternalGetDimensionByCheckpointResponse) GetFound() bool {
-	if x != nil {
-		return x.Found
-	}
-	return false
-}
-
-func (x *InternalGetDimensionByCheckpointResponse) GetDimensionKey() string {
-	if x != nil {
-		return x.DimensionKey
-	}
-	return ""
-}
-
-func (x *InternalGetDimensionByCheckpointResponse) GetRuleType() InternalRuleType {
-	if x != nil {
-		return x.RuleType
-	}
-	return InternalRuleType_INTERNAL_RULE_TYPE_UNSPECIFIED
-}
-
-func (x *InternalGetDimensionByCheckpointResponse) GetUnit() string {
-	if x != nil && x.Unit != nil {
-		return *x.Unit
-	}
-	return ""
-}
-
-func (x *InternalGetDimensionByCheckpointResponse) GetIsResetPeriodically() bool {
-	if x != nil {
-		return x.IsResetPeriodically
-	}
-	return false
-}
-
-func (x *InternalGetDimensionByCheckpointResponse) GetResetPeriod() InternalResetPeriod {
-	if x != nil {
-		return x.ResetPeriod
-	}
-	return InternalResetPeriod_INTERNAL_RESET_PERIOD_UNSPECIFIED
-}
-
 var File_product_v1_product_internal_proto protoreflect.FileDescriptor
 
 const file_product_v1_product_internal_proto_rawDesc = "" +
@@ -1784,19 +1647,7 @@ const file_product_v1_product_internal_proto_rawDesc = "" +
 	"\rinclude_plans\x18\x02 \x01(\bH\x00R\fincludePlans\x88\x01\x01B\x10\n" +
 	"\x0e_include_plans\"c\n" +
 	"\"InternalMerchantGetProductResponse\x12=\n" +
-	"\aproduct\x18\x01 \x01(\v2#.api.product.v1.InternalProductInfoR\aproduct\"I\n" +
-	"'InternalGetDimensionByCheckpointRequest\x12\x1e\n" +
-	"\n" +
-	"checkpoint\x18\x01 \x01(\tR\n" +
-	"checkpoint\"\xc2\x02\n" +
-	"(InternalGetDimensionByCheckpointResponse\x12\x14\n" +
-	"\x05found\x18\x01 \x01(\bR\x05found\x12#\n" +
-	"\rdimension_key\x18\x02 \x01(\tR\fdimensionKey\x12=\n" +
-	"\trule_type\x18\x03 \x01(\x0e2 .api.product.v1.InternalRuleTypeR\bruleType\x12\x17\n" +
-	"\x04unit\x18\x04 \x01(\tH\x00R\x04unit\x88\x01\x01\x122\n" +
-	"\x15is_reset_periodically\x18\x05 \x01(\bR\x13isResetPeriodically\x12F\n" +
-	"\freset_period\x18\x06 \x01(\x0e2#.api.product.v1.InternalResetPeriodR\vresetPeriodB\a\n" +
-	"\x05_unit*\xc5\x01\n" +
+	"\aproduct\x18\x01 \x01(\v2#.api.product.v1.InternalProductInfoR\aproduct*\xc5\x01\n" +
 	"\x12InternalPlanStatus\x12$\n" +
 	" INTERNAL_PLAN_STATUS_UNSPECIFIED\x10\x00\x12\x1e\n" +
 	"\x1aINTERNAL_PLAN_STATUS_DRAFT\x10\x01\x12\x1f\n" +
@@ -1830,14 +1681,13 @@ const file_product_v1_product_internal_proto_rawDesc = "" +
 	"\x1dINTERNAL_PRODUCT_STATUS_DRAFT\x10\x01\x12\"\n" +
 	"\x1eINTERNAL_PRODUCT_STATUS_ACTIVE\x10\x02\x12$\n" +
 	" INTERNAL_PRODUCT_STATUS_INACTIVE\x10\x03\x12(\n" +
-	"$INTERNAL_PRODUCT_STATUS_DISCONTINUED\x10\x042\x82\x06\n" +
+	"$INTERNAL_PRODUCT_STATUS_DISCONTINUED\x10\x042\xea\x04\n" +
 	"\x16ProductInternalService\x12b\n" +
 	"\x0fInternalGetPlan\x12&.api.product.v1.InternalGetPlanRequest\x1a'.api.product.v1.InternalGetPlanResponse\x12z\n" +
 	"\x17InternalMerchantGetPlan\x12..api.product.v1.InternalMerchantGetPlanRequest\x1a/.api.product.v1.InternalMerchantGetPlanResponse\x12}\n" +
 	"\x18InternalListPricingRules\x12/.api.product.v1.InternalListPricingRulesRequest\x1a0.api.product.v1.InternalListPricingRulesResponse\x12k\n" +
 	"\x12InternalGetProduct\x12).api.product.v1.InternalGetProductRequest\x1a*.api.product.v1.InternalGetProductResponse\x12\x83\x01\n" +
-	"\x1aInternalMerchantGetProduct\x121.api.product.v1.InternalMerchantGetProductRequest\x1a2.api.product.v1.InternalMerchantGetProductResponse\x12\x95\x01\n" +
-	" InternalGetDimensionByCheckpoint\x127.api.product.v1.InternalGetDimensionByCheckpointRequest\x1a8.api.product.v1.InternalGetDimensionByCheckpointResponseB\xc0\x01\n" +
+	"\x1aInternalMerchantGetProduct\x121.api.product.v1.InternalMerchantGetProductRequest\x1a2.api.product.v1.InternalMerchantGetProductResponseB\xc0\x01\n" +
 	"\x12com.api.product.v1B\x14ProductInternalProtoP\x01Z:github.com/heyinLab/common/api/gen/go/product/v1;productv1\xa2\x02\x03APX\xaa\x02\x0eApi.Product.V1\xca\x02\x0eApi\\Product\\V1\xe2\x02\x1aApi\\Product\\V1\\GPBMetadata\xea\x02\x10Api::Product::V1b\x06proto3"
 
 var (
@@ -1853,77 +1703,71 @@ func file_product_v1_product_internal_proto_rawDescGZIP() []byte {
 }
 
 var file_product_v1_product_internal_proto_enumTypes = make([]protoimpl.EnumInfo, 6)
-var file_product_v1_product_internal_proto_msgTypes = make([]protoimpl.MessageInfo, 16)
+var file_product_v1_product_internal_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
 var file_product_v1_product_internal_proto_goTypes = []any{
-	(InternalPlanStatus)(0),                          // 0: api.product.v1.InternalPlanStatus
-	(InternalValueType)(0),                           // 1: api.product.v1.InternalValueType
-	(InternalRuleType)(0),                            // 2: api.product.v1.InternalRuleType
-	(InternalRuleStatus)(0),                          // 3: api.product.v1.InternalRuleStatus
-	(InternalResetPeriod)(0),                         // 4: api.product.v1.InternalResetPeriod
-	(InternalProductStatus)(0),                       // 5: api.product.v1.InternalProductStatus
-	(*InternalPlanParameter)(nil),                    // 6: api.product.v1.InternalPlanParameter
-	(*InternalProductPlanInfo)(nil),                  // 7: api.product.v1.InternalProductPlanInfo
-	(*InternalGetPlanRequest)(nil),                   // 8: api.product.v1.InternalGetPlanRequest
-	(*InternalGetPlanResponse)(nil),                  // 9: api.product.v1.InternalGetPlanResponse
-	(*InternalMerchantGetPlanRequest)(nil),           // 10: api.product.v1.InternalMerchantGetPlanRequest
-	(*InternalMerchantGetPlanResponse)(nil),          // 11: api.product.v1.InternalMerchantGetPlanResponse
-	(*InternalPricingRuleInfo)(nil),                  // 12: api.product.v1.InternalPricingRuleInfo
-	(*InternalListPricingRulesRequest)(nil),          // 13: api.product.v1.InternalListPricingRulesRequest
-	(*InternalListPricingRulesResponse)(nil),         // 14: api.product.v1.InternalListPricingRulesResponse
-	(*InternalProductInfo)(nil),                      // 15: api.product.v1.InternalProductInfo
-	(*InternalGetProductRequest)(nil),                // 16: api.product.v1.InternalGetProductRequest
-	(*InternalGetProductResponse)(nil),               // 17: api.product.v1.InternalGetProductResponse
-	(*InternalMerchantGetProductRequest)(nil),        // 18: api.product.v1.InternalMerchantGetProductRequest
-	(*InternalMerchantGetProductResponse)(nil),       // 19: api.product.v1.InternalMerchantGetProductResponse
-	(*InternalGetDimensionByCheckpointRequest)(nil),  // 20: api.product.v1.InternalGetDimensionByCheckpointRequest
-	(*InternalGetDimensionByCheckpointResponse)(nil), // 21: api.product.v1.InternalGetDimensionByCheckpointResponse
-	(*structpb.Struct)(nil),                          // 22: google.protobuf.Struct
-	(*timestamppb.Timestamp)(nil),                    // 23: google.protobuf.Timestamp
+	(InternalPlanStatus)(0),                    // 0: api.product.v1.InternalPlanStatus
+	(InternalValueType)(0),                     // 1: api.product.v1.InternalValueType
+	(InternalRuleType)(0),                      // 2: api.product.v1.InternalRuleType
+	(InternalRuleStatus)(0),                    // 3: api.product.v1.InternalRuleStatus
+	(InternalResetPeriod)(0),                   // 4: api.product.v1.InternalResetPeriod
+	(InternalProductStatus)(0),                 // 5: api.product.v1.InternalProductStatus
+	(*InternalPlanParameter)(nil),              // 6: api.product.v1.InternalPlanParameter
+	(*InternalProductPlanInfo)(nil),            // 7: api.product.v1.InternalProductPlanInfo
+	(*InternalGetPlanRequest)(nil),             // 8: api.product.v1.InternalGetPlanRequest
+	(*InternalGetPlanResponse)(nil),            // 9: api.product.v1.InternalGetPlanResponse
+	(*InternalMerchantGetPlanRequest)(nil),     // 10: api.product.v1.InternalMerchantGetPlanRequest
+	(*InternalMerchantGetPlanResponse)(nil),    // 11: api.product.v1.InternalMerchantGetPlanResponse
+	(*InternalPricingRuleInfo)(nil),            // 12: api.product.v1.InternalPricingRuleInfo
+	(*InternalListPricingRulesRequest)(nil),    // 13: api.product.v1.InternalListPricingRulesRequest
+	(*InternalListPricingRulesResponse)(nil),   // 14: api.product.v1.InternalListPricingRulesResponse
+	(*InternalProductInfo)(nil),                // 15: api.product.v1.InternalProductInfo
+	(*InternalGetProductRequest)(nil),          // 16: api.product.v1.InternalGetProductRequest
+	(*InternalGetProductResponse)(nil),         // 17: api.product.v1.InternalGetProductResponse
+	(*InternalMerchantGetProductRequest)(nil),  // 18: api.product.v1.InternalMerchantGetProductRequest
+	(*InternalMerchantGetProductResponse)(nil), // 19: api.product.v1.InternalMerchantGetProductResponse
+	(*structpb.Struct)(nil),                    // 20: google.protobuf.Struct
+	(*timestamppb.Timestamp)(nil),              // 21: google.protobuf.Timestamp
 }
 var file_product_v1_product_internal_proto_depIdxs = []int32{
 	1,  // 0: api.product.v1.InternalPlanParameter.value_type:type_name -> api.product.v1.InternalValueType
-	22, // 1: api.product.v1.InternalPlanParameter.rule_i18n:type_name -> google.protobuf.Struct
-	22, // 2: api.product.v1.InternalProductPlanInfo.i18n:type_name -> google.protobuf.Struct
+	20, // 1: api.product.v1.InternalPlanParameter.rule_i18n:type_name -> google.protobuf.Struct
+	20, // 2: api.product.v1.InternalProductPlanInfo.i18n:type_name -> google.protobuf.Struct
 	0,  // 3: api.product.v1.InternalProductPlanInfo.status:type_name -> api.product.v1.InternalPlanStatus
-	23, // 4: api.product.v1.InternalProductPlanInfo.create_time:type_name -> google.protobuf.Timestamp
-	23, // 5: api.product.v1.InternalProductPlanInfo.update_time:type_name -> google.protobuf.Timestamp
+	21, // 4: api.product.v1.InternalProductPlanInfo.create_time:type_name -> google.protobuf.Timestamp
+	21, // 5: api.product.v1.InternalProductPlanInfo.update_time:type_name -> google.protobuf.Timestamp
 	6,  // 6: api.product.v1.InternalProductPlanInfo.parameters:type_name -> api.product.v1.InternalPlanParameter
 	7,  // 7: api.product.v1.InternalGetPlanResponse.plan:type_name -> api.product.v1.InternalProductPlanInfo
 	7,  // 8: api.product.v1.InternalMerchantGetPlanResponse.plan:type_name -> api.product.v1.InternalProductPlanInfo
-	22, // 9: api.product.v1.InternalPricingRuleInfo.i18n:type_name -> google.protobuf.Struct
+	20, // 9: api.product.v1.InternalPricingRuleInfo.i18n:type_name -> google.protobuf.Struct
 	2,  // 10: api.product.v1.InternalPricingRuleInfo.rule_type:type_name -> api.product.v1.InternalRuleType
 	4,  // 11: api.product.v1.InternalPricingRuleInfo.reset_period:type_name -> api.product.v1.InternalResetPeriod
 	3,  // 12: api.product.v1.InternalPricingRuleInfo.status:type_name -> api.product.v1.InternalRuleStatus
-	23, // 13: api.product.v1.InternalPricingRuleInfo.create_time:type_name -> google.protobuf.Timestamp
-	23, // 14: api.product.v1.InternalPricingRuleInfo.update_time:type_name -> google.protobuf.Timestamp
+	21, // 13: api.product.v1.InternalPricingRuleInfo.create_time:type_name -> google.protobuf.Timestamp
+	21, // 14: api.product.v1.InternalPricingRuleInfo.update_time:type_name -> google.protobuf.Timestamp
 	2,  // 15: api.product.v1.InternalListPricingRulesRequest.rule_type:type_name -> api.product.v1.InternalRuleType
 	3,  // 16: api.product.v1.InternalListPricingRulesRequest.status:type_name -> api.product.v1.InternalRuleStatus
 	12, // 17: api.product.v1.InternalListPricingRulesResponse.rules:type_name -> api.product.v1.InternalPricingRuleInfo
-	22, // 18: api.product.v1.InternalProductInfo.i18n:type_name -> google.protobuf.Struct
+	20, // 18: api.product.v1.InternalProductInfo.i18n:type_name -> google.protobuf.Struct
 	5,  // 19: api.product.v1.InternalProductInfo.status:type_name -> api.product.v1.InternalProductStatus
-	23, // 20: api.product.v1.InternalProductInfo.create_time:type_name -> google.protobuf.Timestamp
-	23, // 21: api.product.v1.InternalProductInfo.update_time:type_name -> google.protobuf.Timestamp
+	21, // 20: api.product.v1.InternalProductInfo.create_time:type_name -> google.protobuf.Timestamp
+	21, // 21: api.product.v1.InternalProductInfo.update_time:type_name -> google.protobuf.Timestamp
 	15, // 22: api.product.v1.InternalGetProductResponse.product:type_name -> api.product.v1.InternalProductInfo
 	15, // 23: api.product.v1.InternalMerchantGetProductResponse.product:type_name -> api.product.v1.InternalProductInfo
-	2,  // 24: api.product.v1.InternalGetDimensionByCheckpointResponse.rule_type:type_name -> api.product.v1.InternalRuleType
-	4,  // 25: api.product.v1.InternalGetDimensionByCheckpointResponse.reset_period:type_name -> api.product.v1.InternalResetPeriod
-	8,  // 26: api.product.v1.ProductInternalService.InternalGetPlan:input_type -> api.product.v1.InternalGetPlanRequest
-	10, // 27: api.product.v1.ProductInternalService.InternalMerchantGetPlan:input_type -> api.product.v1.InternalMerchantGetPlanRequest
-	13, // 28: api.product.v1.ProductInternalService.InternalListPricingRules:input_type -> api.product.v1.InternalListPricingRulesRequest
-	16, // 29: api.product.v1.ProductInternalService.InternalGetProduct:input_type -> api.product.v1.InternalGetProductRequest
-	18, // 30: api.product.v1.ProductInternalService.InternalMerchantGetProduct:input_type -> api.product.v1.InternalMerchantGetProductRequest
-	20, // 31: api.product.v1.ProductInternalService.InternalGetDimensionByCheckpoint:input_type -> api.product.v1.InternalGetDimensionByCheckpointRequest
-	9,  // 32: api.product.v1.ProductInternalService.InternalGetPlan:output_type -> api.product.v1.InternalGetPlanResponse
-	11, // 33: api.product.v1.ProductInternalService.InternalMerchantGetPlan:output_type -> api.product.v1.InternalMerchantGetPlanResponse
-	14, // 34: api.product.v1.ProductInternalService.InternalListPricingRules:output_type -> api.product.v1.InternalListPricingRulesResponse
-	17, // 35: api.product.v1.ProductInternalService.InternalGetProduct:output_type -> api.product.v1.InternalGetProductResponse
-	19, // 36: api.product.v1.ProductInternalService.InternalMerchantGetProduct:output_type -> api.product.v1.InternalMerchantGetProductResponse
-	21, // 37: api.product.v1.ProductInternalService.InternalGetDimensionByCheckpoint:output_type -> api.product.v1.InternalGetDimensionByCheckpointResponse
-	32, // [32:38] is the sub-list for method output_type
-	26, // [26:32] is the sub-list for method input_type
-	26, // [26:26] is the sub-list for extension type_name
-	26, // [26:26] is the sub-list for extension extendee
-	0,  // [0:26] is the sub-list for field type_name
+	8,  // 24: api.product.v1.ProductInternalService.InternalGetPlan:input_type -> api.product.v1.InternalGetPlanRequest
+	10, // 25: api.product.v1.ProductInternalService.InternalMerchantGetPlan:input_type -> api.product.v1.InternalMerchantGetPlanRequest
+	13, // 26: api.product.v1.ProductInternalService.InternalListPricingRules:input_type -> api.product.v1.InternalListPricingRulesRequest
+	16, // 27: api.product.v1.ProductInternalService.InternalGetProduct:input_type -> api.product.v1.InternalGetProductRequest
+	18, // 28: api.product.v1.ProductInternalService.InternalMerchantGetProduct:input_type -> api.product.v1.InternalMerchantGetProductRequest
+	9,  // 29: api.product.v1.ProductInternalService.InternalGetPlan:output_type -> api.product.v1.InternalGetPlanResponse
+	11, // 30: api.product.v1.ProductInternalService.InternalMerchantGetPlan:output_type -> api.product.v1.InternalMerchantGetPlanResponse
+	14, // 31: api.product.v1.ProductInternalService.InternalListPricingRules:output_type -> api.product.v1.InternalListPricingRulesResponse
+	17, // 32: api.product.v1.ProductInternalService.InternalGetProduct:output_type -> api.product.v1.InternalGetProductResponse
+	19, // 33: api.product.v1.ProductInternalService.InternalMerchantGetProduct:output_type -> api.product.v1.InternalMerchantGetProductResponse
+	29, // [29:34] is the sub-list for method output_type
+	24, // [24:29] is the sub-list for method input_type
+	24, // [24:24] is the sub-list for extension type_name
+	24, // [24:24] is the sub-list for extension extendee
+	0,  // [0:24] is the sub-list for field type_name
 }
 
 func init() { file_product_v1_product_internal_proto_init() }
@@ -1940,14 +1784,13 @@ func file_product_v1_product_internal_proto_init() {
 	file_product_v1_product_internal_proto_msgTypes[9].OneofWrappers = []any{}
 	file_product_v1_product_internal_proto_msgTypes[10].OneofWrappers = []any{}
 	file_product_v1_product_internal_proto_msgTypes[12].OneofWrappers = []any{}
-	file_product_v1_product_internal_proto_msgTypes[15].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_product_v1_product_internal_proto_rawDesc), len(file_product_v1_product_internal_proto_rawDesc)),
 			NumEnums:      6,
-			NumMessages:   16,
+			NumMessages:   14,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
