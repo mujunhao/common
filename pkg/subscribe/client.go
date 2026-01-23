@@ -115,7 +115,7 @@ func (c *SubscribeClient) GetTenantSubscriptions(ctx context.Context, tenantCode
 		ProductCode: &productCode,
 	})
 	if err != nil {
-		c.logger.WithContext(ctx).Errorf("获取订阅列表失败:tenant_code=%d, product_code=%s,error=%v", tenantCode, productCode, err)
+		c.logger.WithContext(ctx).Errorf("获取订阅列表失败:tenant_code=%s, product_code=%s,error=%v", tenantCode, productCode, err)
 		return nil, err
 	}
 
