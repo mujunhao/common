@@ -249,6 +249,14 @@ message PushAnnouncementsRead {
 message PushAnnouncementsReadResponse {
 }
 
+message GetCodeComponentByProductRequest{
+  string product_code = 1[json_name="productCode"];
+}
+
+message GetCodeComponentByProductResponse {
+  string code = 1;
+}
+
 // 内部IAM服务（仅 gRPC，不暴露 HTTP）
 service PlatformIamService {
   // 获取完整租户权限树（树结构，包含 children，用于前端菜单渲染和权限分配）
@@ -259,4 +267,6 @@ service PlatformIamService {
   rpc ListAnnouncements(CListAnnouncementsRequest) returns (CListAnnouncementsResponse);
   // Push阅读情况
   rpc PushAnnouncementsRead(PushAnnouncementsReadRequest) returns (PushAnnouncementsReadResponse);
+  // 产品code获取组件权限
+  rpc GetCodeComponentByProduct(GetCodeComponentByProductRequest) returns (GetCodeComponentByProductResponse);
 }
